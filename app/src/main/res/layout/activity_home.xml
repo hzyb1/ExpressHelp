@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view"
+        android:layout_below="@+id/toolbar"
+        >
+    </FrameLayout>
+    <View android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/back_gray"
+        android:layout_above="@+id/mainpage_rg"
+        />
+    <RadioGroup
+        android:id="@+id/mainpage_rg"
+        android:layout_width="match_parent"
+        android:paddingTop="4dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+        <RadioButton android:id="@+id/home_page"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_home_page"
+            android:button="@null"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="@drawable/item_color"
+            android:textSize="14sp"
+            android:text="@string/home"
+            android:onClick="homePageFragment"
+            android:layout_gravity="center"
+            />
+        <RadioButton android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@drawable/selector_message"
+            android:button="@null"
+            android:layout_weight="1"
+            android:textColor="@drawable/item_color"
+            android:gravity="center_horizontal"
+            android:textSize="14sp"
+            android:text="@string/message"
+            android:onClick="messageFragment"
+            android:layout_gravity="center"
+            />
+        <RadioButton android:id="@+id/my_info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@drawable/selector_my_info"
+            android:button="@null"
+            android:layout_weight="1"
+            android:textColor="@drawable/item_color"
+            android:gravity="center_horizontal"
+            android:textSize="14sp"
+            android:text="@string/my_info"
+            android:onClick="myInfoFragment"
+            android:layout_gravity="center"
+            />
+    </RadioGroup>
+</RelativeLayout>

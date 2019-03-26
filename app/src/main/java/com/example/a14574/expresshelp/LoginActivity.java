@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button normalLogin;
     private Toolbar toolbar;
-    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";
+    private String originAddress = "http://zuehfv.natappfree.cc/ExpressHelp/loginServlet";
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {

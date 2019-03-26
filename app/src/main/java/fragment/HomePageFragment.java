@@ -37,7 +37,7 @@ public class HomePageFragment extends Fragment {
     private Button submitOrder;
     private RecyclerView recyclerView;
     private boolean flag;
-    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/task";      //访问服务器的url
+    private String originAddress = "http://zuehfv.natappfree.cc/ExpressHelp/task";      //访问服务器的url
     private Toolbar toolbar;
     private TextView toolbarTitle;
 

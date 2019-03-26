@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-public class AdminLoginActivity extends AppCompatActivity {
+public class AdminLoginActivity extends AppCompatActivity {         //管理员登录活动
 
     private Toolbar toolbar;
     @Override

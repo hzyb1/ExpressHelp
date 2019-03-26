@@ -22,22 +22,22 @@ import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {      //登录活动
 //    private Button loginButton ;
  //   private EditText telephoneEditText;
   //  private EditText passwordEditText;
-    private EditText telephoneEditText;
+    private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
-    private Button adminLoginButton;
-    private boolean passwordStatus = false;
-    private EditText passwordEditText;
-    private Button normalLogin;
-    private Toolbar toolbar;
-    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";
+    private Button adminLoginButton;        //切换到客服登录的按钮
+    private boolean passwordStatus = false;     //密码状态
+    private EditText passwordEditText;      //密码编辑框
+    private Button normalLogin;     //登录按钮
+    private Toolbar toolbar;        //
+    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";          //登录所访问的服务器url
     Handler mHandler = new Handler(){
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+        public void handleMessage(Message msg) {        //异步访问数据库
+            super.handleMessage(msg);   //访问服务器获取收到的信息
             String result = "";
 
             if ("Wrong".equals(msg.obj.toString())){
@@ -51,12 +51,12 @@ public class LoginActivity extends AppCompatActivity {
             Gson gson = new Gson();
             Log.d("日志",result);
  //           List<User> users = gson.fromJson(result, new TypeToken<List<User>>(){}.getType());//把JSON格式的字符串转为List
-            User user = gson.fromJson(result, User.class);
+            User user = gson.fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
             Intent intent = new Intent();
-            intent.putExtra("name", "诸葛亮");
-            intent.putExtra("age", 50);
-            intent.putExtra("IQ", 200.0f);
-            intent.setClass(LoginActivity.this,HomeActivity.class);
+//            intent.putExtra("name", "诸葛亮");
+//            intent.putExtra("age", 50);
+//            intent.putExtra("IQ", 200.0f);
+            intent.setClass(LoginActivity.this,HomeActivity.class);     //登录成功跳转到主界面
             LoginActivity.this.startActivity(intent);
             Log.d("日志",user+"");
             Toast.makeText(LoginActivity.this,"登录成功", Toast.LENGTH_SHORT).show();
@@ -67,12 +67,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();
+        initView();     //初始化各种属性
+        //对登录按钮设置监听事件
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("按钮点击","点击成功");
-                login();
+                login();            //相应监听事件，调用登录方法
             }
         });
 
@@ -83,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         passwordImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!isInputValid()){
             return;
         }
-        //构造HashMap
+        //构造HashMap     用于构造完整的url
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("telephone", telephoneEditText.getText().toString());
         params.put("password", passwordEditText.getText().toString());

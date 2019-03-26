@@ -18,7 +18,7 @@ import fragment.MessageFragment;
 import fragment.MyInfoFragment;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {           //主界面活动
 
     private Fragment fragment[] = new Fragment[3];
     RadioButton[ ] rbs = new RadioButton[3];

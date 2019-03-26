@@ -21,7 +21,6 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
     private List<Order> mOrderList;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-
         TextView address;
         TextView expressName;
         TextView time;

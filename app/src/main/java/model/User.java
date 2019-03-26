@@ -12,8 +12,8 @@ public class User {
 	private String trueName;		//真实姓名
 	private String schoolNumber;	//学号
 	private String headImage;		//头像路径
-	private int acceptNumber;
-	private int sendNumber;
+	private int acceptNumber;		//接收订单数
+	private int sendNumber;	//发布订单数
 
 
 

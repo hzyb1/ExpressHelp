@@ -44,4 +44,7 @@
     <string name="minute">分</string>
     <string name="end_time">结束时间：</string>
     <string name="money_unit">￥</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

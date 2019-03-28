@@ -18,8 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" />
-        <activity android:name="SubmitOrderActivity"></activity>
-        <activity android:name=".AdminLoginActivity"></activity>
+        <activity android:name=".SubmitOrderActivity" />
+        <activity android:name=".AdminLoginActivity" />
+        <activity android:name=".MyOrderActivity"></activity>
     </application>
 
 </manifest>

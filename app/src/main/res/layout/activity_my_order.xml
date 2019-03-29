@@ -27,10 +27,73 @@
     </android.support.v7.widget.Toolbar>
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingTop="4dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:textSize="24sp">
+        <RadioButton
+            android:id="@+id/pending_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/watch_order_text_selector"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="@string/pending_payment"
+            android:gravity="center"
+            android:background="@drawable/orders_selector"/>
+        <RadioButton
+            android:id="@+id/pending_order"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/watch_order_text_selector"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="@string/pending_order"
+            android:gravity="center"
+            android:background="@drawable/orders_selector"/>
+        <RadioButton
+            android:id="@+id/pending_receive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/watch_order_text_selector"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="@string/pending_received"
+            android:gravity="center"
+            android:background="@drawable/orders_selector"/>
+        <RadioButton
+            android:id="@+id/accomplished"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/watch_order_text_selector"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="@string/accomplish"
+            android:gravity="center"
+            android:background="@drawable/orders_selector"/>
+        <RadioButton
+            android:id="@+id/orders"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@drawable/watch_order_text_selector"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="@string/my_orders"
+            android:gravity="center"
+            android:background="@drawable/orders_selector"/>
 
 
     </RadioGroup>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/back_gray"/>
 
 
 

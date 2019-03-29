@@ -10,5 +10,5 @@
     <color name="admin_button">#8B864E</color>
     <color name="login_button">#00BFFF</color>
     <color name="separate_line">#E6E6FA</color>
-    <color name="order_selected_color">#D81C61</color>
+    <color name="order_selected_color">#f9a3c2</color>
 </resources>

@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
     private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";          //登录所访问的服务器url
-    Handler mHandler = new Handler(){
+   Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
@@ -72,8 +72,10 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("按钮点击","点击成功");
-                login();            //相应监听事件，调用登录方法
+                Intent intent = new Intent(LoginActivity.this,MyOrderActivity.class);
+                startActivity(intent);
+               // Log.d("按钮点击","点击成功");
+               // login();            //相应监听事件，调用登录方法
             }
         });
 
@@ -124,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
     public void login() {
-        //检查用户输入的账号和密码的合法性
+       //检查用户输入的账号和密码的合法性
         if (!isInputValid()){
             return;
         }

@@ -116,33 +116,33 @@ public class HomePageFragment extends Fragment {
             order.setTakeTime("2018-11-7 10:20");
             orderBriefList.add(order);
         }
-        try {
-            //构造完整URL
-            Log.d("url:",originAddress);
-            //发送请求
-            HttpUtil.sendHttpRequest(originAddress, new HttpCallbackListener() {
-                @Override
-                public void onFinish(String response) {
-                    Message message = new Message();
-                    message.obj = response;
-                    mHandler.sendMessage(message);
-                    Log.d("信息是什么",message.toString());
-//                    String result = "";
-//                    Gson gson = new Gson();
-//                    result = message.obj.toString();
-//                    orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
-//                    flag = true;
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Message message = new Message();
-                    message.obj = e.toString();
-                    mHandler.sendMessage(message);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            //构造完整URL
+//            Log.d("url:",originAddress);
+//            //发送请求
+//            HttpUtil.sendHttpRequest(originAddress, new HttpCallbackListener() {
+//                @Override
+//                public void onFinish(String response) {
+//                    Message message = new Message();
+//                    message.obj = response;
+//                    mHandler.sendMessage(message);
+//                    Log.d("信息是什么",message.toString());
+////                    String result = "";
+////                    Gson gson = new Gson();
+////                    result = message.obj.toString();
+////                    orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
+////                    flag = true;
+//                }
+//
+//                @Override
+//                public void onError(Exception e) {
+//                    Message message = new Message();
+//                    message.obj = e.toString();
+//                    mHandler.sendMessage(message);
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }

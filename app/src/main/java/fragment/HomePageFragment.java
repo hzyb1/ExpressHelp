@@ -31,6 +31,7 @@ import Adapter.OrderBriefAdapter;
 import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.Order;
+import util.SpaceItemDecoration;
 
 public class HomePageFragment extends Fragment {
     private List<Order> orderBriefList = new ArrayList<Order>();
@@ -81,6 +82,7 @@ public class HomePageFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         //      while(flag == false);
 //        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);

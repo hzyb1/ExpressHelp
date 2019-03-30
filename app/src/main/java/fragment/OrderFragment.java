@@ -16,6 +16,7 @@ import java.util.List;
 
 import Adapter.OrderAdapter;
 import model.Order;
+import util.SpaceItemDecoration;
 
 /**
  * Created by Administrator on 2019/3/28 0028.
@@ -29,6 +30,7 @@ public class OrderFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         OrderAdapter adapter = new OrderAdapter(orderList);
         recyclerView.setAdapter(adapter);
         return view;

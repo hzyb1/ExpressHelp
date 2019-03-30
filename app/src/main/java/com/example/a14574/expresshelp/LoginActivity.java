@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,MyOrderActivity.class);
+                //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);
                // Log.d("按钮点击","点击成功");
                // login();            //相应监听事件，调用登录方法

@@ -8,14 +8,48 @@ public class User {
 	private int bedroomBuild;		//寝室楼栋
 	private int bedroomNumber;		//寝室号
 	private String sex;				//性别
-	private String idCard;			//身份证
-	private String trueName;		//真实姓名
-	private String schoolNumber;	//学号
 	private String headImage;		//头像路径
-	private int acceptNumber;		//接收订单数
-	private int sendNumber;	//发布订单数
+	private int sendNumber;		//发出订单数量
+	private boolean isBan;	//是否被禁用
+	private float balance;	//余额
+	private int credit;		//信誉度
+	private String idCard;	//身份证号
+	private String trueName;	//真实姓名
+	private String schoolNumber;	//学号
+	private int acceptNumber;	//接单数量
+	private float grade;	//评分
 
+	public boolean isBan() {
+		return isBan;
+	}
 
+	public void setBan(boolean ban) {
+		isBan = ban;
+	}
+
+	public float getBalance() {
+		return balance;
+	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+
+	public int getCredit() {
+		return credit;
+	}
+
+	public void setCredit(int credit) {
+		this.credit = credit;
+	}
+
+	public float getGrade() {
+		return grade;
+	}
+
+	public void setGrade(float grade) {
+		this.grade = grade;
+	}
 
 	public int getAcceptNumber() {
 		return acceptNumber;

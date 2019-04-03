@@ -97,12 +97,14 @@
                         android:layout_alignParentRight="true">
 
                         <TextView
+                            android:id="@+id/my_orders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/watch_all_orders"
                             android:textSize="16sp"
                             android:layout_gravity="center"/>
                         <ImageView
+                            android:id="@+id/my_orders_image"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/arrow_normal"
@@ -131,12 +133,14 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/wait_pay_image"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/pending_payment"
                             android:layout_gravity="center"/>
 
                         <TextView
+                            android:id="@+id/wait_pay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pending_payment"
@@ -151,11 +155,13 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/wait_accept_image"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:src="@drawable/pending_order"/>
                         <TextView
+                            android:id="@+id/wait_accept"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pending_order"
@@ -169,12 +175,14 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <ImageView
+                            android:id="@+id/wait_take_image"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/pending_received"
                             android:layout_gravity="center" />
 
                         <TextView
+                            android:id="@+id/wait_take"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/pending_received"
@@ -189,12 +197,14 @@
                         android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/finish_image"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/accomplish"
                             android:layout_gravity="center"
                             />
                         <TextView
+                            android:id="@+id/finish"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/accomplish"

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,MyOrderActivity.class);
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);
                // Log.d("按钮点击","点击成功");

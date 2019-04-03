@@ -3,10 +3,11 @@ package model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Order {
     private int id;		//订单号
-    private Date submitTime;	//发布时间
+    private Timestamp submitTime;	//发布时间
     private int acceptId;	//收单人Id
     private int sendId;		//发单人Id
     private String takeName;		//收货人姓名
@@ -15,7 +16,7 @@ public class Order {
     private String takeTelephone;	//收货电话
     private String expressName;		//快递点
     private int state;		//订单状态
-    private Date completionTime;	//订单结束时间
+    private Timestamp completionTime;	//订单结束时间
     private float money;
     private Time firstTakeTimeBegin;		//第一个收货时间的起始时间
     private Time firstTakeTimeEnd;		//第一个收货时间的结束时间
@@ -37,12 +38,8 @@ public class Order {
         this.id = id;
     }
 
-    public Date getSubmitTime() {
+    public Timestamp getSubmitTime() {
         return submitTime;
-    }
-
-    public void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
     }
 
     public int getAcceptId() {
@@ -109,11 +106,15 @@ public class Order {
         this.state = state;
     }
 
-    public Date getCompletionTime() {
+    public void setSubmitTime(Timestamp submitTime) {
+        this.submitTime = submitTime;
+    }
+
+    public Timestamp getCompletionTime() {
         return completionTime;
     }
 
-    public void setCompletionTime(Date completionTime) {
+    public void setCompletionTime(Timestamp completionTime) {
         this.completionTime = completionTime;
     }
 

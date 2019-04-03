@@ -24,6 +24,9 @@ import com.example.a14574.expresshelp.SubmitOrderActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.Order;
 import util.SpaceItemDecoration;
+
 
 public class HomePageFragment extends Fragment {
     private List<Order> orderBriefList = new ArrayList<Order>();
@@ -112,9 +116,13 @@ public class HomePageFragment extends Fragment {
         flag = false;
         for(int i=0;i<20;i++){
             Order order = new Order();
-            order.setGetAdress("21-103");
+            order.setGetAddress("21-103");
             order.setExpressName("中通快递");
             order.setTakeCode("3");
+            Date date = new Date();//获得系统时间. 
+            String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+            Timestamp goodsC_date = Timestamp.valueOf(nowTime);//把时间转换 
+            order.setSubmitTime(goodsC_date);
             order.setTakeTime("2018-11-7 10:20");
             orderBriefList.add(order);
         }

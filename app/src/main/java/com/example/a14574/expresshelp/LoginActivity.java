@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
     private String originAddress = "loginServlet";          //登录所访问的服务器url
+    private ProgressDialog progressDialog;                   //登录状态对话框
    Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             }else {
                 result = msg.obj.toString();
             }
+            progressDialog.dismiss();
             Log.d("日志",msg+"123");
             Gson gson = new Gson();
             Log.d("日志",result);
@@ -70,9 +73,9 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                //startActivity(intent);
                // Log.d("按钮点击","点击成功");
                 login();            //相应监听事件，调用登录方法
             }
@@ -123,8 +126,14 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
     public void login() {
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setTitle("正在登录，请稍后......");
+        progressDialog.setMessage("登录中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
        //检查用户输入的账号和密码的合法性
         if (!isInputValid()){
+            progressDialog.dismiss();
             return;
         }
         //构造HashMap     用于构造完整的url

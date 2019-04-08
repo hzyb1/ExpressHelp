@@ -23,9 +23,8 @@ import http.HttpUtil;
 import model.User;
 
 public class LoginActivity extends AppCompatActivity {      //登录活动
-//    private Button loginButton ;
- //   private EditText telephoneEditText;
-  //  private EditText passwordEditText;
+
+    private static String LOGINFIELD = "Login failed";
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
     private Button adminLoginButton;        //切换到客服登录的按钮
@@ -33,14 +32,13 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private EditText passwordEditText;      //密码编辑框
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
-    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";          //登录所访问的服务器url
+    private String originAddress = "loginServlet";          //登录所访问的服务器url
    Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
             String result = "";
-
-            if ("Wrong".equals(msg.obj.toString())){
+            if (LOGINFIELD.equals(msg.obj.toString())){
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                 return;
@@ -76,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                 //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);
                // Log.d("按钮点击","点击成功");
-               // login();            //相应监听事件，调用登录方法
+                login();            //相应监听事件，调用登录方法
             }
         });
 
@@ -110,11 +108,9 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
 //                startActivity(intent);
 //            }
 //        });
-
-
-
     }
     private void initView(){
+        originAddress = this.getString(R.string.TheServer) + originAddress;
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordImageView = (ImageView) findViewById(R.id.pwd_image);
         normalLogin = (Button)findViewById(R.id.normal_login);

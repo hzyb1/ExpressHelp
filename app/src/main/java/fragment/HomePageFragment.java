@@ -24,6 +24,7 @@ import com.example.a14574.expresshelp.SubmitOrderActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.sql.Time;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -123,7 +124,8 @@ public class HomePageFragment extends Fragment {
             String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
             Timestamp goodsC_date = Timestamp.valueOf(nowTime);//把时间转换 
             order.setSubmitTime(goodsC_date);
-            order.setTakeTime("2018-11-7 10:20");
+            Time time = new Time(10,20,1);
+
             orderBriefList.add(order);
         }
 //        try {

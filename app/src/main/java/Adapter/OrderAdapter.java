@@ -48,7 +48,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Order order = mOrderList.get(position);
-        holder.address.setText(order.getGetAdress());
+        holder.address.setText(order.getGetAddress());
         holder.express.setText(order.getExpressName());
         holder.money.setText(Float.toString(order.getMoney()));
         switch (order.getState()){

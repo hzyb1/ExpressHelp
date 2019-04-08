@@ -51,9 +51,9 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Order order = mOrderList.get(position);
-        holder.address.setText(order.getGetAdress());
+        holder.address.setText(order.getGetAddress());
         holder.money.setText(""+order.getMoney());
-        holder.time.setText(order.getTakeTime());
+     //   holder.time.setText(order.getTakeTime());
         holder.expressName.setText(order.getExpressName());
     }
 

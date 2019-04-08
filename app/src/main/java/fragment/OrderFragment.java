@@ -38,10 +38,10 @@ public class OrderFragment extends Fragment {
     public void init(){
         for(int i=0;i<20;i++){
             Order order = new Order();
-            order.setGetAdress("21-103");
+            order.setGetAddress("21-103");
             order.setExpressName("中通快递");
             order.setTakeCode("3");
-            order.setTakeTime("2018-11-7 10:20");
+        //    order.setTakeTime("2018-11-7 10:20");
             orderList.add(order);
         }
     }

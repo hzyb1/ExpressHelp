@@ -168,91 +168,132 @@
                 android:textSize="18sp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center" />
+
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circular_shape_small"
+                >
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="38dp"
                     android:padding="5dp"
-                    android:text="@string/start_time"
+                    android:text="@string/first_start_time"
                     android:textSize="18sp"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="center" />
-                <Spinner
-                    android:id="@+id/start_hour"
-                    android:layout_width="90dp"
-                    android:layout_height="38dp"
                     android:layout_gravity="center"
-                    >
-                </Spinner>
+                    />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:padding="5dp"
-                    android:text="@string/hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/first_start_time"
+                    android:hint="8:00"
                     android:textSize="18sp"
-                    android:layout_gravity="center" />
-                <Spinner
-                    android:id="@+id/start_minute"
-                    android:layout_width="90dp"
-                    android:layout_height="38dp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    >
-                </Spinner>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:padding="5dp"
-                    android:text="@string/minute"
-                    android:textSize="18sp"
-                    android:layout_gravity="center" />
+                    android:gravity="right"
+                    />
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circular_shape_small"
+                >
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="38dp"
                     android:padding="5dp"
-                    android:text="@string/end_time"
+                    android:text="@string/first_end_time"
                     android:textSize="18sp"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="center" />
-                <Spinner
-                    android:id="@+id/stop_hour"
-                    android:layout_width="90dp"
-                    android:layout_height="38dp"
                     android:layout_gravity="center"
-                    >
-                </Spinner>
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/first_end_time"
+                    android:hint="8:00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circular_shape_small"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="38dp"
                     android:padding="5dp"
-                    android:text="@string/hour"
+                    android:text="@string/second_start_time"
                     android:textSize="18sp"
-                    android:layout_gravity="center" />
-                <Spinner
-                    android:id="@+id/stop_minute"
-                    android:layout_width="90dp"
-                    android:layout_height="38dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center"
-                    >
-                </Spinner>
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/second_start_time"
+                    android:hint="8:00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/circular_shape_small"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="38dp"
                     android:padding="5dp"
-                    android:text="@string/minute"
+                    android:text="@string/second_end_time"
                     android:textSize="18sp"
-                    android:layout_gravity="center" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/second_end_time"
+                    android:hint="8:00"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -290,6 +331,9 @@
                     android:background="@drawable/subimt_order_tv_right_bg"
                     android:layout_weight="2"/>
             </LinearLayout>
+
+
+
             <Button
                 android:layout_marginTop="20dp"
                 android:layout_width="100dp"

@@ -44,4 +44,16 @@
     <string name="minute">分</string>
     <string name="end_time">结束时间：</string>
     <string name="money_unit">￥</string>
+
+    <string name="username_tv">用户名：</string>
+    <string name="temp_username">弹指尘梦空山语</string>
+    <string name="id_tv">id：</string>
+    <string name="temp_id">123456789</string>
+    <string name="sex_tv">性别：</string>
+    <string name="temp_sex">男</string>
+
+    <string name="submit_times">发布任务次数：</string>
+    <string name="user_credit">用户信誉度：</string>
+    <string name="more_info">更多信息</string>
+    <string name="send_message">发消息</string>
 </resources>

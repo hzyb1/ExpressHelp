@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
+import com.example.a14574.expresshelp.SpecificUserInfoActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +40,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
 
     private TextView finish;
     private ImageView finish_image;
+
+    private Button toSpecificInfo;  //去查看详情页面
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
@@ -53,6 +56,14 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         });
         headImage = (CircleImageView) view.findViewById(R.id.head_image);
         Glide.with(getContext()).load(R.drawable.temp_head2).into(headImage);
+        toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
+        toSpecificInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyInfoFragment.this.getActivity(),SpecificUserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
     private void initEvents(){

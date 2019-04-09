@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,23 +42,17 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
-
-            if(msg.arg1 == 404){
-                Log.d("日志",msg+"连接失败");
-                Toast.makeText(LoginActivity.this,"连接失败", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
             String result = msg.obj.toString();
-            if (LOGINFIELD.equals(result)){
+            Log.d("查看结果：：",result+"abc");
+            if (!LOGINFIELD.equals(result)){
+                result = msg.obj.toString();
+            }else {
+
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 return;
-            }else {
-                result = msg.obj.toString();
             }
-
             progressDialog.dismiss();
             Log.d("日志",msg+"123");
             Gson gson = new Gson();
@@ -65,12 +60,8 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             if(result == null || result.equals("")){
                 return ;
             }
- //           List<User> users = gson.fromJson(result, new TypeToken<List<User>>(){}.getType());//把JSON格式的字符串转为List
             User user = gson.fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
             Intent intent = new Intent();
-//            intent.putExtra("name", "诸葛亮");
-//            intent.putExtra("age", 50);
-//            intent.putExtra("IQ", 200.0f);
             intent.setClass(LoginActivity.this,HomeActivity.class);     //登录成功跳转到主界面
             LoginActivity.this.startActivity(intent);
             Log.d("日志",user+"");
@@ -115,13 +106,6 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                 passwordEditText.setSelection(passwordEditText.getText().length());
             }
         });
-//        normalLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-//                startActivity(intent);
-//            }
-//        });
     }
     private void initView(){
         originAddress = this.getString(R.string.TheServer) + originAddress;
@@ -175,10 +159,11 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
            HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                @Override
                public void onFailure(Call call, IOException e) {
-                   Log.d("登录失败：","aaaa");
-                   Message message = new Message();
-                   message.arg1 = 404;
-                   mHandler.sendMessage(message);
+                   Looper.prepare();
+                   Toast.makeText(LoginActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
+                   Log.d("连接服务器失败",e.toString());
+                   progressDialog.dismiss();
+                   Looper.loop();
                }
 
                @Override

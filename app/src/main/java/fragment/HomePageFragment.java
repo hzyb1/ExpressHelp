@@ -90,8 +90,8 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         //      while(flag == false);
-//        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
-//        recyclerView.setAdapter(adapter);
+       OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+       recyclerView.setAdapter(adapter);
         submitOrder = (Button) view.findViewById(R.id.submit_order);
 //        submitOrder.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -125,7 +125,10 @@ public class HomePageFragment extends Fragment {
             Timestamp goodsC_date = Timestamp.valueOf(nowTime);//把时间转换 
             order.setSubmitTime(goodsC_date);
             Time time = new Time(10,20,1);
-
+            order.setFirstTakeTimeBegin(time);
+            order.setFirstTakeTimeEnd(time);
+            order.setSecondTakeTimeBegin(time);
+            order.setSecondTakeTimeEnd(time);
             orderBriefList.add(order);
         }
 //        try {

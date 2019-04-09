@@ -14,6 +14,8 @@ public class Order {
     private String getAddress;	//收货地址
     private String takeCode;		//取货号
     private String takeTelephone;	//收货电话
+    private String takeTime;		//取货时间
+    private String secondtakeTime;
     private String expressName;		//快递点
     private int state;		//订单状态
     private Timestamp completionTime;	//订单结束时间
@@ -28,6 +30,14 @@ public class Order {
 //	private int bedroomNumber;		//收货寝室号
 //	private String sentTelephone;
 //	private String hTelephone;		//收货人电话
+
+    public String getSecondtakeTime() {
+        return secondtakeTime;
+    }
+
+    public void setSecondtakeTime(String secondtakeTime) {
+        this.secondtakeTime = secondtakeTime;
+    }
 
 
     public int getId() {

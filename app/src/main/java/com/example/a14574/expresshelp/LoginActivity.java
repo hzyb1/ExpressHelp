@@ -1,5 +1,5 @@
 package com.example.a14574.expresshelp;
-
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -16,11 +16,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.User;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {      //登录活动
 
@@ -33,20 +36,30 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
     private String originAddress = "loginServlet";          //登录所访问的服务器url
+    private ProgressDialog progressDialog;                   //登录状态对话框
    Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
-            String result = msg.obj.toString();
 
+            if(msg.arg1 == 404){
+                Log.d("日志",msg+"连接失败");
+                Toast.makeText(LoginActivity.this,"连接失败", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                return;
+            }
+            String result = msg.obj.toString();
             if (LOGINFIELD.equals(result)){
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
                 return;
             }else {
                 result = msg.obj.toString();
             }
-            Log.d("日志",result+"123");
+
+            progressDialog.dismiss();
+            Log.d("日志",msg+"123");
             Gson gson = new Gson();
             Log.d("日志",result);
             if(result == null || result.equals("")){
@@ -74,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 login();            //相应监听事件，调用登录方法
             }
         });
@@ -110,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
 //        });
     }
     private void initView(){
-        originAddress = this.getString(R.string.VirtualTheServer) + originAddress;
+        originAddress = this.getString(R.string.TheServer) + originAddress;
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordImageView = (ImageView) findViewById(R.id.pwd_image);
         normalLogin = (Button)findViewById(R.id.normal_login);
@@ -123,8 +137,14 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
     public void login() {
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setTitle("正在登录，请稍后......");
+        progressDialog.setMessage("登录中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
        //检查用户输入的账号和密码的合法性
         if (!isInputValid()){
+            progressDialog.dismiss();
             return;
         }
         //构造HashMap     用于构造完整的url
@@ -138,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("url:",compeletedURL);
             //发送请求
-            HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+           /* HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
                 @Override
                 public void onFinish(String response) {
                     Message message = new Message();
@@ -151,7 +171,24 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                     message.obj = e.toString();
                     mHandler.sendMessage(message);
                 }
-            });
+            });*/
+           HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+               @Override
+               public void onFailure(Call call, IOException e) {
+                   Log.d("登录失败：","aaaa");
+                   Message message = new Message();
+                   message.arg1 = 404;
+                   mHandler.sendMessage(message);
+               }
+
+               @Override
+               public void onResponse(Call call, Response response) throws IOException {
+                   Message message = new Message();
+                   message.obj = response.body().string().trim();
+                   mHandler.sendMessage(message);
+                   Log.d("登录成功：",message.obj.toString()+"aaaa");
+               }
+           });
         } catch (Exception e) {
             e.printStackTrace();
         }

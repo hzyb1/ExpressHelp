@@ -20,7 +20,8 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".SubmitOrderActivity" />
         <activity android:name=".AdminLoginActivity" />
-        <activity android:name=".MyOrderActivity"></activity>
+        <activity android:name=".MyOrderActivity" />
+        <activity android:name=".SpecificUserInfoActivity"></activity>
     </application>
 
 </manifest>

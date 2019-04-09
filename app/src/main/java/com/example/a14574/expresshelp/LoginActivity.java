@@ -37,17 +37,21 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
-            String result = "";
-            if (LOGINFIELD.equals(msg.obj.toString())){
+            String result = msg.obj.toString();
+
+            if (LOGINFIELD.equals(result)){
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                 return;
             }else {
                 result = msg.obj.toString();
             }
-            Log.d("日志",msg+"123");
+            Log.d("日志",result+"123");
             Gson gson = new Gson();
             Log.d("日志",result);
+            if(result == null || result.equals("")){
+                return ;
+            }
  //           List<User> users = gson.fromJson(result, new TypeToken<List<User>>(){}.getType());//把JSON格式的字符串转为List
             User user = gson.fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
             Intent intent = new Intent();
@@ -70,10 +74,6 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                startActivity(intent);
-               // Log.d("按钮点击","点击成功");
                 login();            //相应监听事件，调用登录方法
             }
         });
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
 //        });
     }
     private void initView(){
-        originAddress = this.getString(R.string.TheServer) + originAddress;
+        originAddress = this.getString(R.string.VirtualTheServer) + originAddress;
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordImageView = (ImageView) findViewById(R.id.pwd_image);
         normalLogin = (Button)findViewById(R.id.normal_login);

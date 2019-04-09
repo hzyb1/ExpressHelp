@@ -1,0 +1,134 @@
+[33mcommit 36d88a32fdca7e99a515ebfa37511c706836d159[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m)[m
+Author: hzyb1 <1457493024@qq.com>
+Date:   Mon Apr 8 19:26:07 2019 +0800
+
+    string资源新增TheServer字段，表示服务器
+
+[33mcommit 2e04927d2da17178f2acf61f4660783ce0b9b3ab[m
+Author: hzyb1 <1457493024@qq.com>
+Date:   Wed Apr 3 20:05:27 2019 +0800
+
+    重新更新model类
+
+[33mcommit b4684286364fde737e415aab3a3e783c26f6650d[m
+Author: hzyb1 <1457493024@qq.com>
+Date:   Wed Apr 3 19:52:20 2019 +0800
+
+    更新model类
+
+[33mcommit ed8b79719ab1b56dce8ba0872aac55a6afa7c629[m
+Merge: db56872 bb602de
+Author: Lei <597215781@qq.com>
+Date:   Wed Apr 3 18:17:53 2019 +0800
+
+    解决冲突
+
+[33mcommit db56872a75d7874481f9090e82cae79482968dc6[m
+Author: Lei <597215781@qq.com>
+Date:   Wed Apr 3 18:07:45 2019 +0800
+
+    a
+
+[33mcommit bb602deeb5a82372b0baaac13cc9a8ebb3a4ddb6[m
+Author: sd <1453431007@qq.com>
+Date:   Wed Apr 3 11:50:01 2019 +0800
+
+    订单界面修改
+
+[33mcommit bd4afb2ea4d3ef05e0ce624735b8a3bed9b4b0b4[m
+Author: Lei <597215781@qq.com>
+Date:   Tue Apr 2 20:08:26 2019 +0800
+
+    修改RatioButton美观问题
+
+[33mcommit 1bc845ce940d447155e3c343315421609bec2f3b[m
+Author: Lei <597215781@qq.com>
+Date:   Sat Mar 30 14:31:01 2019 +0800
+
+    美化RecyclerView子项样式
+
+[33mcommit e198a38813d033db025323fa22b63bd16f8235cf[m
+Author: Lei <597215781@qq.com>
+Date:   Fri Mar 29 16:40:33 2019 +0800
+
+    change color
+
+[33mcommit 5c692d77f24ed0d31fcb524cd55cd474e589f4be[m
+Author: Lei <597215781@qq.com>
+Date:   Fri Mar 29 16:30:11 2019 +0800
+
+    添加查看订单中的五个RatioButton，用来区分查询条件
+
+[33mcommit 4b8a75e1ec3aa23ae00cdd24465e1ede57dadada[m
+Merge: 7eb4bab eb231b5
+Author: Lei <597215781@qq.com>
+Date:   Fri Mar 29 15:51:04 2019 +0800
+
+    合并与邵栋在activity_my_order上的冲突
+
+[33mcommit 7eb4bab462bcb801dda2a9e2b47380e9567e9f22[m
+Author: Lei <597215781@qq.com>
+Date:   Fri Mar 29 15:38:59 2019 +0800
+
+    修改了MyOrderActivity
+
+[33mcommit eb231b5ce53850ba33a08e4117eae0ce3b07e33d[m
+Author: shaodong <1453431007@qq.com>
+Date:   Fri Mar 29 15:36:23 2019 +0800
+
+    增加查看订单碎片，注释掉了Login和Homepragment的网络连接部分
+
+[33mcommit 6edd42f0b6f0a4055bd1ad609218eafaa8a925ab[m
+Author: shaodong <1453431007@qq.com>
+Date:   Thu Mar 28 20:26:59 2019 +0800
+
+    new fragment
+
+[33mcommit 4472004e0c963664f4d510986fd3d7d050afa172[m
+Author: shaodong <1453431007@qq.com>
+Date:   Thu Mar 28 20:19:20 2019 +0800
+
+    add fragment
+
+[33mcommit 7b8a0d758f8065f9978bcf243834cf5ba67372de[m
+Author: shaodong <1453431007@qq.com>
+Date:   Thu Mar 28 20:14:55 2019 +0800
+
+    test
+
+[33mcommit 410758e0cdd586ac76dd321ec9556634b89b967e[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Lei <597215781@qq.com>
+Date:   Thu Mar 28 19:35:55 2019 +0800
+
+    add MyOrderActivity
+
+[33mcommit 16f579aa8d15ce6f0adfef2b5580ef636dc902e2[m
+Merge: 4c2948d 70a4c85
+Author: Lei <597215781@qq.com>
+Date:   Tue Mar 26 19:58:28 2019 +0800
+
+    fixed git pull conflict at the first time
+
+[33mcommit 4c2948de1150ba857455b7260ebb73b887cf50ba[m
+Author: Lei <597215781@qq.com>
+Date:   Tue Mar 26 19:54:54 2019 +0800
+
+    test git pull
+
+[33mcommit 70a4c8578d130bcf91cff63360e6a23e1061ab8c[m
+Author: hzyb1 <1457493024@qq.com>
+Date:   Tue Mar 26 14:53:20 2019 +0800
+
+    添加注释
+
+[33mcommit b4f044b91b5266f275f89b5ec94ce768faa21ec3[m
+Author: hzyb1 <1457493024@qq.com>
+Date:   Sat Mar 23 20:52:47 2019 +0800
+
+    first commit
+
+[33mcommit 2b1ef2dd978263cf03474e2dc033a1e9b3e782d6[m
+Author: hzyb1 <30856294+hzyb1@users.noreply.github.com>
+Date:   Sat Mar 23 20:41:09 2019 +0800
+
+    Initial commit

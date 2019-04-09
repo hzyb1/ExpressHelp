@@ -24,7 +24,7 @@ import fragment.OrderFragment;
 import model.Order;
 
 public class MyOrderActivity extends AppCompatActivity {
-    private List<Order> orderList = new ArrayList<>();
+    //private List<Order> orderList = new ArrayList<>();
     private Toolbar toolbar;
     private RadioButton radioButton;
     @Override
@@ -63,7 +63,6 @@ public class MyOrderActivity extends AppCompatActivity {
     public void showItem(){
         Intent intent = getIntent();
         int style = intent.getIntExtra("style",0);
-        Log.d("MyOrderActivity", "showitem: "+style);
         switch (style){
             case 1:
                 radioButton = (RadioButton)findViewById(R.id.orders);

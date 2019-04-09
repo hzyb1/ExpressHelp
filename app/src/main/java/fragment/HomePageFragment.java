@@ -85,8 +85,8 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         //      while(flag == false);
-//        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
-//        recyclerView.setAdapter(adapter);
+       OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+       recyclerView.setAdapter(adapter);
         submitOrder = (Button) view.findViewById(R.id.submit_order);
 //        submitOrder.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -109,15 +109,19 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initOrders(){
-        flag = false;
-        for(int i=0;i<20;i++){
-            Order order = new Order();
-            order.setGetAdress("21-103");
-            order.setExpressName("中通快递");
-            order.setTakeCode("3");
-            order.setTakeTime("2018-11-7 10:20");
-            orderBriefList.add(order);
-        }
+            flag = false;
+            for(int i=0;i<20;i++){
+                Order order = new Order();
+                order.setGetAdress("21-103");
+                order.setMoney(2.1000f);
+                order.setId(1111);
+                order.setSubmitTime("2019.1.1");
+                order.setExpressName("中通快递");
+                order.setTakeCode("3");
+                order.setTakeTime("2018-11-7 10:20");
+                order.setSecondtakeTime("2018-11-7 13:20");
+                orderBriefList.add(order);
+            }
 //        try {
 //            //构造完整URL
 //            Log.d("url:",originAddress);

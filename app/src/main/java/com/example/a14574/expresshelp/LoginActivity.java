@@ -3,6 +3,7 @@ package com.example.a14574.expresshelp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,14 +43,15 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
-            String result = "";
-            if (LOGINFIELD.equals(msg.obj.toString())){
+            String result = msg.obj.toString();
+            Log.d("查看结果：：",result+"abc");
+            if (!LOGINFIELD.equals(result)){
+                result = msg.obj.toString();
+            }else {
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 return;
-            }else {
-                result = msg.obj.toString();
             }
             progressDialog.dismiss();
             Log.d("日志",msg+"123");
@@ -168,11 +170,23 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
            HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                @Override
                public void onFailure(Call call, IOException e) {
-
+                   Looper.prepare();
+                   Toast.makeText(LoginActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
+                   Log.d("连接服务器失败",e.toString());
+                   progressDialog.dismiss();
+                   Looper.loop();
                }
 
                @Override
                public void onResponse(Call call, Response response) throws IOException {
+                   if (!response.isSuccessful()) {
+                       Looper.prepare();
+                       Toast.makeText(LoginActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
+                       Log.d("连接服务器失败","shibai");
+                       progressDialog.dismiss();
+                       Looper.loop();
+                       return;
+                   }
                    Message message = new Message();
                    message.obj = response.body().string().trim();
                    mHandler.sendMessage(message);

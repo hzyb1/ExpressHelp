@@ -1,5 +1,5 @@
 <resources>
-    <string name="TheServer"> http://45.32.84.43:8080/ExpressHelpServce/    </string>
+    <string name="TheServer"> http://45.32.84.43:8080/ExpressHelpServc/    </string>
 
     <string name="app_name">ExpressHelp</string>
     <string name="normal_user_login_title">用户登录</string>

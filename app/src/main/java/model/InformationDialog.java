@@ -82,12 +82,15 @@ public class InformationDialog extends Dialog {
        order_money = (TextView)findViewById(R.id.order_money);
        order_first_time = (TextView)findViewById(R.id.order_first_time);
        order_second_time = (TextView)findViewById(R.id.order_second_time);
-       order_time.setText("订单发布时间："+order.getSubmitTime());
+       String timeStr=order.getSubmitTime()
+                .toString()
+                .substring(0, order.getSubmitTime().toString().indexOf("."));
+       order_time.setText("订单发布时间："+timeStr);
        order_id.setText("订单编号："+order.getId());
-       order_place.setText("收货地点："+order.getGetAdress());
+       order_place.setText("快递点："+order.getExpressName());
        order_money.setText("金额："+order.getMoney()+"");
-       order_first_time.setText("收货时间："+order.getTakeTime());
-       order_second_time.setText("收货时间："+order.getSecondtakeTime());
+       order_first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin()+"-"+order.getFirstTakeTimeEnd());
+       order_second_time.setText("第二次收货时间："+order.getSecondTakeTimeBegin()+"-"+order.getSecondTakeTimeEnd());
        Button  accept = (Button)findViewById(R.id.accept);
        accept.setOnClickListener(new View.OnClickListener() {
            @Override

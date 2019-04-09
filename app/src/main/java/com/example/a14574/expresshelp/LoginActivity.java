@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -23,9 +24,8 @@ import http.HttpUtil;
 import model.User;
 
 public class LoginActivity extends AppCompatActivity {      //登录活动
-//    private Button loginButton ;
- //   private EditText telephoneEditText;
-  //  private EditText passwordEditText;
+
+    private static String LOGINFIELD = "Login failed";
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
     private Button adminLoginButton;        //切换到客服登录的按钮
@@ -33,20 +33,21 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private EditText passwordEditText;      //密码编辑框
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
-    private String originAddress = "http://vnhcit.natappfree.cc/ExpressHelp/loginServlet";          //登录所访问的服务器url
+    private String originAddress = "loginServlet";          //登录所访问的服务器url
+    private ProgressDialog progressDialog;                   //登录状态对话框
    Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {        //异步访问数据库
             super.handleMessage(msg);   //访问服务器获取收到的信息
             String result = "";
-
-            if ("Wrong".equals(msg.obj.toString())){
+            if (LOGINFIELD.equals(msg.obj.toString())){
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                 return;
             }else {
                 result = msg.obj.toString();
             }
+            progressDialog.dismiss();
             Log.d("日志",msg+"123");
             Gson gson = new Gson();
             Log.d("日志",result);
@@ -72,11 +73,11 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                //startActivity(intent);
                // Log.d("按钮点击","点击成功");
-               // login();            //相应监听事件，调用登录方法
+                login();            //相应监听事件，调用登录方法
             }
         });
 
@@ -110,11 +111,9 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
 //                startActivity(intent);
 //            }
 //        });
-
-
-
     }
     private void initView(){
+        originAddress = this.getString(R.string.TheServer) + originAddress;
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordImageView = (ImageView) findViewById(R.id.pwd_image);
         normalLogin = (Button)findViewById(R.id.normal_login);
@@ -127,8 +126,14 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
     public void login() {
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setTitle("正在登录，请稍后......");
+        progressDialog.setMessage("登录中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
        //检查用户输入的账号和密码的合法性
         if (!isInputValid()){
+            progressDialog.dismiss();
             return;
         }
         //构造HashMap     用于构造完整的url

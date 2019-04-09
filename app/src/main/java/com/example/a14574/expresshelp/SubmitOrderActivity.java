@@ -1,22 +1,27 @@
 package com.example.a14574.expresshelp;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class SubmitOrderActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private Spinner startHour;
-    private Spinner startMinute;
-    private Spinner stopHour;
-    private Spinner stopMinute;
-
+    private TextView firstStartTime;
+    private TextView firstEndTime;
+    private TextView secondStartTime;
+    private TextView secondEndTime;
+    int hour,minute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","跳转成功");
@@ -30,14 +35,41 @@ public class SubmitOrderActivity extends AppCompatActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        startHour = (Spinner) findViewById(R.id.start_hour);
-        startMinute = (Spinner) findViewById(R.id.start_minute);
-        stopHour = (Spinner) findViewById(R.id.stop_hour);
-        stopMinute = (Spinner) findViewById(R.id.stop_minute);
-        initSpinner(startHour,startMinute);
-        initSpinner(stopHour,stopMinute);
+        firstStartTime = (TextView) findViewById(R.id.first_start_time);
+        firstEndTime = (TextView) findViewById(R.id.first_end_time);
+        secondStartTime = (TextView) findViewById(R.id.second_start_time);
+        secondEndTime = (TextView) findViewById(R.id.second_end_time);
+        initEvents();
     }
-    @Override
+
+
+    private void initEvents(){
+        firstStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(firstStartTime);
+            }
+        });
+        firstEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(firstEndTime);
+            }
+        });
+        secondStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(secondStartTime);
+            }
+        });
+        secondEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(secondEndTime);
+            }
+        });
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
@@ -46,29 +78,19 @@ public class SubmitOrderActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void initSpinner(Spinner hour,Spinner minute){
-        String hours[] = new String[24];
-        String minutes[] = new String[60];
-        for(int i=0;i<24;i++){
-            if(i<10){
-                hours[i]="0"+i;
-            }else{
-                hours[i]=i+"";
-            }
-        }
-        for(int i=0;i<60;i++){
-            if(i<10){
-                minutes[i]="0"+i;
-            }else{
-                minutes[i]=i+"";
-            }
-        }
-        ArrayAdapter<String> adapterHour = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line,hours);
-        hour.setAdapter(adapterHour);
-        ArrayAdapter<String> adapteMinute = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line,minutes);
-        minute.setAdapter(adapteMinute);
+    private void showTimePickerDialog(final TextView textView){
+        new TimePickerDialog(SubmitOrderActivity.this,AlertDialog.THEME_HOLO_LIGHT,new TimePickerDialog.OnTimeSetListener() {
 
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                hour = hourOfDay;
+                SubmitOrderActivity.this.minute = minute;
+                if (SubmitOrderActivity.this.minute < 10){
+                    textView.setText(hour+":"+"0"+SubmitOrderActivity.this.minute);
+                }else {
+                    textView.setText(hour+":"+SubmitOrderActivity.this.minute);
+                }
+            }
+        }, 0, 0, true).show();
     }
 }

@@ -1,4 +1,6 @@
 <resources>
+    <string name="TheServer"> http://45.32.84.43:8080/ExpressHelpServce/    </string>
+
     <string name="app_name">ExpressHelp</string>
     <string name="normal_user_login_title">用户登录</string>
     <string name="admin_user_login_title">管理员登录</string>
@@ -39,9 +41,21 @@
     <string name="receiver_telephone">收货人电话：</string>
     <string name="pick_up_code">取货码：</string>
     <string name="arrive_time">送达时间：</string>
-    <string name="start_time">起始时间：</string>
-    <string name="hour">时</string>
-    <string name="minute">分</string>
-    <string name="end_time">结束时间：</string>
+    <string name="first_start_time">第一个起始时间：</string>
+    <string name="first_end_time">第一个结束时间：</string>
+    <string name="second_start_time">第二个起始时间：</string>
+    <string name="second_end_time">第二个结束时间：</string>
     <string name="money_unit">￥</string>
+
+    <string name="username_tv">用户名：</string>
+    <string name="temp_username">弹指尘梦空山语</string>
+    <string name="id_tv">id：</string>
+    <string name="temp_id">123456789</string>
+    <string name="sex_tv">性别：</string>
+    <string name="temp_sex">男</string>
+
+    <string name="submit_times">发布任务次数：</string>
+    <string name="user_credit">用户信誉度：</string>
+    <string name="more_info">更多信息</string>
+    <string name="send_message">发消息</string>
 </resources>

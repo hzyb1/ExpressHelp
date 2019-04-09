@@ -17,11 +17,14 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.User;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {      //登录活动
 
@@ -43,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             if (LOGINFIELD.equals(msg.obj.toString())){
                 result = "验证失败";
                 Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
                 return;
             }else {
                 result = msg.obj.toString();
@@ -147,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("url:",compeletedURL);
             //发送请求
-            HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+           /* HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
                 @Override
                 public void onFinish(String response) {
                     Message message = new Message();
@@ -160,7 +164,21 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                     message.obj = e.toString();
                     mHandler.sendMessage(message);
                 }
-            });
+            });*/
+           HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+               @Override
+               public void onFailure(Call call, IOException e) {
+
+               }
+
+               @Override
+               public void onResponse(Call call, Response response) throws IOException {
+                   Message message = new Message();
+                   message.obj = response.body().string().trim();
+                   mHandler.sendMessage(message);
+                   Log.d("登录成功：",message.obj.toString()+"aaaa");
+               }
+           });
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,6 +12,9 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
 public class HttpUtil {
     private static String session_id = null;
 
@@ -93,6 +96,11 @@ public class HttpUtil {
     public static boolean isNetworkAvailable(){
         //这里检查网络，后续再添加
         return true;
+    }
+    public static void sendOkHttpRequest(String address,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(address).build();
+        client.newCall(request).enqueue(callback);
     }
 
 }

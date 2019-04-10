@@ -2,6 +2,10 @@ package com.example.a14574.expresshelp;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,18 +19,28 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.sql.Timestamp;
+
+import http.HttpUtil;
+import model.Order;
+import model.User;
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SubmitOrderActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
     private TextView firstStartTime;
     private TextView firstEndTime;
     private TextView secondStartTime;
     private TextView secondEndTime;
     private int hour,minute;
-
     private Button submitOrder;
     private EditText expressName;
     private EditText getAddress;
@@ -34,14 +48,32 @@ public class SubmitOrderActivity extends AppCompatActivity {
     private EditText takeTelephone;
     private EditText takeCode;
     private EditText money;
-
     private Timestamp submitTime;
+
+    private String originAddress =  "sendOrder";
+
+
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {        //异步访问数据库
+            super.handleMessage(msg);   //访问服务器获取收到的信息
+            String result = msg.obj.toString();
+            Log.d("查看结果：：", result + "abc");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","跳转成功");
-
         super.onCreate(savedInstanceState);
+
+        originAddress = this.getString(R.string.VirtualTheServer) + originAddress;
+        initViews();
+        initEvents();
+    }
+
+    private void initViews(){
         setContentView(R.layout.activity_submit_order);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -64,7 +96,6 @@ public class SubmitOrderActivity extends AppCompatActivity {
         secondStartTime = (TextView) findViewById(R.id.second_start_time);
         secondEndTime = (TextView) findViewById(R.id.second_end_time);
 
-        initEvents();
     }
 
 
@@ -96,6 +127,14 @@ public class SubmitOrderActivity extends AppCompatActivity {
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Order order = new Order();
+                order.setGetAddress("21-103");
+                order.setExpressName("中通快递");
+                order.setTakeCode("3");
+
+
+                sendOrder(order);
 
             }
         });
@@ -136,4 +175,37 @@ public class SubmitOrderActivity extends AppCompatActivity {
             }
         }, 0, 0, true).show();
     }
+
+    private void sendOrder(Order order){
+        try {
+            //构造完整URL
+            String compeletedURL = originAddress ;
+            Log.d("url:",compeletedURL);
+
+
+            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            RequestBody requestBody = RequestBody.create(JSON, new Gson().toJson(order));
+
+            HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(SubmitOrderActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    Log.d("连接服务器失败",e.toString());
+                    Looper.loop();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

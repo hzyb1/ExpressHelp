@@ -73,16 +73,31 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();     //初始化各种属性
+        originAddress = this.getString(R.string.TheServer) + originAddress;
+        initViews();     //初始化各种属性
         //对登录按钮设置监听事件
+       initEvents();    //初始化监听器
+    }
+    private void initViews(){
+        passwordEditText = (EditText) findViewById(R.id.password);
+        passwordImageView = (ImageView) findViewById(R.id.pwd_image);
+        normalLogin = (Button)findViewById(R.id.normal_login);
+        telephoneEditText = (EditText)findViewById(R.id.telephone);
+        passwordEditText = (EditText)findViewById(R.id.password);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
+        normalLogin = (Button) findViewById(R.id.normal_login);
+    }
+
+    private void initEvents(){
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 login();            //相应监听事件，调用登录方法
             }
         });
-
         adminLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                 startActivity(intent);
             }
         });
-
         passwordImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,20 +121,7 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             }
         });
     }
-    private void initView(){
-        originAddress = this.getString(R.string.TheServer) + originAddress;
-        passwordEditText = (EditText) findViewById(R.id.password);
-        passwordImageView = (ImageView) findViewById(R.id.pwd_image);
-        normalLogin = (Button)findViewById(R.id.normal_login);
-        telephoneEditText = (EditText)findViewById(R.id.telephone);
-        passwordEditText = (EditText)findViewById(R.id.password);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
-        normalLogin = (Button) findViewById(R.id.normal_login);
-    }
-    public void login() {
+    private void login() {
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
         progressDialog.setMessage("登录中......");
@@ -140,23 +141,8 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         try {
             //构造完整URL
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-            Log.d("url:",compeletedURL);
-            //发送请求
-           /* HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
-                @Override
-                public void onFinish(String response) {
-                    Message message = new Message();
-                    message.obj = response;
-                    mHandler.sendMessage(message);
-                }
-                @Override
-                public void onError(Exception e) {
-                    Message message = new Message();
-                    message.obj = e.toString();
-                    mHandler.sendMessage(message);
-                }
-            });*/
-           HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+
+           HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                @Override
                public void onFailure(Call call, IOException e) {
                    Looper.prepare();

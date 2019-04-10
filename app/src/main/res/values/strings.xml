@@ -1,5 +1,5 @@
 <resources>
-    <string name="TheServer"> http://45.32.84.43:8080/ExpressHelpServc/    </string>
+    <string name="TheServer"> http://45.32.84.43:8080/ExpressHelpServce/    </string>
 
     <string name="app_name">ExpressHelp</string>
     <string name="normal_user_login_title">用户登录</string>
@@ -11,6 +11,7 @@
     <string name="register_account">注册</string>
     <string name="forget_password">忘记密码</string>
     <string name="into_admin_login">管理员登录</string>
+    <string name="temp_time">00:00</string>
 
 
     <string name="home">首页</string>

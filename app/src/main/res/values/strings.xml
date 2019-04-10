@@ -3,6 +3,7 @@
 
     <string name="app_name">ExpressHelp</string>
     <string name="normal_user_login_title">用户登录</string>
+    <string name="register_new_user_title">新用户注册</string>
     <string name="admin_user_login_title">管理员登录</string>
     <string name="username_edit_hint">请输入用户名</string>
     <string name="admin_username_edit_hint">请输入管理员账户名</string>

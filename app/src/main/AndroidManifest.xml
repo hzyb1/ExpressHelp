@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +22,7 @@
         <activity android:name=".SubmitOrderActivity" />
         <activity android:name=".AdminLoginActivity" />
         <activity android:name=".MyOrderActivity" />
-        <activity android:name=".SpecificUserInfoActivity"></activity>
+        <activity android:name=".SpecificUserInfoActivity" />
     </application>
 
 </manifest>

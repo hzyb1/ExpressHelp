@@ -157,6 +157,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
+        Timestamp submitTime = new Timestamp(System.currentTimeMillis());
         Order order = new Order();
         order.setExpressName(expressNameS);
         order.setGetAddress(getAddressS);
@@ -168,6 +169,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
         order.setFirstTakeTimeEnd(fet);
         order.setSecondTakeTimeBegin(sst);
         order.setSecondTakeTimeEnd(set);
+        order.setSubmitTime(submitTime);
         return order;
     }
 

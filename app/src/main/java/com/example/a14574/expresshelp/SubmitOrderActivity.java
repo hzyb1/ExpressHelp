@@ -210,6 +210,6 @@ public class SubmitOrderActivity extends AppCompatActivity {
                     textView.setText(hourS+":"+minuteS);
                 }
             }
-        }, 0, 0, true).show();
+        }, hour, minute, true).show();
     }
 }

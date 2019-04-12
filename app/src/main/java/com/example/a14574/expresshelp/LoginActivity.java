@@ -106,6 +106,14 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                 passwordEditText.setSelection(passwordEditText.getText().length());
             }
         });
+        Button register = (Button)findViewById(R.id.register);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void initView(){
         originAddress = this.getString(R.string.TheServer) + originAddress;

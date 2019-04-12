@@ -191,9 +191,13 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 String hourS="";String minuteS="";
                 if(hour<10){
                     hourS = "0"+hour;
+                }else{
+                    hourS = hour+"";
                 }
                 if(minute<10){
                     minuteS = "0"+SubmitOrderActivity.this.minute;
+                }else {
+                    minuteS = ""+SubmitOrderActivity.this.minute;
                 }
                 if (SubmitOrderActivity.this.minute < 10){
                     textView.setText(hourS+":"+minuteS);

@@ -1,9 +1,12 @@
 package com.example.a14574.expresshelp;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean passwordStatus = false;
     private boolean passwordStatus_second = false;
     private Button register;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +125,13 @@ public class RegisterActivity extends AppCompatActivity {
         pwd_image = (ImageView)findViewById(R.id.register_pwd_image);
         pwd_image_scond = (ImageView)findViewById(R.id.register_pwd_image_second);
         register = (Button)findViewById(R.id.register_button);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /**
@@ -133,5 +144,15 @@ public class RegisterActivity extends AppCompatActivity {
         user.setUsername(username.getText().toString());
         user.setTelephone(telephone.getText().toString());
         user.setSex(sex);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

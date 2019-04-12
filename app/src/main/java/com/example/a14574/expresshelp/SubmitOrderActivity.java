@@ -106,8 +106,9 @@ public class SubmitOrderActivity extends AppCompatActivity {
                     return;
                 }
                 Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                intent.putExtra("order",order);
                 startActivity(intent);
-              //  finish();
+                finish();
             }
         });
     }
@@ -161,6 +162,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
+        Timestamp submitTime = new Timestamp(System.currentTimeMillis());
         Order order = new Order();
         order.setExpressName(expressNameS);
         order.setGetAddress(getAddressS);
@@ -172,6 +174,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
         order.setFirstTakeTimeEnd(fet);
         order.setSecondTakeTimeBegin(sst);
         order.setSecondTakeTimeEnd(set);
+        order.setSubmitTime(submitTime);
         return order;
     }
 
@@ -193,9 +196,13 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 String hourS="";String minuteS="";
                 if(hour<10){
                     hourS = "0"+hour;
+                }else{
+                    hourS = hour+"";
                 }
                 if(minute<10){
                     minuteS = "0"+SubmitOrderActivity.this.minute;
+                }else {
+                    minuteS = ""+SubmitOrderActivity.this.minute;
                 }
                 if (SubmitOrderActivity.this.minute < 10){
                     textView.setText(hourS+":"+minuteS);

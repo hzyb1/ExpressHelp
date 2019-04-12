@@ -1,8 +1,11 @@
 package com.example.a14574.expresshelp;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ public class PayOrderActivity extends AppCompatActivity {
     private TextView second;
     private Button admit;
     private Button change;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,5 +51,21 @@ public class PayOrderActivity extends AppCompatActivity {
         second = (TextView)findViewById(R.id.pay_time_second);
         admit = (Button)findViewById(R.id.pay_admit);
         change = (Button)findViewById(R.id.pay_change);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

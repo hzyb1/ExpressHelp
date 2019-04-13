@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import model.Order;
 
 public class PayOrderActivity extends BaseActivity {
@@ -38,8 +40,12 @@ public class PayOrderActivity extends BaseActivity {
         phone.setText("收货人电话："+order.getTakeTelephone());
         number.setText("取货码："+order.getTakeCode());
         money.setText("金额："+order.getMoney()+" ￥");
-        first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin().toString().substring(0,5)+"-"+order.getFirstTakeTimeEnd().toString().substring(0,5));
-        second.setText("第二次收货时间："+order.getSecondTakeTimeBegin().toString().substring(0,5)+"-"+order.getSecondTakeTimeEnd().toString().substring(0,5));
+        /*SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        first_time.setText("第一次收货时间："+sdf.format(order.getFirstTakeTimeBegin())+"-"
+                +sdf.format(order.getFirstTakeTimeEnd()));*/
+        first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin().getHours()+":"+order.getFirstTakeTimeBegin().getMinutes()+"-"
+                +order.getFirstTakeTimeEnd().getHours()+":"+order.getFirstTakeTimeEnd().getMinutes());
+       /* second.setText("第二次收货时间："+order.getSecondTakeTimeBegin()+"-"+order.getSecondTakeTimeEnd());*/
         initEvents();
     }
 

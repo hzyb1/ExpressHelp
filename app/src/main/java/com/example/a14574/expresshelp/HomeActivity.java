@@ -129,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {           //主界面活�
         try {
             //构造完整URL
             String originAddress = "selectUserById";
-            originAddress = this.getString(R.string.VirtualTheServer) + originAddress;
+            originAddress = this.getString(R.string.TheServer) + originAddress;
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("URL:",compeletedURL);
 

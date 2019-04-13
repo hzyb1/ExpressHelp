@@ -3,9 +3,8 @@ package com.example.a14574.expresshelp;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import model.Order;
 
@@ -127,7 +127,14 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 if(order==null){
                     return;
                 }
+
                 submitOrder(order);     //上传服务器
+
+                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                intent.putExtra("order",order);
+                startActivity(intent);
+                finish();
+
             }
         });
     }
@@ -160,13 +167,17 @@ public class SubmitOrderActivity extends AppCompatActivity {
             return null;
         }
         Time fst=null;Time fet=null;Time sst=null;Time set=null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         try{
-            fst = new Time(simpleDateFormat.parse(firstStartTimeS).getTime());
+            Log.d("日志",simpleDateFormat.format(simpleDateFormat.parse(firstStartTimeS) ) );
+           fst = new Time(simpleDateFormat.parse(firstStartTimeS).getTime());
+            Log.d("日志",fst.toString());
+        //    simpleDateFormat.format(fst);
             fet = new Time(simpleDateFormat.parse(firstEndTimeS).getTime());
+            simpleDateFormat.format(fst);
             sst = new Time(simpleDateFormat.parse(secondStartTimeS).getTime());
             set = new Time(simpleDateFormat.parse(secondEndTimeS).getTime());
-            Log.d("日志",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -182,6 +193,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
+        Timestamp submitTime = new Timestamp(System.currentTimeMillis());
         Order order = new Order();
         if(LoginActivity.USER != null){
             Log.d("日志",LoginActivity.USER.getId()+" ");
@@ -198,10 +210,11 @@ public class SubmitOrderActivity extends AppCompatActivity {
         order.setTakeTelephone(takeTelephoneS);
         order.setTakeCode(takeCodeS);
         order.setMoney(moneyF);
-        order.setFirstTakeTimeBegin(fst);
-        order.setFirstTakeTimeEnd(fet);
-        order.setSecondTakeTimeBegin(sst);
-        order.setSecondTakeTimeEnd(set);
+//        order.setFirstTakeTimeBegin(fst);
+//        order.setFirstTakeTimeEnd(fet);
+//        order.setSecondTakeTimeBegin(sst);
+//        order.setSecondTakeTimeEnd(set);
+        order.setSubmitTime(submitTime);
         return order;
     }
 
@@ -223,9 +236,13 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 String hourS="";String minuteS="";
                 if(hour<10){
                     hourS = "0"+hour;
+                }else{
+                    hourS = hour+"";
                 }
                 if(minute<10){
                     minuteS = "0"+SubmitOrderActivity.this.minute;
+                }else {
+                    minuteS = ""+SubmitOrderActivity.this.minute;
                 }
                 if (SubmitOrderActivity.this.minute < 10){
                     textView.setText(hourS+":"+minuteS);
@@ -233,7 +250,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
                     textView.setText(hourS+":"+minuteS);
                 }
             }
-        }, 0, 0, true).show();
+        }, hour, minute, true).show();
     }
 
     private void submitOrder(Order order){
@@ -242,17 +259,18 @@ public class SubmitOrderActivity extends AppCompatActivity {
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
 
 
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(order));
+
+            Log.d("日志:",gson.toJson(order));
 
             HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
-                    Toast.makeText(SubmitOrderActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
-                    Log.d("连接服务器失败",e.toString());
+                    Toast.makeText(SubmitOrderActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
                     Looper.loop();
                 }
 

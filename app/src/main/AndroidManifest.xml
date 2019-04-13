@@ -28,16 +28,22 @@
 
         <activity
             android:name=".SubmitOrderActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".AdminLoginActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".MyOrderActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".SpecificUserInfoActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity
+            android:name=".PayOrderActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
     </application>
 
 </manifest>

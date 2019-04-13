@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import model.Order;
 
-public class PayOrderActivity extends AppCompatActivity {
+public class PayOrderActivity extends BaseActivity {
     private TextView address;
     private TextView receive;
     private TextView name;
@@ -24,12 +24,13 @@ public class PayOrderActivity extends AppCompatActivity {
     private Button admit;
     private Button change;
     private Toolbar toolbar;
+    private Order order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_order);
-        final Intent intent = getIntent();
-        final Order order = (Order)intent.getSerializableExtra("order");
+        Intent intent = getIntent();
+        order = (Order)intent.getSerializableExtra("order");
         initView();
         address.setText("快递点："+order.getExpressName());
         receive.setText("收货地址："+order.getGetAddress());
@@ -39,15 +40,7 @@ public class PayOrderActivity extends AppCompatActivity {
         money.setText("金额："+order.getMoney()+" ￥");
         first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin().toString().substring(0,5)+"-"+order.getFirstTakeTimeEnd().toString().substring(0,5));
         second.setText("第二次收货时间："+order.getSecondTakeTimeBegin().toString().substring(0,5)+"-"+order.getSecondTakeTimeEnd().toString().substring(0,5));
-        change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(PayOrderActivity.this,SubmitOrderActivity.class);
-                intent1.putExtra("order",order);
-                startActivity(intent1);
-                finish();
-            }
-        });
+        initEvents();
     }
 
     private void initView (){
@@ -68,6 +61,18 @@ public class PayOrderActivity extends AppCompatActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+    public void initEvents(){
+        change.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(PayOrderActivity.this,ModifyOrderActivity.class);
+                intent1.putExtra("order",order);
+                startActivity(intent1);
+                finish();
+            }
+        });
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

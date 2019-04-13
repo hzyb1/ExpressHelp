@@ -28,7 +28,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
     private static String REGISTERFIELD = "register success";
 
     private EditText username;

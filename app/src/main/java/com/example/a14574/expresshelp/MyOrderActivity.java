@@ -24,7 +24,7 @@ import Adapter.OrderAdapter;
 import fragment.OrderFragment;
 import model.Order;
 
-public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener{
+public class MyOrderActivity extends BaseActivity implements View.OnClickListener{
     //private List<Order> orderList = new ArrayList<>();
     private Toolbar toolbar;
     private RadioButton radioButton;

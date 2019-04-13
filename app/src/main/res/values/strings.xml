@@ -63,4 +63,21 @@
     <string name="user_credit">用户信誉度：</string>
     <string name="more_info">更多信息</string>
     <string name="send_message">发消息</string>
+
+    <string name="modify_order">修改订单</string>
+    <string name="confirm_payment">确认支付</string>
+
+    <string name="confirm_modify">确认修改</string>
+
+    <string name="setting">设置</string>
+
+    <string name="current_user">当前用户：</string>
+
+    <string name="exit_current_account">退出当前账号</string>
+
+    <string name="current_balance">当前余额：</string>
+
+    <string name="temp_balance">10.0￥</string>
+
+    <string name="top_up">充值</string>
 </resources>

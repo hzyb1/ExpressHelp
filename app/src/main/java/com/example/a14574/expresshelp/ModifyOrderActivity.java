@@ -1,26 +1,37 @@
 package com.example.a14574.expresshelp;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
-public class SpecificUserInfoActivity extends BaseActivity {
+import com.google.gson.Gson;
 
+import model.Order;
+
+public class ModifyOrderActivity extends BaseActivity {   //修改订单界面
+
+    private Order order;
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_specific_user_info);
+        setContentView(R.layout.activity_modify_order);
+        Intent intent = getIntent();
+        order = (Order) intent.getSerializableExtra("order");
+        Log.d("修改订单",new Gson().toJson(order));
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("详细信息");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

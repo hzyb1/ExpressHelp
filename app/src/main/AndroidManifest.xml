@@ -42,8 +42,12 @@
             android:name=".RegisterActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
+            android:name=".ModifyOrderActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
+        <activity
             android:name=".PayOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

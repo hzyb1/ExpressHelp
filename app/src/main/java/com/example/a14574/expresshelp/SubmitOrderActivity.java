@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -37,7 +39,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class SubmitOrderActivity extends AppCompatActivity {
+public class SubmitOrderActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView firstStartTime;
@@ -123,6 +125,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Order order=createOrder();
                 if(order==null){
                     return;
@@ -178,6 +181,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
             simpleDateFormat.format(fst);
             sst = new Time(simpleDateFormat.parse(secondStartTimeS).getTime());
             set = new Time(simpleDateFormat.parse(secondEndTimeS).getTime());
+            Log.d("显示时间",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }

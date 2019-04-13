@@ -31,7 +31,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 
-public class HomeActivity extends AppCompatActivity {           //主界面活动
+public class HomeActivity extends BaseActivity {           //主界面活动
     private static String LOGINFIELD = "Login failed";
 
     private Fragment fragment[] = new Fragment[3];

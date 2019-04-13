@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import model.Order;
 
-public class PayOrderActivity extends AppCompatActivity {
+public class PayOrderActivity extends BaseActivity {
     private TextView address;
     private TextView receive;
     private TextView name;

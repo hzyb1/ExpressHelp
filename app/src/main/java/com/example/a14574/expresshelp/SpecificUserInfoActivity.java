@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class SpecificUserInfoActivity extends AppCompatActivity {
+public class SpecificUserInfoActivity extends BaseActivity {
 
     private Toolbar toolbar;
     @Override

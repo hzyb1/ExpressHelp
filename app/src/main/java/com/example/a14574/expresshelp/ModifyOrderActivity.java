@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 import model.Order;
 
-public class ModifyOrderActivity extends AppCompatActivity {   //修改订单界面
+public class ModifyOrderActivity extends BaseActivity {   //修改订单界面
 
     private Order order;
     private Toolbar toolbar;

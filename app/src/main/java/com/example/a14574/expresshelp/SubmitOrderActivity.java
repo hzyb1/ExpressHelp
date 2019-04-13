@@ -39,7 +39,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class SubmitOrderActivity extends AppCompatActivity {
+public class SubmitOrderActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private TextView firstStartTime;

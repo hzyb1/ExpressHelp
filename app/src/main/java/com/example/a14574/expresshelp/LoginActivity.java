@@ -27,7 +27,7 @@ import model.User;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class LoginActivity extends AppCompatActivity {      //登录活动
+public class LoginActivity extends BaseActivity {      //登录活动
 
     public static User USER = null;
     private static String LOGINFIELD = "Login failed";
@@ -154,6 +154,8 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                        SharedPreferences.Editor editor = sp.edit();
                        editor.putInt("userid",USER.getId());
                        editor.commit();
+                       progressDialog.dismiss();
+                       LoginActivity.this.finish();
                    }
                    Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
                    progressDialog.dismiss();

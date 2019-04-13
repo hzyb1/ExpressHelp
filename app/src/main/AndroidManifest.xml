@@ -13,15 +13,19 @@
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
+
+        </activity>
+
+        <activity
+            android:name=".HomeActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
         <activity
             android:name=".SubmitOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />

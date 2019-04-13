@@ -1,6 +1,7 @@
 package com.example.a14574.expresshelp;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -28,6 +29,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {      //登录活动
 
+    public static User USER = null;
     private static String LOGINFIELD = "Login failed";
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
@@ -38,53 +40,37 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
     private Toolbar toolbar;        //
     private String originAddress = "loginServlet";          //登录所访问的服务器url
     private ProgressDialog progressDialog;                   //登录状态对话框
-   Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {        //异步访问数据库
-            super.handleMessage(msg);   //访问服务器获取收到的信息
-            String result = msg.obj.toString();
-            Log.d("查看结果：：",result+"abc");
-            if (!LOGINFIELD.equals(result)){
-                result = msg.obj.toString();
-            }else {
-
-                result = "验证失败";
-                Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                return;
-            }
-            progressDialog.dismiss();
-            Log.d("日志",msg+"123");
-            Gson gson = new Gson();
-            Log.d("日志",result);
-            if(result == null || result.equals("")){
-                return ;
-            }
-            User user = gson.fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
-            Intent intent = new Intent();
-            intent.setClass(LoginActivity.this,HomeActivity.class);     //登录成功跳转到主界面
-            LoginActivity.this.startActivity(intent);
-            Log.d("日志",user+"");
-            Toast.makeText(LoginActivity.this,"登录成功", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();     //初始化各种属性
+        initViews();     //初始化各种属性
         //对登录按钮设置监听事件
+       initEvents();    //初始化监听器
+    }
+    private void initViews(){
+        passwordEditText = (EditText) findViewById(R.id.password);
+        passwordImageView = (ImageView) findViewById(R.id.pwd_image);
+        normalLogin = (Button)findViewById(R.id.normal_login);
+        telephoneEditText = (EditText)findViewById(R.id.telephone);
+        passwordEditText = (EditText)findViewById(R.id.password);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
+        normalLogin = (Button) findViewById(R.id.normal_login);
+    }
+
+    private void initEvents(){
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 login();            //相应监听事件，调用登录方法
                 /*Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);*/
             }
         });
-
         adminLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
                 startActivity(intent);
             }
         });
-
         passwordImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,20 +102,9 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             }
         });
     }
-    private void initView(){
+    private void login() {
         originAddress = this.getString(R.string.TheServer) + originAddress;
-        passwordEditText = (EditText) findViewById(R.id.password);
-        passwordImageView = (ImageView) findViewById(R.id.pwd_image);
-        normalLogin = (Button)findViewById(R.id.normal_login);
-        telephoneEditText = (EditText)findViewById(R.id.telephone);
-        passwordEditText = (EditText)findViewById(R.id.password);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
-        normalLogin = (Button) findViewById(R.id.normal_login);
-    }
-    public void login() {
+
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
         progressDialog.setMessage("登录中......");
@@ -150,23 +124,8 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
         try {
             //构造完整URL
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-            Log.d("url:",compeletedURL);
-            //发送请求
-           /* HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
-                @Override
-                public void onFinish(String response) {
-                    Message message = new Message();
-                    message.obj = response;
-                    mHandler.sendMessage(message);
-                }
-                @Override
-                public void onError(Exception e) {
-                    Message message = new Message();
-                    message.obj = e.toString();
-                    mHandler.sendMessage(message);
-                }
-            });*/
-           HttpUtil.sendOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+
+           HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                @Override
                public void onFailure(Call call, IOException e) {
                    Looper.prepare();
@@ -178,16 +137,34 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
 
                @Override
                public void onResponse(Call call, Response response) throws IOException {
-                   Message message = new Message();
-                   message.obj = response.body().string().trim();
-                   mHandler.sendMessage(message);
-                   Log.d("登录成功：",message.obj.toString()+"aaaa");
+                   Looper.prepare();
+                   String result = response.body().string().trim();
+                   if (LOGINFIELD.equals(result)){
+                       result = "验证失败";
+                   }else{
+                       if(result == null || result.equals("")){
+                           return ;
+                       }
+                       USER = new Gson().fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
+                       Intent intent = new Intent();
+                       intent.setClass(LoginActivity.this,HomeActivity.class);     //登录成功跳转到主界面
+                       LoginActivity.this.startActivity(intent);
+                       result = "验证成功";
+                       SharedPreferences sp= getSharedPreferences("loginSetting", 0);
+                       SharedPreferences.Editor editor = sp.edit();
+                       editor.putInt("userid",USER.getId());
+                       editor.commit();
+                   }
+                   Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
+                   progressDialog.dismiss();
+                   Looper.loop();
                }
            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private boolean isInputValid() {
         //检查用户输入的合法性，这里暂且默认用户输入合法

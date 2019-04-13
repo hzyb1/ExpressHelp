@@ -40,12 +40,10 @@ public class PayOrderActivity extends BaseActivity {
         phone.setText("收货人电话："+order.getTakeTelephone());
         number.setText("取货码："+order.getTakeCode());
         money.setText("金额："+order.getMoney()+" ￥");
-        /*SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         first_time.setText("第一次收货时间："+sdf.format(order.getFirstTakeTimeBegin())+"-"
-                +sdf.format(order.getFirstTakeTimeEnd()));*/
-        first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin().getHours()+":"+order.getFirstTakeTimeBegin().getMinutes()+"-"
-                +order.getFirstTakeTimeEnd().getHours()+":"+order.getFirstTakeTimeEnd().getMinutes());
-       /* second.setText("第二次收货时间："+order.getSecondTakeTimeBegin()+"-"+order.getSecondTakeTimeEnd());*/
+                +sdf.format(order.getFirstTakeTimeEnd()));
+       second.setText("第二次收货时间："+sdf.format(order.getSecondTakeTimeBegin())+"-"+sdf.format(order.getSecondTakeTimeEnd()));
         initEvents();
     }
 

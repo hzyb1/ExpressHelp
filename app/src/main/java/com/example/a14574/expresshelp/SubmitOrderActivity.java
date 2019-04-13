@@ -170,33 +170,29 @@ public class SubmitOrderActivity extends BaseActivity {
             return null;
         }
         Timestamp fst=null;Timestamp fet=null;Timestamp sst=null;Timestamp set=null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         try{
             Log.d("日志",simpleDateFormat.format(simpleDateFormat.parse(firstStartTimeS) ) );
 
-            //Timestamp time = Timestamp.valueOf(str);
-            //fst = new Timestamp(simpleDateFormat.parse(firstStartTimeS).getTime());
            fst = new Timestamp(simpleDateFormat.parse(firstStartTimeS).getTime());
             Log.d("日志",fst.toString());
-        //    simpleDateFormat.format(fst);
             fet = new Timestamp(simpleDateFormat.parse(firstEndTimeS).getTime());
-            //simpleDateFormat.format(fst);
             sst = new Timestamp(simpleDateFormat.parse(secondStartTimeS).getTime());
             set = new Timestamp(simpleDateFormat.parse(secondEndTimeS).getTime());
             Log.d("显示时间",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }
-        if(fst.after(fet)){
+        if(fet.before(fst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(sst.after(set)){
+        if(set.before(sst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(fet.after(sst)){
+        if(sst.before(fet)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }

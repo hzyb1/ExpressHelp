@@ -179,9 +179,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     //上传到服务器端
     private void submitUser(User user){
-
-
-
         try {
             //构造完整URL
             String originAddress = "register";
@@ -214,6 +211,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this,"注册成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     }else{
                         Toast.makeText(RegisterActivity.this,"注册失败，该电话号码已注册", Toast.LENGTH_SHORT).show();
                     }

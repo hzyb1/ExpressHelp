@@ -20,11 +20,11 @@ import model.Order;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     private List<Order> mOrderList;
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView state;
-        TextView address;
-        TextView express;
-        TextView money;
-        Button handle;
+        private TextView state;
+        private TextView address;
+        private TextView express;
+        private TextView money;
+        private Button handle;
         public ViewHolder(View view){
             super (view);
             state = (TextView)view.findViewById(R.id.order_state);
@@ -57,16 +57,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 holder.handle.setText("确认付款");
                 break;
             case 1:
-                holder.state.setText("待接受");
-                holder.handle.setText("确认接受");
+                holder.state.setText("待接单");
+                holder.handle.setText("修改订单");
                 break;
             case 2:
+            case 3:
                 holder.state.setText("待收货");
                 holder.handle.setText("确认收货");
-                break;
-            case 3:
-                holder.state.setText("待确认");
-                holder.handle.setText("确认");
                 break;
             case 4:
                 holder.state.setText("已完成");

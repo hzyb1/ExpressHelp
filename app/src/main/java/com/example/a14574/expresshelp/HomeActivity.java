@@ -161,5 +161,6 @@ public class HomeActivity extends AppCompatActivity {           //主界面活�
         Intent intent = new Intent();
         intent.setClass(HomeActivity.this,LoginActivity.class);     //跳转到登录界面
         HomeActivity.this.startActivity(intent);
+        finish();
     }
 }

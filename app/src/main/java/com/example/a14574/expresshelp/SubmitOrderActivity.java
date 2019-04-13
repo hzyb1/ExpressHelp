@@ -18,11 +18,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
+import model.Order;
 
 import http.HttpUtil;
 import model.Order;
@@ -50,18 +54,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
     private EditText money;
     private Timestamp submitTime;
 
-    private String originAddress =  "sendOrder";
-
-
-
-    Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {        //异步访问数据库
-            super.handleMessage(msg);   //访问服务器获取收到的信息
-            String result = msg.obj.toString();
-            Log.d("查看结果：：", result + "abc");
-        }
-    };
+    private String originAddress =  "submitOrder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +65,9 @@ public class SubmitOrderActivity extends AppCompatActivity {
         initViews();
         initEvents();
     }
+
+
+
 
     private void initViews(){
         setContentView(R.layout.activity_submit_order);
@@ -127,29 +123,86 @@ public class SubmitOrderActivity extends AppCompatActivity {
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Order order = new Order();
-                order.setGetAddress("21-103");
-                order.setExpressName("中通快递");
-                order.setTakeCode("3");
-
-
-                sendOrder(order);
-
+                Order order=createOrder();
+                if(order==null){
+                    return;
+                }
+                submitOrder(order);     //上传服务器
             }
         });
     }
-    private void submitOrder(){
+    private Order createOrder(){
         String expressNameS = expressName.getText().toString().trim();
         String getAddressS = getAddress.getText().toString().trim();
         String takeNameS = takeName.getText().toString().trim();
         String takeTelephoneS = takeTelephone.getText().toString().trim();
         String takeCodeS = takeCode.getText().toString().trim();
         String moneyS = money.getText().toString().trim();
+        String firstStartTimeS = firstStartTime.getText().toString().trim();
+        String firstEndTimeS = firstEndTime.getText().toString().trim();
+        String secondStartTimeS = secondStartTime.getText().toString().trim();
+        String secondEndTimeS = secondEndTime.getText().toString().trim();
         if(expressNameS.equals("") || getAddressS.equals("") || takeTelephoneS.equals("")
                 || takeCodeS.equals("") || moneyS.equals("") || takeNameS.equals("")){
             Toast.makeText(this,"不能填空项哦！！！",Toast.LENGTH_LONG).show();
+            return null;
         }
+        float moneyF=0;
+        try {
+            moneyF = Float.parseFloat(moneyS);
+        }catch (Exception e){
+            Toast.makeText(this,"金额需为数字哦！！！",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            return null;
+        }
+        if(firstStartTimeS.equals("") || firstEndTimeS.equals("")|| secondStartTimeS.equals("")|| secondEndTimeS.equals("")){
+            Toast.makeText(this,"请注意设置时间哦！！！",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        Time fst=null;Time fet=null;Time sst=null;Time set=null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        try{
+            fst = new Time(simpleDateFormat.parse(firstStartTimeS).getTime());
+            fet = new Time(simpleDateFormat.parse(firstEndTimeS).getTime());
+            sst = new Time(simpleDateFormat.parse(secondStartTimeS).getTime());
+            set = new Time(simpleDateFormat.parse(secondEndTimeS).getTime());
+            Log.d("日志",fst+"");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(fst.after(fet)){
+            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        if(sst.after(set)){
+            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        if(fet.after(sst)){
+            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
+            return null;
+        }
+        Order order = new Order();
+        if(LoginActivity.USER != null){
+            Log.d("日志",LoginActivity.USER.getId()+" ");
+        }else{
+            Log.d("日志","user是空的");
+            return null;
+        }
+
+
+        order.setSendId(LoginActivity.USER.getId());
+        order.setExpressName(expressNameS);
+        order.setGetAddress(getAddressS);
+        order.setTakeName(takeNameS);
+        order.setTakeTelephone(takeTelephoneS);
+        order.setTakeCode(takeCodeS);
+        order.setMoney(moneyF);
+        order.setFirstTakeTimeBegin(fst);
+        order.setFirstTakeTimeEnd(fet);
+        order.setSecondTakeTimeBegin(sst);
+        order.setSecondTakeTimeEnd(set);
+        return order;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -167,24 +220,32 @@ public class SubmitOrderActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 hour = hourOfDay;
                 SubmitOrderActivity.this.minute = minute;
+                String hourS="";String minuteS="";
+                if(hour<10){
+                    hourS = "0"+hour;
+                }
+                if(minute<10){
+                    minuteS = "0"+SubmitOrderActivity.this.minute;
+                }
                 if (SubmitOrderActivity.this.minute < 10){
-                    textView.setText(hour+":"+"0"+SubmitOrderActivity.this.minute);
+                    textView.setText(hourS+":"+minuteS);
                 }else {
-                    textView.setText(hour+":"+SubmitOrderActivity.this.minute);
+                    textView.setText(hourS+":"+minuteS);
                 }
             }
         }, 0, 0, true).show();
     }
 
-    private void sendOrder(Order order){
+    private void submitOrder(Order order){
         try {
             //构造完整URL
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
-
-
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-            RequestBody requestBody = RequestBody.create(JSON, new Gson().toJson(order));
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+
+            RequestBody requestBody = RequestBody.create(JSON, gson.toJson(order));
 
             HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){
                 @Override
@@ -197,9 +258,10 @@ public class SubmitOrderActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Message message = new Message();
-                    message.obj = response.body().string().trim();
-                    mHandler.sendMessage(message);
+//                    Message message = new Message();
+//                    message.obj = response.body().string().trim();
+//                    mHandler.sendMessage(message);
+                    Log.d("成功","发布成功");
                 }
             });
         } catch (Exception e) {

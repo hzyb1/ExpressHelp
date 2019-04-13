@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
@@ -308,15 +308,5 @@
             android:gravity="right"
             />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/submit_order_button"
-        android:layout_marginTop="20dp"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:textSize="20sp"
-        android:text="@string/into_submit_order"
-        android:background="@drawable/submit_order_backcolor"
-        android:layout_gravity="center"/>
 
 </LinearLayout>

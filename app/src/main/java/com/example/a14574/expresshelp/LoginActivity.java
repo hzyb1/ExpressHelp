@@ -80,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {      //登录活动
             public void onClick(View v) {
 
                 login();            //相应监听事件，调用登录方法
+                /*Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(intent);*/
             }
         });
 

@@ -38,7 +38,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
     private EditText passwordEditText;      //密码编辑框
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
-    private String originAddress = "loginServlet";          //登录所访问的服务器url
     private ProgressDialog progressDialog;                   //登录状态对话框
 
     @Override
@@ -103,8 +102,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        originAddress = this.getString(R.string.TheServer) + originAddress;
-
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
         progressDialog.setMessage("登录中......");
@@ -138,6 +136,9 @@ public class LoginActivity extends BaseActivity {      //登录活动
                @Override
                public void onResponse(Call call, Response response) throws IOException {
                    Looper.prepare();
+                   if(!response.isSuccessful()){
+                       return ;
+                   }
                    String result = response.body().string().trim();
                    if (LOGINFIELD.equals(result)){
                        result = "验证失败";

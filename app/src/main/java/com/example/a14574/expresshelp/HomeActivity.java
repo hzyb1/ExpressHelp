@@ -128,8 +128,7 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         params.put("userId", id+"");
         try {
             //构造完整URL
-            String originAddress = "selectUserById";
-            originAddress = this.getString(R.string.TheServer) + originAddress;
+            String originAddress = this.getString(R.string.TheServer) + "selectUserById";
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("URL:",compeletedURL);
 

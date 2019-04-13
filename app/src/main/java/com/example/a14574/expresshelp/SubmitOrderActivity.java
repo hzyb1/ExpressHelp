@@ -56,14 +56,10 @@ public class SubmitOrderActivity extends BaseActivity {
     private EditText money;
     private Timestamp submitTime;
 
-    private String originAddress =  "submitOrder";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","跳转成功");
         super.onCreate(savedInstanceState);
-
-        originAddress = this.getString(R.string.VirtualTheServer) + originAddress;
         initViews();
         initEvents();
     }
@@ -260,6 +256,8 @@ public class SubmitOrderActivity extends BaseActivity {
     private void submitOrder(Order order){
         try {
             //构造完整URL
+            String originAddress = this.getString(R.string.VirtualTheServer) + "submitOrder";
+
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

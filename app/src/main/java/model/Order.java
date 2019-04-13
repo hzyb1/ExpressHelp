@@ -15,7 +15,6 @@ public class Order implements Serializable {
     private String getAddress;	//收货地址
     private String takeCode;		//取货号
     private String takeTelephone;	//收货电话
-    private String takeTime;		//取货时间
     private String secondtakeTime;
     private String expressName;		//快递点
     private int state;		//订单状态

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -101,6 +103,9 @@ public class SubmitOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Order order=submitOrder();
+                Gson gson = new Gson();
+                String a=gson.toJson(order);
+                Log.d("测试订单输出",a);
                 if(order==null){
                     return;
                 }
@@ -142,6 +147,7 @@ public class SubmitOrderActivity extends AppCompatActivity {
             fet = new Time(simpleDateFormat.parse(firstEndTimeS).getTime());
             sst = new Time(simpleDateFormat.parse(secondStartTimeS).getTime());
             set = new Time(simpleDateFormat.parse(secondEndTimeS).getTime());
+            Log.d("显示时间",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }

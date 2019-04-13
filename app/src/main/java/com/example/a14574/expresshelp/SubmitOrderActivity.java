@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,6 +110,10 @@ public class SubmitOrderActivity extends AppCompatActivity {
                 if(order==null){
                     return;
                 }
+                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                intent.putExtra("order",order);
+                startActivity(intent);
+                finish();
             }
         });
     }

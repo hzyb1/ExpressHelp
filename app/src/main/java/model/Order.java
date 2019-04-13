@@ -1,11 +1,12 @@
 package model;
 
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-public class Order {
+public class Order implements Serializable {
     private int id;		//订单号
     private Timestamp submitTime;	//发布时间
     private int acceptId;	//收单人Id

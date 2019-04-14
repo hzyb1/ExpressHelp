@@ -218,7 +218,7 @@ public class SubmitOrderActivity extends BaseActivity {
         order.setFirstTakeTimeEnd(fet);
         order.setSecondTakeTimeBegin(sst);
         order.setSecondTakeTimeEnd(set);
-
+        order.setState(0);
         order.setSubmitTime(submitTime);
         return order;
     }

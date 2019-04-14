@@ -83,7 +83,7 @@ public class HomePageFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-
+        //recyclerView.setItemAnimator(null);
         Log.d("日志","   在哪啊 ");
        /*OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
        recyclerView.setAdapter(adapter);*/
@@ -107,7 +107,7 @@ public class HomePageFragment extends Fragment {
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {
-                refresh();
+                initAdapter();
             }
         });
 
@@ -119,7 +119,13 @@ public class HomePageFragment extends Fragment {
     private void refresh(){
         swipeRefresh.setRefreshing(true);
         initOrders();
+        swipeRefresh.setRefreshing(false);
+    }
+    private void initAdapter(){
+        swipeRefresh.setRefreshing(true);
+        initOrders();
         OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         swipeRefresh.setRefreshing(false);
     }

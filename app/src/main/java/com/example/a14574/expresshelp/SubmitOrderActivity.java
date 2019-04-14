@@ -279,7 +279,7 @@ public class SubmitOrderActivity extends BaseActivity {
     private void submitOrder(Order order){
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) + "submitOrder";
+            String originAddress = this.getString(R.string.TheServer) + "submitOrder";
 
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);

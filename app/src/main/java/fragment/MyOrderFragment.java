@@ -145,7 +145,7 @@ public class MyOrderFragment extends Fragment {
         params.put("id", LoginActivity.USER.getId()+"");
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) +  "selectMyOrder";
+            String originAddress = this.getString(R.string.TheServer) +  "selectMyOrder";
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("日志",compeletedURL);
 

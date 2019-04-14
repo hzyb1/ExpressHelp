@@ -30,28 +30,15 @@ import model.User;
 import okhttp3.Call;
 import okhttp3.Response;
 
-
 public class HomeActivity extends BaseActivity {           //主界面活动
-    private static String LOGINFIELD = "Login failed";
 
     private Fragment fragment[] = new Fragment[3];
     RadioButton[ ] rbs = new RadioButton[3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-                /*//去掉标题栏
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //设置全屏
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        /*if(Build.VERSION.SDK_INT>=21){
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }*/
-        spLogin();
+        Log.d("日志","home???");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
 
         fragment[0] = new HomePageFragment();
         fragment[1] = new MessageFragment();
@@ -113,53 +100,5 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         drawable_my_info.setBounds(0, 0,  realHeight,  realHeight);
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
-    }
-
-    private boolean spLogin(){
-        SharedPreferences sp = getSharedPreferences("loginSetting", 0);
-        int id = sp.getInt("userid",0);
-        Log.d("Id是",id+"");
-        if(id == 0){
-            goToLoginActivity();
-            return false;
-        }
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("userId", id+"");
-        try {
-            //构造完整URL
-            String originAddress = this.getString(R.string.TheServer) + "selectUserById";
-            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-            Log.d("URL:",compeletedURL);
-
-            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    goToLoginActivity();
-                    Log.d("连接服务器失败",e.toString());
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string().trim();
-                    if (LOGINFIELD.equals(result)){
-                        goToLoginActivity();
-                    }else{
-                        if(result == null || result.equals("")){
-                            return ;
-                        }
-                        LoginActivity.USER = new Gson().fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-    private void goToLoginActivity(){
-        Intent intent = new Intent();
-        intent.setClass(HomeActivity.this,LoginActivity.class);     //跳转到登录界面
-        HomeActivity.this.startActivity(intent);
-        finish();
     }
 }

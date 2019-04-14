@@ -42,6 +42,8 @@ public class LoginActivity extends BaseActivity {      //登录活动
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("日志","login???");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();     //初始化各种属性

@@ -83,7 +83,7 @@ public class PayOrderActivity extends BaseActivity {
         change.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(PayOrderActivity.this,ModifyOrderActivity.class);
+                Intent intent1 = new Intent(PayOrderActivity.this,SubmitOrderActivity.class);
                 intent1.putExtra("order",order);
                 startActivity(intent1);
                 finish();

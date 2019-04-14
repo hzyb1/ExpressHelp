@@ -55,6 +55,8 @@ public class SubmitOrderActivity extends BaseActivity {
     private EditText takeCode;
     private EditText money;
     private Timestamp submitTime;
+    private Order order;
+    private TextView toolBarTitle;
 
     private String originAddress =  "submitOrder";
 
@@ -80,7 +82,11 @@ public class SubmitOrderActivity extends BaseActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        order = (Order)getIntent().getSerializableExtra("order");
+        if(order!=null){
 
+        }
+        toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         submitOrder = (Button) findViewById(R.id.submit_order_button);
         expressName = (EditText) findViewById(R.id.express_name);
         getAddress = (EditText) findViewById(R.id.get_address);
@@ -93,7 +99,11 @@ public class SubmitOrderActivity extends BaseActivity {
         firstEndTime = (TextView) findViewById(R.id.first_end_time);
         secondStartTime = (TextView) findViewById(R.id.second_start_time);
         secondEndTime = (TextView) findViewById(R.id.second_end_time);
-
+        order = (Order)getIntent().getSerializableExtra("order");
+        if(order!=null){
+            toolBarTitle.setText("修改订单");
+            submitOrder.setText("修改订单");
+        }
     }
 
 
@@ -196,7 +206,7 @@ public class SubmitOrderActivity extends BaseActivity {
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        Timestamp submitTime = new Timestamp(System.currentTimeMillis());
+        submitTime = new Timestamp(System.currentTimeMillis());
         Order order = new Order();
         if(LoginActivity.USER != null){
             Log.d("日志",LoginActivity.USER.getId()+" ");

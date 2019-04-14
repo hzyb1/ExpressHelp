@@ -38,7 +38,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
     private EditText passwordEditText;      //密码编辑框
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
-    private String originAddress = "loginServlet";          //登录所访问的服务器url
     private ProgressDialog progressDialog;                   //登录状态对话框
 
     @Override
@@ -103,7 +102,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        originAddress = this.getString(R.string.TheServer) + originAddress;
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet"; //登录所访问的服务器url
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
@@ -138,9 +137,18 @@ public class LoginActivity extends BaseActivity {      //登录活动
                @Override
                public void onResponse(Call call, Response response) throws IOException {
                    Looper.prepare();
+                   if(!response.isSuccessful()){
+                       Toast.makeText(LoginActivity.this,"登录失败", Toast.LENGTH_SHORT).show();
+                       progressDialog.dismiss();
+                       Looper.loop();
+                       return;
+                   }
                    String result = response.body().string().trim();
+                   Log.d("loginResult",result);
                    if (LOGINFIELD.equals(result)){
                        result = "验证失败";
+                       progressDialog.dismiss();
+                       Log.d("登录失败","login failed");
                    }else{
                        if(result == null || result.equals("")){
                            return ;
@@ -158,7 +166,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        LoginActivity.this.finish();
                    }
                    Toast.makeText(LoginActivity.this,result, Toast.LENGTH_SHORT).show();
-                   progressDialog.dismiss();
                    Looper.loop();
                }
            });
@@ -171,5 +178,10 @@ public class LoginActivity extends BaseActivity {      //登录活动
     private boolean isInputValid() {
         //检查用户输入的合法性，这里暂且默认用户输入合法
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

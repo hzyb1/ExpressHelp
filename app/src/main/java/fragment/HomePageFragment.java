@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class HomePageFragment extends Fragment {
     private String originAddress = "http://zuehfv.natappfree.cc/ExpressHelp/task";      //访问服务器的url
     private Toolbar toolbar;
     private TextView toolbarTitle;
+   private SwipeRefreshLayout swipeRefresh;
 
     Handler mHandler = new Handler(){
         @Override
@@ -85,6 +87,8 @@ public class HomePageFragment extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.selector_color);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
@@ -108,6 +112,14 @@ public class HomePageFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //swipeRefresh.setRefreshing(false);
+            }
+        });
+
 
 
         return view;

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 
@@ -45,6 +46,18 @@ public class PayOrderActivity extends BaseActivity {
                 +sdf.format(order.getFirstTakeTimeEnd()));
        second.setText("第二次收货时间："+sdf.format(order.getSecondTakeTimeBegin())+"-"+sdf.format(order.getSecondTakeTimeEnd()));
         initEvents();
+        admit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                order.setState(1);
+
+
+                //上传服务器
+
+
+                Toast.makeText(PayOrderActivity.this,"支付成功",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void initView (){

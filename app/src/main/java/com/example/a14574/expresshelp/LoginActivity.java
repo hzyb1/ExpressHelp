@@ -42,6 +42,8 @@ public class LoginActivity extends BaseActivity {      //登录活动
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("日志","login???");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();     //初始化各种属性
@@ -102,7 +104,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        String originAddress = this.getString(R.string.TheServer) +"loginServlet"; //登录所访问的服务器url
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");

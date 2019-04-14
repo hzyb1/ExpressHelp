@@ -55,6 +55,8 @@ public class SubmitOrderActivity extends BaseActivity {
     private EditText takeCode;
     private EditText money;
     private Timestamp submitTime;
+    private Order order;
+    private TextView toolBarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,11 @@ public class SubmitOrderActivity extends BaseActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        order = (Order)getIntent().getSerializableExtra("order");
+        if(order!=null){
 
+        }
+        toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         submitOrder = (Button) findViewById(R.id.submit_order_button);
         expressName = (EditText) findViewById(R.id.express_name);
         getAddress = (EditText) findViewById(R.id.get_address);
@@ -89,7 +95,11 @@ public class SubmitOrderActivity extends BaseActivity {
         firstEndTime = (TextView) findViewById(R.id.first_end_time);
         secondStartTime = (TextView) findViewById(R.id.second_start_time);
         secondEndTime = (TextView) findViewById(R.id.second_end_time);
-
+        order = (Order)getIntent().getSerializableExtra("order");
+        if(order!=null){
+            toolBarTitle.setText("修改订单");
+            submitOrder.setText("修改订单");
+        }
     }
 
 
@@ -166,37 +176,33 @@ public class SubmitOrderActivity extends BaseActivity {
             return null;
         }
         Timestamp fst=null;Timestamp fet=null;Timestamp sst=null;Timestamp set=null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         try{
             Log.d("日志",simpleDateFormat.format(simpleDateFormat.parse(firstStartTimeS) ) );
 
-            //Timestamp time = Timestamp.valueOf(str);
-            //fst = new Timestamp(simpleDateFormat.parse(firstStartTimeS).getTime());
            fst = new Timestamp(simpleDateFormat.parse(firstStartTimeS).getTime());
             Log.d("日志",fst.toString());
-        //    simpleDateFormat.format(fst);
             fet = new Timestamp(simpleDateFormat.parse(firstEndTimeS).getTime());
-            //simpleDateFormat.format(fst);
             sst = new Timestamp(simpleDateFormat.parse(secondStartTimeS).getTime());
             set = new Timestamp(simpleDateFormat.parse(secondEndTimeS).getTime());
             Log.d("显示时间",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }
-        if(fst.after(fet)){
+        if(fet.before(fst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(sst.after(set)){
+        if(set.before(sst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(fet.after(sst)){
+        if(sst.before(fet)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        Timestamp submitTime = new Timestamp(System.currentTimeMillis());
+        submitTime = new Timestamp(System.currentTimeMillis());
         Order order = new Order();
         if(LoginActivity.USER != null){
             Log.d("日志",LoginActivity.USER.getId()+" ");
@@ -218,7 +224,7 @@ public class SubmitOrderActivity extends BaseActivity {
         order.setFirstTakeTimeEnd(fet);
         order.setSecondTakeTimeBegin(sst);
         order.setSecondTakeTimeEnd(set);
-
+        order.setState(0);
         order.setSubmitTime(submitTime);
         return order;
     }

@@ -139,7 +139,7 @@ public class HomePageFragment extends Fragment {
         params.put("id", LoginActivity.USER.getId()+"");
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) +  "selectMainOrder";
+            String originAddress = this.getString(R.string.TheServer) +  "selectMainOrder";
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("日志",compeletedURL);
 

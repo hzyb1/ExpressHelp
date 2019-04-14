@@ -45,21 +45,6 @@ public class MyOrderFragment extends Fragment {
     private TextView nothing_title;
     private RecyclerView recyclerView;
     private int state;
-    Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            Log.d("日志","来没来啊");
-            super.handleMessage(msg);
-            String result = "";
-            result = msg.obj.toString();
-            Gson gson = new Gson();
-            Log.d("日志",result+"222");
-            orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
-            OrderBriefAdapter adapter = new OrderBriefAdapter(orderList);
-            recyclerView.setAdapter(adapter);
-            Log.d("日志",orderList.size()+"   333 ");
-        }
-    };
 
 
 
@@ -67,10 +52,10 @@ public class MyOrderFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_orders,container,false);
-        init();
+   //     init();
         find();
-        recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         OrderAdapter adapter = new OrderAdapter(needorderList);
@@ -126,56 +111,20 @@ public class MyOrderFragment extends Fragment {
 
         }
     }
-    public void init(){
-        Order order = new Order();
-        order.setState(3);
-        order.setMoney(2.1f);
-        order.setExpressName("百事");
-        order.setGetAddress("21栋");
-        orderList.add(order);
 
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        if(LoginActivity.USER == null){
-            Log.d("日志","USER为空tt");
-            return ;
-        }else{
-            Log.d("日志",LoginActivity.USER.getPassword());
-        }
-        params.put("id", LoginActivity.USER.getId()+"");
-        try {
-            //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) +  "selectMyOrder";
-            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-            Log.d("日志",compeletedURL);
-
-            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Looper.prepare();
-                    Toast.makeText(getActivity(),"未能连接到网络", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if(!response.isSuccessful()){
-                        return ;
-                    }
-                    Message message = new Message();
-                    message.obj = response.body().string().trim();
-                    mHandler.sendMessage(message);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
     public int getState() {
         return state;
     }
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 }

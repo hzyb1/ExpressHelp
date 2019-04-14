@@ -40,6 +40,8 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
         showItem();
         OrderFragment fragment = new OrderFragment();
         replaceFragment(fragment);
@@ -79,15 +81,7 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         replaceFragment(fragment);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
     public void replaceFragment(OrderFragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -120,5 +114,14 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
                     break;
         }
         radioButton.setChecked(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

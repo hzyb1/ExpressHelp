@@ -179,31 +179,30 @@ public class SubmitOrderActivity extends BaseActivity {
             Toast.makeText(this,"请注意设置时间哦！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        Time fst=null;Time fet=null;Time sst=null;Time set=null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+        Timestamp fst=null;Timestamp fet=null;Timestamp sst=null;Timestamp set=null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         try{
             Log.d("日志",simpleDateFormat.format(simpleDateFormat.parse(firstStartTimeS) ) );
-           fst = new Time(simpleDateFormat.parse(firstStartTimeS).getTime());
+
+           fst = new Timestamp(simpleDateFormat.parse(firstStartTimeS).getTime());
             Log.d("日志",fst.toString());
-        //    simpleDateFormat.format(fst);
-            fet = new Time(simpleDateFormat.parse(firstEndTimeS).getTime());
-            simpleDateFormat.format(fst);
-            sst = new Time(simpleDateFormat.parse(secondStartTimeS).getTime());
-            set = new Time(simpleDateFormat.parse(secondEndTimeS).getTime());
+            fet = new Timestamp(simpleDateFormat.parse(firstEndTimeS).getTime());
+            sst = new Timestamp(simpleDateFormat.parse(secondStartTimeS).getTime());
+            set = new Timestamp(simpleDateFormat.parse(secondEndTimeS).getTime());
             Log.d("显示时间",fst+"");
         }catch (Exception e){
             e.printStackTrace();
         }
-        if(fst.after(fet)){
+        if(fet.before(fst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(sst.after(set)){
+        if(set.before(sst)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
-        if(fet.after(sst)){
+        if(sst.before(fet)){
             Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
             return null;
         }
@@ -224,10 +223,12 @@ public class SubmitOrderActivity extends BaseActivity {
         order.setTakeTelephone(takeTelephoneS);
         order.setTakeCode(takeCodeS);
         order.setMoney(moneyF);
-//        order.setFirstTakeTimeBegin(fst);
-//        order.setFirstTakeTimeEnd(fet);
-//        order.setSecondTakeTimeBegin(sst);
-//        order.setSecondTakeTimeEnd(set);
+
+        order.setFirstTakeTimeBegin(fst);
+        order.setFirstTakeTimeEnd(fet);
+        order.setSecondTakeTimeBegin(sst);
+        order.setSecondTakeTimeEnd(set);
+
         order.setSubmitTime(submitTime);
         return order;
     }

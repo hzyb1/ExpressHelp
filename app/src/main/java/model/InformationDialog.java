@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.a14574.expresshelp.R;
 
+import java.text.SimpleDateFormat;
+
 public class InformationDialog extends Dialog {
     private Context mContext;
     private String content;
@@ -89,8 +91,9 @@ public class InformationDialog extends Dialog {
        order_id.setText("订单编号："+order.getId());
        order_place.setText("快递点："+order.getExpressName());
        order_money.setText("金额："+order.getMoney()+"");
-       order_first_time.setText("第一次收货时间："+order.getFirstTakeTimeBegin()+"-"+order.getFirstTakeTimeEnd());
-       order_second_time.setText("第二次收货时间："+order.getSecondTakeTimeBegin()+"-"+order.getSecondTakeTimeEnd());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+       order_first_time.setText("第一次收货时间："+sdf.format(order.getFirstTakeTimeBegin())+"-"+sdf.format(order.getFirstTakeTimeEnd()));
+       order_second_time.setText("第二次收货时间："+sdf.format(order.getSecondTakeTimeBegin())+"-"+sdf.format(order.getSecondTakeTimeEnd()));
        Button  accept = (Button)findViewById(R.id.accept);
        accept.setOnClickListener(new View.OnClickListener() {
            @Override

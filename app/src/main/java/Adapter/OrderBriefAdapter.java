@@ -109,6 +109,11 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
     }
 
     @Override
+    public long getItemId(int position) {
+         return mOrderList.get(position).getId();
+    }
+
+    @Override
     public int getItemCount() {
         return mOrderList.size();
     }

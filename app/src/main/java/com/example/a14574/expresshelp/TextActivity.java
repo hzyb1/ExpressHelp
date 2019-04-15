@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -61,58 +62,59 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
             Log.d("日志",result+"222");
             orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             Log.d("日志",orderList.size()+"   333 ");
-            find();
-            if (orderList.isEmpty()){
-                Log.d("日志","线程中的 orderlist是空的，没有传输到");
-            }else{
-                Log.d("日志","线程中的 orderlist不是空的 传输到了");
-            }
-            recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-            OrderAdapter adapter = new OrderAdapter(needorderList);
-            recyclerView.setAdapter(adapter);
-            if (needorderList.isEmpty()){
-                nothing_image = (ImageView)findViewById(R.id.nothing_image);
-                nothing_title = (TextView)findViewById(R.id.nothing_title);
-                nothing_title.setVisibility(View.VISIBLE);
-                nothing_image.setVisibility(View.VISIBLE);
+//            find();
+//            if (orderList.isEmpty()){
+//                Log.d("日志","线程中的 orderlist是空的，没有传输到");
+//            }else{
+//                Log.d("日志","线程中的 orderlist不是空的 传输到了");
+//            }
+//            recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
+//            LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
+//            recyclerView.setLayoutManager(layoutManager);
+//            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+//            OrderAdapter adapter = new OrderAdapter(needorderList);
+//            recyclerView.setAdapter(adapter);
+//            if (needorderList.isEmpty()){
+//                nothing_image = (ImageView)findViewById(R.id.nothing_image);
+//                nothing_title = (TextView)findViewById(R.id.nothing_title);
+//                nothing_title.setVisibility(View.VISIBLE);
+//                nothing_image.setVisibility(View.VISIBLE);
+//            }
+        }
+    };
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    find();
+                    if (orderList.isEmpty()){
+                        Log.d("日志","orderlist是空的，没有传输到");
+                    }else{
+                        Log.d("日志","orderlist是不是空的 传输到了");
+                    }
+                    recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
+                    recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+                    OrderAdapter adapter = new OrderAdapter(needorderList);
+                    recyclerView.setAdapter(adapter);
+                    if (needorderList.isEmpty()){
+                        nothing_image = (ImageView)findViewById(R.id.nothing_image);
+                        nothing_title = (TextView)findViewById(R.id.nothing_title);
+                        nothing_title.setVisibility(View.VISIBLE);
+                        nothing_image.setVisibility(View.VISIBLE);
+                    }
+                    break;
             }
         }
     };
-//    private Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what){
-//                case 1:
-//                    find();
-//                    if (orderList.isEmpty()){
-//                        Log.d("日志","orderlist是空的，没有传输到");
-//                    }else{
-//                        Log.d("日志","orderlist是不是空的 传输到了");
-//                    }
-//                    recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
-//                    LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
-//                    recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
-//                    recyclerView.setLayoutManager(layoutManager);
-//                    recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-//                    OrderAdapter adapter = new OrderAdapter(needorderList);
-//                    recyclerView.setAdapter(adapter);
-//                    if (needorderList.isEmpty()){
-//                        nothing_image = (ImageView)findViewById(R.id.nothing_image);
-//                        nothing_title = (TextView)findViewById(R.id.nothing_title);
-//                        nothing_title.setVisibility(View.VISIBLE);
-//                        nothing_image.setVisibility(View.VISIBLE);
-//                    }
-//                    break;
-//            }
-//        }
-//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
+
         init();
 
 
@@ -123,12 +125,17 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+
         radioButton2 = (RadioButton)findViewById(R.id.orders);
         radioButton3 = (RadioButton)findViewById(R.id.pending_payment);
         radioButton4 = (RadioButton)findViewById(R.id.pending_order);
         radioButton5 = (RadioButton)findViewById(R.id.pending_receive);
         radioButton6 = (RadioButton)findViewById(R.id.accomplished);
+
         showItem();
+
         radioButton2.setOnClickListener(this);
         radioButton3.setOnClickListener(this);
         radioButton4.setOnClickListener(this);
@@ -140,11 +147,6 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
     }
     @Override
     public void onClick(View view) {
-        /*final ProgressDialog progressDialog = new ProgressDialog(TextActivity.this);
-        progressDialog.setMessage("请稍后");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        Log.d("日志"," progressDialog 开始显示了");*/
         switch (view.getId()){
             case R.id.orders :
                 state = 1;
@@ -163,18 +165,16 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
                 break;
 
         }
-        //find();
-       // init();
         if (orderList.isEmpty()){
             Log.d("日志","监听事件的 orderlist是空的，没有传输到");
         }else{
             Log.d("日志","监听事件的 orderlist不是空的 传输到了");
         }
         find();
-        recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+       // recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
+        //LinearLayoutManager layoutManager = new LinearLayoutManager(TextActivity.this);
+      //  recyclerView.setLayoutManager(layoutManager);
+       // recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         OrderAdapter adapter = new OrderAdapter(needorderList);
         recyclerView.setAdapter(adapter);
         if (needorderList.isEmpty()){
@@ -183,17 +183,6 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
             nothing_image.setVisibility(View.VISIBLE);
             nothing_title.setVisibility(View.VISIBLE);
         }
-//       new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//               // progressDialog.dismiss();
-//                Log.d("日志","进入线程中了 替换List");
-//                Message message = new Message();
-//                message.what = 1;
-//                handler.sendMessage(message);
-//            }
-//        });
-
     }
 
     public void showItem(){
@@ -228,11 +217,11 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     private void init(){
-        progressDialog = new ProgressDialog(TextActivity.this);
-        progressDialog.setTitle("正在登录，请稍后......");
-        progressDialog.setMessage("登录中......");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+//        progressDialog = new ProgressDialog(TextActivity.this);
+//        progressDialog.setTitle("正在登录，请稍后......");
+//        progressDialog.setMessage("登录中......");
+//        progressDialog.setCancelable(false);
+//        progressDialog.show();
 
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
@@ -253,19 +242,19 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
                     Toast.makeText(TextActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                   // progressDialog.dismiss();
                     Looper.loop();
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if(!response.isSuccessful()){
-                        progressDialog.dismiss();
+                       // progressDialog.dismiss();
                         return ;
                     }
                     Message message = new Message();
                     message.obj = response.body().string().trim();
                     mHandler.sendMessage(message);
-                    progressDialog.dismiss();
+                   // progressDialog.dismiss();
                 }
             });
         } catch (Exception e) {
@@ -325,4 +314,5 @@ public class TextActivity extends AppCompatActivity implements  View.OnClickList
 
         }
     }
+
 }

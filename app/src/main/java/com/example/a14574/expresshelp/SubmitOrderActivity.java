@@ -55,7 +55,7 @@ public class SubmitOrderActivity extends BaseActivity {
     private EditText takeCode;
     private EditText money;
     private Timestamp submitTime;
-    private Order order;
+    private Order orderModify;
     private TextView toolBarTitle;
 
     @Override
@@ -67,6 +67,18 @@ public class SubmitOrderActivity extends BaseActivity {
     }
 
 
+    private void initModifyOrder(){
+        expressName.setText(orderModify.getExpressName());
+        getAddress.setText(orderModify.getGetAddress());
+        takeName.setText(orderModify.getTakeName());
+        takeTelephone.setText(orderModify.getTakeTelephone());
+        takeCode.setText(orderModify.getTakeCode());
+        money.setText(orderModify.getMoney()+"");
+        firstStartTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getFirstTakeTimeBegin()));
+        firstEndTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getFirstTakeTimeEnd()));
+        secondStartTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getSecondTakeTimeBegin()));
+        secondEndTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getSecondTakeTimeEnd()));
+    }
 
 
     private void initViews(){
@@ -77,10 +89,6 @@ public class SubmitOrderActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        order = (Order)getIntent().getSerializableExtra("order");
-        if(order!=null){
-
         }
         toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         submitOrder = (Button) findViewById(R.id.submit_order_button);
@@ -95,10 +103,11 @@ public class SubmitOrderActivity extends BaseActivity {
         firstEndTime = (TextView) findViewById(R.id.first_end_time);
         secondStartTime = (TextView) findViewById(R.id.second_start_time);
         secondEndTime = (TextView) findViewById(R.id.second_end_time);
-        order = (Order)getIntent().getSerializableExtra("order");
-        if(order!=null){
+        orderModify = (Order)getIntent().getSerializableExtra("order");
+        if(orderModify!=null){
             toolBarTitle.setText("修改订单");
             submitOrder.setText("修改订单");
+            initModifyOrder();
         }
     }
 
@@ -137,8 +146,11 @@ public class SubmitOrderActivity extends BaseActivity {
                     return;
                 }
 
-                submitOrder(order);     //上传服务器
+                if(orderModify!=null){  //进入修改事件
 
+                }else{
+                    submitOrder(order);     //上传服务器
+                }
                 Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
                 intent.putExtra("order",order);
                 startActivity(intent);

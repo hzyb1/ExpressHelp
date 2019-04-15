@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -46,6 +47,7 @@ public class MyOrderFragment extends Fragment {
     private RecyclerView recyclerView;
     private View view;
     private int state;
+
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -56,27 +58,6 @@ public class MyOrderFragment extends Fragment {
             Gson gson = new Gson();
             Log.d("日志",result+"222");
             orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
-            find();
-            if (orderList.isEmpty()){
-                Log.d("日志","orderlist是空的，没有传输到");
-            }else{
-                Log.d("日志","orderlist是不是空的 传输到了");
-            }
-            recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-            OrderAdapter adapter = new OrderAdapter(needorderList);
-            recyclerView.setAdapter(adapter);
-            if (needorderList.isEmpty()){
-                nothing_image = (ImageView)view.findViewById(R.id.nothing_image);
-                nothing_title = (TextView)view.findViewById(R.id.nothing_title);
-                nothing_title.setVisibility(view.VISIBLE);
-                nothing_image.setVisibility(view.VISIBLE);
-            }
-            /*find();
-            OrderAdapter adapter = new OrderAdapter(orderList);
-            recyclerView.setAdapter(adapter);*/
             Log.d("日志",orderList.size()+"   333 ");
         }
     };
@@ -84,11 +65,10 @@ public class MyOrderFragment extends Fragment {
 
 
 
-
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_orders,container,false);
-        init();
-       /* find();
+
+        find();
         if (orderList.isEmpty()){
             Log.d("日志","orderlist是空的，没有传输到");
         }else{
@@ -96,6 +76,7 @@ public class MyOrderFragment extends Fragment {
         }
         recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         OrderAdapter adapter = new OrderAdapter(needorderList);
@@ -105,7 +86,7 @@ public class MyOrderFragment extends Fragment {
             nothing_title = (TextView)view.findViewById(R.id.nothing_title);
             nothing_title.setVisibility(view.VISIBLE);
             nothing_image.setVisibility(view.VISIBLE);
-        }*/
+        }
         return view;
     }
 
@@ -151,7 +132,25 @@ public class MyOrderFragment extends Fragment {
 
         }
     }
-    public void init(){
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+    private void init(){
+
+
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
             Log.d("日志","USER为空tt");
@@ -170,7 +169,7 @@ public class MyOrderFragment extends Fragment {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
-                    Toast.makeText(getActivity(),"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MyOrderActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
                     Looper.loop();
                 }
                 @Override
@@ -188,11 +187,5 @@ public class MyOrderFragment extends Fragment {
         }
 
     }
-    public int getState() {
-        return state;
-    }
 
-    public void setState(int state) {
-        this.state = state;
-    }
 }

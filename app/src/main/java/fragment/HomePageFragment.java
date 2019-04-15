@@ -72,7 +72,7 @@ public class HomePageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initOrders();
+        //initOrders();
         View view = inflater.inflate(R.layout.fragment_home_page,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.order_brief_recycler);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -85,8 +85,8 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         Log.d("日志","   在哪啊 ");
-       OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
-       recyclerView.setAdapter(adapter);
+       /*OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+       recyclerView.setAdapter(adapter);*/
         submitOrder = (Button) view.findViewById(R.id.submit_order);
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +101,13 @@ public class HomePageFragment extends Fragment {
             @Override
             public void onRefresh() {
                 //swipeRefresh.setRefreshing(false);
+                refresh();
+            }
+        });
+        swipeRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
             }
         });
 
@@ -109,6 +116,13 @@ public class HomePageFragment extends Fragment {
         return view;
     }
 
+    private void refresh(){
+        swipeRefresh.setRefreshing(true);
+        initOrders();
+        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+        recyclerView.setAdapter(adapter);
+        swipeRefresh.setRefreshing(false);
+    }
 
 
     private void initOrders(){

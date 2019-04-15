@@ -44,7 +44,6 @@
             android:name=".PayOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity android:name=".SettingActivity" />
-        <activity android:name=".TextActivity"></activity>
     </application>
 
 </manifest>

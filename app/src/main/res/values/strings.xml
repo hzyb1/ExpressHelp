@@ -1,5 +1,7 @@
 <resources>
 
+    <string name ="HTTPSUCCESS">HTTPSUCCESS</string>
+    <string name="HTTPERROR">HTTPERROR</string>
     <string name="TheServer">http://45.32.84.43:8080/ExpressHelpServce/</string>
     <string name="VirtualTheServer">http://10.0.2.2:1111/ExpressHelpServce/</string>
 

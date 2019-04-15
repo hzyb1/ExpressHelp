@@ -30,7 +30,6 @@ import okhttp3.Response;
 public class LoginActivity extends BaseActivity {      //登录活动
 
     public static User USER = null;
-    private static String LOGINFIELD = "Login failed";
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
     private Button adminLoginButton;        //切换到客服登录的按钮
@@ -104,7 +103,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
+        String originAddress = this.getString(R.string.VirtualTheServer) +"loginServlet";
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
@@ -135,7 +134,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
                    progressDialog.dismiss();
                    Looper.loop();
                }
-
                @Override
                public void onResponse(Call call, Response response) throws IOException {
                    Looper.prepare();
@@ -146,11 +144,9 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        return;
                    }
                    String result = response.body().string().trim();
-                   Log.d("loginResult",result);
-                   if (LOGINFIELD.equals(result)){
+                   if (LoginActivity.this.getString(R.string.HTTPERROR).equals(result)){
                        result = "验证失败";
                        progressDialog.dismiss();
-                       Log.d("登录失败","login failed");
                    }else{
                        if(result == null || result.equals("")){
                            return ;

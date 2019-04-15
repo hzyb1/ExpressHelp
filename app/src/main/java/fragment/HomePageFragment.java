@@ -57,16 +57,13 @@ public class HomePageFragment extends Fragment {
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            Log.d("日志","来没来啊");
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
             Gson gson = new Gson();
-            Log.d("日志",result+"222");
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
             recyclerView.setAdapter(adapter);
-            Log.d("日志",orderBriefList.size()+"   333 ");
         }
     };
     @Nullable
@@ -84,14 +81,12 @@ public class HomePageFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
-        Log.d("日志","   在哪啊 ");
        /*OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
        recyclerView.setAdapter(adapter);*/
         submitOrder = (Button) view.findViewById(R.id.submit_order);
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("日志","相应点击");
                 Intent intent = new Intent(getActivity(),SubmitOrderActivity.class);
                 startActivity(intent);
             }
@@ -126,22 +121,6 @@ public class HomePageFragment extends Fragment {
 
 
     private void initOrders(){
-//        for(int i=0;i<20;i++){
-//            Order order = new Order();
-//            order.setGetAddress("21-103");
-//            order.setExpressName("中通快递");
-//            order.setTakeCode("3");
-//            Date date = new Date();//获得系统时间. 
-//            String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-//            Timestamp goodsC_date = Timestamp.valueOf(nowTime);//把时间转换 
-//            order.setSubmitTime(goodsC_date);
-//            Time time = new Time(10,20,1);
-////            order.setFirstTakeTimeBegin(time);
-////            order.setFirstTakeTimeEnd(time);
-////            order.setSecondTakeTimeBegin(time);
-////            order.setSecondTakeTimeEnd(time);
-//            orderBriefList.add(order);
-//        }
 
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
@@ -172,11 +151,6 @@ public class HomePageFragment extends Fragment {
                 Message message = new Message();
                 message.obj = response.body().string().trim();
                 mHandler.sendMessage(message);
-                String result ;
-                Gson gson = new Gson();
-                result = message.obj.toString();
-                orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
-
             }
         });
     } catch (Exception e) {

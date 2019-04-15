@@ -1,10 +1,13 @@
 package com.example.a14574.expresshelp;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Looper;
 
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,13 +24,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 
+import Adapter.OrderBriefAdapter;
 import model.Order;
 
 import http.HttpUtil;
@@ -57,6 +63,37 @@ public class SubmitOrderActivity extends BaseActivity {
     private Timestamp submitTime;
     private Order orderModify;
     private TextView toolBarTitle;
+    private Order order;
+    private ProgressDialog progressDialog;                   //上传状态对话框
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+
+
+            if(SubmitOrderActivity.this.getString(R.string.HTTPERROR).equals(result)){
+                Toast.makeText(SubmitOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
+
+                progressDialog.dismiss();
+            }else{
+                Toast.makeText(SubmitOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                intent.putExtra("order",order);
+                startActivity(intent);
+                finish();
+                progressDialog.dismiss();
+            }
+
+
+
+
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +178,7 @@ public class SubmitOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                Order order=createOrder();
+                order=createOrder();
                 if(order==null){
                     return;
                 }
@@ -151,10 +188,19 @@ public class SubmitOrderActivity extends BaseActivity {
                 }else{
                     submitOrder(order);     //上传服务器
                 }
-                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
-                intent.putExtra("order",order);
-                startActivity(intent);
-                finish();
+
+                progressDialog = new ProgressDialog(SubmitOrderActivity.this);
+                progressDialog.setTitle("正在上传，请稍后......");
+                progressDialog.setMessage("上传中......");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+
+
+//                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+//                intent.putExtra("order",order);
+//                startActivity(intent);
+//                finish();
 
             }
         });
@@ -279,7 +325,7 @@ public class SubmitOrderActivity extends BaseActivity {
     private void submitOrder(Order order){
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.TheServer) + "submitOrder";
+            String originAddress = this.getString(R.string.VirtualTheServer) + "submitOrder";
 
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
@@ -301,10 +347,9 @@ public class SubmitOrderActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-//                    Message message = new Message();
-//                    message.obj = response.body().string().trim();
-//                    mHandler.sendMessage(message);
-                    Log.d("成功","发布成功");
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    mHandler.sendMessage(message);
                 }
             });
         } catch (Exception e) {

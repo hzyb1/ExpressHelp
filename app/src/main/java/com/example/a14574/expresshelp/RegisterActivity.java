@@ -186,10 +186,7 @@ public class RegisterActivity extends BaseActivity {
             Log.d("url:",compeletedURL);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
-
-
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user));
-
             Log.d("日志:",gson.toJson(user));
 
             HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){

@@ -1,6 +1,7 @@
 package com.example.a14574.expresshelp;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,10 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
     private RadioButton radioButton;
     private int state;
     private List<Order> orderList = new ArrayList<>();
+    private ProgressDialog progressDialog;                   //上传状态对话框
+ //   private boolean flag;
+
+
 
     Handler mHandler = new Handler(){
         @Override
@@ -48,10 +53,9 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
             Gson gson = new Gson();
             Log.d("日志",result+"222");
             orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
+            progressDialog.dismiss();
             Log.d("日志",orderList.size()+"   333 ");
-
-
-
+    //        flag = false;
         }
     };
 
@@ -60,9 +64,14 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
+   //     flag = true;
+
+
         initViews();
         showItem();
+
         init();
+
     }
 
 
@@ -163,6 +172,12 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
 
     private void init(){
 
+        progressDialog = new ProgressDialog(MyOrderActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
 
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
@@ -198,7 +213,5 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }

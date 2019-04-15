@@ -111,7 +111,7 @@ public class MyOrderFragment extends Fragment {
 
         }
     }
-    
+
     public int getState() {
         return state;
     }

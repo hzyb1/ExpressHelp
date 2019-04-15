@@ -17,7 +17,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class BeginActivity extends BaseActivity {
-    private static String LOGINFIELD = "Login failed";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,7 @@ public class BeginActivity extends BaseActivity {
                         flag = false;
                     }else{
                         String result = response.body().string().trim();
-                        if (LOGINFIELD.equals(result)){
+                        if (BeginActivity.this.getString(R.string.HTTPERROR).equals(result)){
                             flag = false;
                         }else{
                             if(result == null || result.equals("")){

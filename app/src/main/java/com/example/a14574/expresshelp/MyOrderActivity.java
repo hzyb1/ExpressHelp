@@ -38,10 +38,13 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
     private RadioButton radioButton;
     private int state;
     private List<Order> orderList = new ArrayList<>();
+
     private ProgressDialog progressDialog;                   //上传状态对话框
- //   private boolean flag;
-
-
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+    private  RadioButton radioButton4;
+    private RadioButton radioButton5 ;
+    private RadioButton radioButton6;
 
     Handler mHandler = new Handler(){
         @Override
@@ -55,7 +58,7 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
             orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             progressDialog.dismiss();
             Log.d("日志",orderList.size()+"   333 ");
-    //        flag = false;
+
         }
     };
 
@@ -64,13 +67,14 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
-   //     flag = true;
 
+
+        init();
 
         initViews();
         showItem();
 
-        init();
+
 
     }
 
@@ -84,13 +88,14 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        MyOrderFragment fragment = new MyOrderFragment();
-        replaceFragment(fragment);
-        RadioButton radioButton2 = (RadioButton)findViewById(R.id.orders);
-        RadioButton radioButton3 = (RadioButton)findViewById(R.id.pending_payment);
-        RadioButton radioButton4 = (RadioButton)findViewById(R.id.pending_order);
-        RadioButton radioButton5 = (RadioButton)findViewById(R.id.pending_receive);
-        RadioButton radioButton6 = (RadioButton)findViewById(R.id.accomplished);
+
+
+
+        radioButton2 = (RadioButton)findViewById(R.id.orders);
+        radioButton3 = (RadioButton)findViewById(R.id.pending_payment);
+        radioButton4 = (RadioButton)findViewById(R.id.pending_order);
+        radioButton5 = (RadioButton)findViewById(R.id.pending_receive);
+        radioButton6 = (RadioButton)findViewById(R.id.accomplished);
         radioButton2.setOnClickListener(this);
         radioButton3.setOnClickListener(this);
         radioButton4.setOnClickListener(this);
@@ -100,8 +105,11 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
 
 
 
+
+
     @Override
     public void onClick(View view) {
+
         MyOrderFragment fragment = new MyOrderFragment();
         switch (view.getId()){
             case R.id.orders :
@@ -122,23 +130,24 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
 
         }
         replaceFragment(fragment);
+       /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+               // progressDialog.dismiss();
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
+            }
+        });*/
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
     public void replaceFragment(MyOrderFragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         fragment.setState(state);
-        fragment.setOrderList(orderList);
+        //fragment.setOrderList(orderList);
         transaction.replace(R.id.order_fragment,fragment);
         transaction.commit();
     }
@@ -149,24 +158,30 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         switch (style){
             case 1:
                 radioButton = (RadioButton)findViewById(R.id.orders);
+                radioButton2.setOnClickListener(this);
                 ;break;
             case 2:
                 radioButton = (RadioButton)findViewById(R.id.pending_payment);
+                radioButton3.setOnClickListener(this);
                 ;break;
             case 3:
                 radioButton = (RadioButton)findViewById(R.id.pending_order);
+                radioButton4.setOnClickListener(this);
                 ;break;
             case 4:
                 radioButton = (RadioButton)findViewById(R.id.pending_receive);
+                radioButton5.setOnClickListener(this);
                 ;break;
             case 5:
                 radioButton = (RadioButton)findViewById(R.id.accomplished);
+                radioButton6.setOnClickListener(this);
                 ;break;
                 default:
                     break;
         }
         radioButton.setChecked(true);
     }
+
 
 
 
@@ -177,7 +192,6 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         progressDialog.setMessage("上传中......");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
 
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
@@ -214,4 +228,15 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

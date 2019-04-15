@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,16 +46,36 @@ public class MyOrderFragment extends Fragment {
     private ImageView nothing_image;
     private TextView nothing_title;
     private RecyclerView recyclerView;
+    private View view;
     private int state;
 
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            Log.d("日志","来没来啊");
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+            Gson gson = new Gson();
+            Log.d("日志",result+"222");
+            orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
+            Log.d("日志",orderList.size()+"   333 ");
+        }
+    };
 
 
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_orders,container,false);
-   //     init();
+        view = inflater.inflate(R.layout.fragment_orders,container,false);
+
         find();
+        if (orderList.isEmpty()){
+            Log.d("日志","orderlist是空的，没有传输到");
+        }else{
+            Log.d("日志","orderlist是不是空的 传输到了");
+        }
+        recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = (RecyclerView)view.findViewById(R.id.orders_recycler);
         recyclerView.setLayoutManager(layoutManager);
@@ -111,7 +133,6 @@ public class MyOrderFragment extends Fragment {
 
         }
     }
-
     public int getState() {
         return state;
     }
@@ -127,4 +148,45 @@ public class MyOrderFragment extends Fragment {
     public void setOrderList(List<Order> orderList) {
         this.orderList = orderList;
     }
+
+    private void init(){
+
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        if(LoginActivity.USER == null){
+            Log.d("日志","USER为空tt");
+            return ;
+        }else{
+            Log.d("日志",LoginActivity.USER.getPassword());
+        }
+        params.put("id", LoginActivity.USER.getId()+"");
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) +  "selectMyOrder";
+            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+            Log.d("日志",compeletedURL);
+
+            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    //Toast.makeText(MyOrderActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        return ;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

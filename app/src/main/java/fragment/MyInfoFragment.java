@@ -18,6 +18,7 @@ import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SettingActivity;
 import com.example.a14574.expresshelp.SpecificUserInfoActivity;
+import com.example.a14574.expresshelp.TextActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -110,7 +111,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(getActivity(), MyOrderActivity.class);
+        //Intent intent = new Intent(getActivity(), MyOrderActivity.class);
+        Intent intent = new Intent(getActivity(), TextActivity.class);
         switch (view.getId()){
             case R.id.my_orders:
                 ;

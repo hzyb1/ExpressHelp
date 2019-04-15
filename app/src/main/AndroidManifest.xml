@@ -10,7 +10,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".BeginActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
@@ -19,22 +18,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan">
-
-        </activity>
-
-
-
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan"></activity>
         <activity
             android:name=".HomeActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
-        </activity>
-
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
         <activity
             android:name=".SubmitOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
@@ -53,7 +43,8 @@
         <activity
             android:name=".PayOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".TextActivity"></activity>
     </application>
 
 </manifest>

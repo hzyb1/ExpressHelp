@@ -81,8 +81,6 @@ public class HomePageFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
-       /*OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
-       recyclerView.setAdapter(adapter);*/
         submitOrder = (Button) view.findViewById(R.id.submit_order);
         submitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +100,7 @@ public class HomePageFragment extends Fragment {
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {
-                refresh();
+                initAdapter();
             }
         });
 
@@ -114,7 +112,13 @@ public class HomePageFragment extends Fragment {
     private void refresh(){
         swipeRefresh.setRefreshing(true);
         initOrders();
+        swipeRefresh.setRefreshing(false);
+    }
+    private void initAdapter(){
+        swipeRefresh.setRefreshing(true);
+        initOrders();
         OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         swipeRefresh.setRefreshing(false);
     }

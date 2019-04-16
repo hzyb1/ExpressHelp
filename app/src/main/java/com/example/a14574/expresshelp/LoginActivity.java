@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -103,7 +101,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        String originAddress = this.getString(R.string.VirtualTheServer) +"loginServlet";
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");

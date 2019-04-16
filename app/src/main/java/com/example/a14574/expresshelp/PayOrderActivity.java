@@ -90,11 +90,6 @@ public class PayOrderActivity extends BaseActivity {
 
                 if(LoginActivity.USER.getBalance() >= order.getMoney()){
                     order.setState(1);
-                    progressDialog = new ProgressDialog(PayOrderActivity.this);
-                    progressDialog.setTitle("正在上传，请稍后......");
-                    progressDialog.setMessage("上传中......");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
                     pay(order);
                     //上传服务器
                 }else{
@@ -149,10 +144,15 @@ public class PayOrderActivity extends BaseActivity {
     }
 
     private void pay(Order order){
+        progressDialog = new ProgressDialog(PayOrderActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) + "updataOrder";
+            String originAddress = this.getString(R.string.VirtualTheServer) + "payOrder";
 
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
@@ -170,6 +170,13 @@ public class PayOrderActivity extends BaseActivity {
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        Looper.prepare();
+                        Toast.makeText(PayOrderActivity.this,"连接失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
                     Message message = new Message();
                     message.obj = response.body().string().trim();
                     mHandler.sendMessage(message);
@@ -180,8 +187,6 @@ public class PayOrderActivity extends BaseActivity {
         }
 
     }
-
-
 
 
 }

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SettingActivity;
@@ -26,6 +27,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private Button setting;
     private CircleImageView headImage;
     private LinearLayout pendingPaymentLayout;
+
+    private TextView userName;
 
     private TextView my_orders;
     private ImageView my_orders_image;
@@ -49,6 +52,14 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_info,container,false);
         setting = (Button) view.findViewById(R.id.setting);
+        userName = (TextView)view.findViewById(R.id.name);
+        headImage = (CircleImageView) view.findViewById(R.id.head_image);
+        if(LoginActivity.USER != null){
+            userName.setText(LoginActivity.USER.getUsername());
+            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Glide.with(getContext()).load(url).into(headImage);
+        }
+
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +68,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
             }
         });
-        headImage = (CircleImageView) view.findViewById(R.id.head_image);
-        Glide.with(getContext()).load(R.drawable.temp_head2).into(headImage);
+  //      Glide.with(getContext()).load(R.drawable.temp_head2).into(headImage);
         toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
         toSpecificInfo.setOnClickListener(new View.OnClickListener() {
             @Override

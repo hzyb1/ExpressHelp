@@ -19,15 +19,27 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.+'
     compile 'com.android.support:recyclerview-v7:25.+'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile files('libs/gson-2.7.jar')
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    testCompile 'junit:junit:4.12'
+
+ //   compile 'com.zhihu.android:matisse:$latest_version'
+
+ //   compile project(':pictureselector')
+ //   compile 'com.github.wildma:PictureSelector:1.1.2'
+
     //  compile 'com.android.support.constraint:constraint-layout:1.1.3'
 }

@@ -72,23 +72,19 @@ public class SubmitOrderActivity extends BaseActivity {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
-
-
-            if(SubmitOrderActivity.this.getString(R.string.HTTPERROR).equals(result)){
+            if("0".equals(result)){
                 Toast.makeText(SubmitOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
-
-                progressDialog.dismiss();
             }else{
                 Toast.makeText(SubmitOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                order.setId(Integer.parseInt(result));
                 intent.putExtra("order",order);
                 startActivity(intent);
                 finish();
-                progressDialog.dismiss();
             }
 
 
-
+            progressDialog.dismiss();
 
         }
     };
@@ -188,12 +184,6 @@ public class SubmitOrderActivity extends BaseActivity {
                 }else{
                     submitOrder(order);     //上传服务器
                 }
-
-                progressDialog = new ProgressDialog(SubmitOrderActivity.this);
-                progressDialog.setTitle("正在上传，请稍后......");
-                progressDialog.setMessage("上传中......");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
 
 
 
@@ -323,15 +313,18 @@ public class SubmitOrderActivity extends BaseActivity {
     }
 
     private void submitOrder(Order order){
+        progressDialog = new ProgressDialog(SubmitOrderActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         try {
             //构造完整URL
             String originAddress = this.getString(R.string.VirtualTheServer) + "submitOrder";
-
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
-
 
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(order));
 
@@ -342,11 +335,19 @@ public class SubmitOrderActivity extends BaseActivity {
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
                     Toast.makeText(SubmitOrderActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     Looper.loop();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        Looper.prepare();
+                        Toast.makeText(SubmitOrderActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
                     Message message = new Message();
                     message.obj = response.body().string().trim();
                     mHandler.sendMessage(message);

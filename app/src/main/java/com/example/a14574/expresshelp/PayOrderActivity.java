@@ -152,7 +152,7 @@ public class PayOrderActivity extends BaseActivity {
 
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) + "updataOrder";
+            String originAddress = this.getString(R.string.TheServer) + "updataOrder";
 
             String compeletedURL = originAddress ;
             Log.d("url:",compeletedURL);

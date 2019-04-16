@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.ModifyInformationActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
@@ -63,13 +64,13 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
         holder.read_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = holder.getAdapterPosition();
+               /* int position = holder.getAdapterPosition();
                 InformationDialog informationDialog = new InformationDialog(view.getContext(), mOrderList.get(position));
-                informationDialog.show();
+                informationDialog.show();*/
 
                 //跑手验证功能
                 Log.d("日志","getIDCard"+LoginActivity.USER.getIdCard());
-              /*if (LoginActivity.USER.getIdCard()==null){
+              if (LoginActivity.USER.getIdCard() == null){
 
                     AlertDialog.Builder dialog = new AlertDialog.Builder(a);
                     dialog.setTitle("还未成为跑手");
@@ -78,7 +79,7 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
                     dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(a,);
+                            Intent intent = new Intent(a, ModifyInformationActivity.class);
                             a.startActivity(intent);
 
                         }
@@ -94,7 +95,7 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
                     int position = holder.getAdapterPosition();
                     InformationDialog informationDialog = new InformationDialog(view.getContext(), mOrderList.get(position));
                     informationDialog.show();
-                }*/
+                }
             }
         });
         return holder;

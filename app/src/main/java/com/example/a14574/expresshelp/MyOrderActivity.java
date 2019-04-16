@@ -161,7 +161,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     private void initOrders(){
         progressDialog = new ProgressDialog(MyOrderActivity.this);
         progressDialog.setTitle("请稍后......");
-        progressDialog.setMessage("请受......");
+        progressDialog.setMessage("正在加载......");
         progressDialog.setCancelable(false);
         progressDialog.show();
 

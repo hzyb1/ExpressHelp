@@ -103,7 +103,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         });
     }
     private void login() {
-        String originAddress = this.getString(R.string.VirtualTheServer) +"loginServlet";
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");

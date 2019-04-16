@@ -21,10 +21,10 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".HomeActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".SubmitOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
@@ -44,6 +44,9 @@
             android:name=".PayOrderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity android:name=".SettingActivity" />
+        <activity android:name=".ModifyInformationActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan"/>
+
     </application>
 
 </manifest>

@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import Adapter.OrderAdapter;
-import fragment.MyOrderFragment;
 import http.HttpUtil;
 import model.Order;
 import okhttp3.Call;
@@ -38,49 +37,48 @@ import util.SpaceItemDecoration;
 public class MyOrderActivity extends AppCompatActivity implements  View.OnClickListener{
     private Toolbar toolbar;
     private RadioButton radioButton;
-    private int state;
-    private List<Order> orderList = new ArrayList<>();
-    private List<Order> needorderList = new ArrayList<>();
+    private int state;      //我想看的订单状态
+    private List<Order> orderList = new ArrayList<>();      //所有我的订单列表
+    private List<Order> needorderList = new ArrayList<>();      //我需要显示的订单列表
     private RadioButton radioButton2;
     private RadioButton radioButton3;
-    private  RadioButton radioButton4;
+    private RadioButton radioButton4;
     private RadioButton radioButton5 ;
     private RadioButton radioButton6;
-    private ImageView nothing_image;
-    private TextView nothing_title;
+    private ImageView nothing_image;      //need订单列表为空的时候显示的图片
+    private TextView nothing_title;     //need订单列表为空的时候显示的文字
     private RecyclerView recyclerView;
-    private ProgressDialog  progressDialog;
+    private ProgressDialog  progressDialog;     //等待状态对话框
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String result = "";
-            if(msg.arg1 == 1){
+            if(msg.arg1 == 1){      //第二次访问
 
-            }else if(msg.arg1 == 2){
+            }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
                 Gson gson = new Gson();
-                Log.d("日志",result+"222");
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }
-            find();
-            OrderAdapter adapter = new OrderAdapter(needorderList);
+            find();     //查找想要显示的订单列表
+            OrderAdapter adapter = new OrderAdapter(needorderList);     //适配器
             recyclerView.setAdapter(adapter);
-            if (needorderList.isEmpty()){
+            if (needorderList.isEmpty()){       //订单列表为空的时候显示图片和文字
                 nothing_image = (ImageView)findViewById(R.id.nothing_image);
                 nothing_title = (TextView)findViewById(R.id.nothing_title);
                 nothing_title.setVisibility(View.VISIBLE);
                 nothing_image.setVisibility(View.VISIBLE);
             }
-            progressDialog.dismiss();
+            progressDialog.dismiss();       //结束等待
         }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
-        initViews();
-        initOrders();
+        initViews();    //初始化控件
+        initOrders();   //访问服务器初始化订单
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -119,12 +117,6 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
         Message message = new Message();
         message.arg1 = 1;
         mHandler.sendMessage(message);
-        if (needorderList.isEmpty()){
-            nothing_image = (ImageView)findViewById(R.id.nothing_image);
-            nothing_title = (TextView)findViewById(R.id.nothing_title);
-            nothing_image.setVisibility(View.VISIBLE);
-            nothing_title.setVisibility(View.VISIBLE);
-        }
     }
 
     private void showItem(){
@@ -157,20 +149,19 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
         }
         radioButton.setChecked(true);
     }
-
+    //访问服务器初始化订单列表
     private void initOrders(){
         progressDialog = new ProgressDialog(MyOrderActivity.this);
         progressDialog.setTitle("请稍后......");
-        progressDialog.setMessage("请受......");
+        progressDialog.setMessage("正在加载......");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
-
+            progressDialog.dismiss();
             return ;
         }else{
-            Log.d("日志",LoginActivity.USER.getPassword());
         }
         params.put("id", LoginActivity.USER.getId()+"");
         try {
@@ -178,7 +169,6 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
             String originAddress = this.getString(R.string.TheServer) +  "selectMyOrder";
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("日志",compeletedURL);
-
             HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -213,6 +203,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
         }
         return super.onOptionsItemSelected(item);
     }
+    //查找想要显示的订单列表
     private void find(){
         switch (state){
             case 1:
@@ -254,7 +245,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
                 break;
         }
     }
-
+    //初始化控件
     private void initViews(){
         recyclerView = (RecyclerView)findViewById(R.id.orders_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(MyOrderActivity.this);

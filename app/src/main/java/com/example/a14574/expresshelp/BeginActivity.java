@@ -24,6 +24,8 @@ public class BeginActivity extends BaseActivity {
         spLogin();
 
     }
+
+    //持久化登录
     private boolean spLogin(){
         SharedPreferences sp = getSharedPreferences("loginSetting", 0);
         int id = sp.getInt("userid",0);
@@ -49,6 +51,7 @@ public class BeginActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     boolean flag = true;
+                    //访问异常，返回值不是200
                     if(!response.isSuccessful()){
                         flag = false;
                     }else{

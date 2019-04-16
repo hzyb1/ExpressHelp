@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Looper;
 import android.support.v7.app.ActionBar;
@@ -29,8 +30,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RegisterActivity extends BaseActivity {
-    private static String REGISTERFIELD = "register success";
-
     private EditText username;
     private EditText first_password;
     private EditText second_password;
@@ -44,11 +43,72 @@ public class RegisterActivity extends BaseActivity {
     private boolean passwordStatus_second = false;
     private Button register;
     private Toolbar toolbar;
+    private ProgressDialog progressDialog;                   //等待对话框
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        initView();
+        initViews();
+        initEvents();
+    }
+
+
+    /**
+     * 检验输入的合法性
+     */
+    private boolean isInputValid(){
+        boolean vaild = false;
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+        dialog.setTitle("错误信息");
+        dialog.setCancelable(true);
+        if(telephone.getText().toString().equals("")) {
+            dialog.setMessage("电话号码不能为空");
+            dialog.show();
+        }else if(!telephone.getText().toString().matches("[1][3578]\\d{9}")){
+            dialog.setMessage("电话号码格式错误");
+            dialog.show();
+        } else if (username.getText().toString().equals("")){
+            dialog.setMessage("用户名不能为空");
+            dialog.show();
+        }else if (!first_password.getText().toString().equals(second_password.getText().toString())){
+            dialog.setMessage("两次密码不一致");
+            dialog.show();
+        }else if(first_password.getText().toString().equals("") || second_password.getText().toString().equals("") ){
+            dialog.setMessage("密码不能为空");
+            dialog.show();
+        }else if(sex.equals("无")){
+            dialog.setMessage("请选择性别");
+            dialog.show();
+        }else{
+            vaild = true;
+        }
+        return vaild;
+    }
+
+    /**
+     * 初始化控件
+     */
+    private void initViews (){
+        username = (EditText)findViewById(R.id.register_username);
+        first_password = (EditText)findViewById(R.id.register_password_first);
+        second_password = (EditText)findViewById(R.id.register_password_second);
+        telephone = (EditText)findViewById(R.id.register_telephone);
+        sex = "无";
+        man = (ImageView)findViewById(R.id.man);
+        wuman = (ImageView)findViewById(R.id.wuman);
+        pwd_image = (ImageView)findViewById(R.id.register_pwd_image);
+        pwd_image_scond = (ImageView)findViewById(R.id.register_pwd_image_second);
+        register = (Button)findViewById(R.id.register_button);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+    private void initEvents(){
         man.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,70 +159,14 @@ public class RegisterActivity extends BaseActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if(isInputValid()){
-                   User user = saveUser();
-                   submitUser(user);
+                if(isInputValid()){
+                    User user = saveUser();
+                    submitUser(user);
                 }
             }
         });
     }
 
-
-    /**
-     * 检验输入的合法性
-     */
-    private boolean isInputValid(){
-        boolean vaild = false;
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-        dialog.setTitle("错误信息");
-        dialog.setCancelable(true);
-        if(telephone.getText().toString().equals("")) {
-            dialog.setMessage("电话号码不能为空");
-            dialog.show();
-        }else if(!telephone.getText().toString().matches("[1][3578]\\d{9}")){
-            dialog.setMessage("电话号码格式错误");
-            dialog.show();
-        } else if (username.getText().toString().equals("")){
-            dialog.setMessage("用户名不能为空");
-            dialog.show();
-        }else if (!first_password.getText().toString().equals(second_password.getText().toString())){
-            dialog.setMessage("两次密码不一致");
-            dialog.show();
-        }else if(first_password.getText().toString().equals("") || second_password.getText().toString().equals("") ){
-            dialog.setMessage("密码不能为空");
-            dialog.show();
-        }else if(sex.equals("无")){
-            dialog.setMessage("请选择性别");
-            dialog.show();
-        }else{
-            vaild = true;
-        }
-        return vaild;
-    }
-
-    /**
-     * 初始化控件
-     */
-    private void initView (){
-        username = (EditText)findViewById(R.id.register_username);
-        first_password = (EditText)findViewById(R.id.register_password_first);
-        second_password = (EditText)findViewById(R.id.register_password_second);
-        telephone = (EditText)findViewById(R.id.register_telephone);
-        sex = "无";
-        man = (ImageView)findViewById(R.id.man);
-        wuman = (ImageView)findViewById(R.id.wuman);
-        pwd_image = (ImageView)findViewById(R.id.register_pwd_image);
-        pwd_image_scond = (ImageView)findViewById(R.id.register_pwd_image_second);
-        register = (Button)findViewById(R.id.register_button);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
 
     /**
      * 保存User对象
@@ -179,6 +183,12 @@ public class RegisterActivity extends BaseActivity {
 
     //上传到服务器端
     private void submitUser(User user){
+        //旋转等待框
+        progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setTitle("正在登录，请稍后......");
+        progressDialog.setMessage("登录中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         try {
             //构造完整URL
             String originAddress = "register";
@@ -193,24 +203,32 @@ public class RegisterActivity extends BaseActivity {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
-                    Toast.makeText(RegisterActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"注册失败,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     Looper.loop();
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-//                    Message message = new Message();
-//                    message.obj = response.body().string().trim();
-//                    mHandler.sendMessage(message);
+                    Looper.prepare();    //在子线程中显示toast;
+                    if(!response.isSuccessful()){
+                        Toast.makeText(RegisterActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
+
                     String result = response.body().string().trim();
                     Log.d("日志","发布成功"+result);
                     Looper.prepare();
-                    if(result.equals(REGISTERFIELD)){
+                    if(RegisterActivity.this.getString(R.string.HTTPSUCCESS).equals(result)){
                         Toast.makeText(RegisterActivity.this,"注册成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                         startActivity(intent);
+                        progressDialog.dismiss();
                         finish();
                     }else{
                         Toast.makeText(RegisterActivity.this,"注册失败，该电话号码已注册", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                     Looper.loop();
                 }

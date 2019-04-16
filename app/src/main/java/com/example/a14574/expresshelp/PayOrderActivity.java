@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 import http.HttpUtil;
 import model.Order;
@@ -38,8 +39,8 @@ public class PayOrderActivity extends BaseActivity {
     private TextView money;
     private TextView first_time;
     private TextView second;
-    private Button admit;
-    private Button change;
+    private Button admit;       //支付按钮
+    private Button change;      //修改订单按钮
     private Toolbar toolbar;
     private Order order;
     private ProgressDialog progressDialog;                   //上传状态对话框
@@ -51,16 +52,15 @@ public class PayOrderActivity extends BaseActivity {
             result = msg.obj.toString();
             if(PayOrderActivity.this.getString(R.string.HTTPERROR).equals(result)){
                 Toast.makeText(PayOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
-
-                progressDialog.dismiss();
             }else{
                 Toast.makeText(PayOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(PayOrderActivity.this,PayOrderActivity.class);
-//                intent.putExtra("order",order);
-//                startActivity(intent);
-//                finish();
-                progressDialog.dismiss();
+                LoginActivity.USER.setBalance(LoginActivity.USER.getBalance() - order.getMoney());      //用户金额减少
+                Intent intent = new Intent(PayOrderActivity.this,MyOrderActivity.class);
+                intent.putExtra("style",3);     //进去我的订单查看刚待接单订单
+                startActivity(intent);
+                finish();
             }
+            progressDialog.dismiss();
         }
     };
 
@@ -72,34 +72,9 @@ public class PayOrderActivity extends BaseActivity {
         Intent intent = getIntent();
         order = (Order)intent.getSerializableExtra("order");
         initView();
-        address.setText("快递点："+order.getExpressName());
-        receive.setText("收货地址："+order.getGetAddress());
-        name.setText("收货人姓名："+order.getTakeName());
-        phone.setText("收货人电话："+order.getTakeTelephone());
-        number.setText("取货码："+order.getTakeCode());
-        money.setText("金额："+order.getMoney()+" ￥");
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        first_time.setText("第一次收货时间："+sdf.format(order.getFirstTakeTimeBegin())+"-"
-                +sdf.format(order.getFirstTakeTimeEnd()));
-       second.setText("第二次收货时间："+sdf.format(order.getSecondTakeTimeBegin())+"-"+sdf.format(order.getSecondTakeTimeEnd()));
+
         initEvents();
-        admit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-                if(LoginActivity.USER.getBalance() >= order.getMoney()){
-                    order.setState(1);
-                    pay(order);
-                    //上传服务器
-                }else{
-                    Log.d("日志",LoginActivity.USER.getBalance()+"as");
-                    Toast.makeText(PayOrderActivity.this,"你的余额不足，请先进行充值",Toast.LENGTH_LONG).show();
-                }
-
-      //          Toast.makeText(PayOrderActivity.this,"支付成功",Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void initView (){
@@ -120,6 +95,16 @@ public class PayOrderActivity extends BaseActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        address.setText("快递点："+order.getExpressName());
+        receive.setText("收货地址："+order.getGetAddress());
+        name.setText("收货人姓名："+order.getTakeName());
+        phone.setText("收货人电话："+order.getTakeTelephone());
+        number.setText("取货码："+order.getTakeCode());
+        money.setText("金额："+order.getMoney()+" ￥");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        first_time.setText("第一次收货时间："+sdf.format(order.getFirstTakeTimeBegin())+"-"
+                +sdf.format(order.getFirstTakeTimeEnd()));
+        second.setText("第二次收货时间："+sdf.format(order.getSecondTakeTimeBegin())+"-"+sdf.format(order.getSecondTakeTimeEnd()));
     }
     public void initEvents(){
         change.setOnClickListener(new View.OnClickListener(){
@@ -132,8 +117,18 @@ public class PayOrderActivity extends BaseActivity {
             }
         });
 
+        admit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(LoginActivity.USER.getBalance() >= order.getMoney()){
+                    pay(order);
+                    //上传服务器
+                }else{
+                    Toast.makeText(PayOrderActivity.this,"你的余额不足，请先进行充值",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
@@ -142,30 +137,26 @@ public class PayOrderActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    //上传服务器，实现支付
     private void pay(Order order){
         progressDialog = new ProgressDialog(PayOrderActivity.this);
         progressDialog.setTitle("正在上传，请稍后......");
         progressDialog.setMessage("上传中......");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("orderId", order.getId()+"");
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) + "payOrder";
-
-            String compeletedURL = originAddress ;
+            String originAddress = this.getString(R.string.TheServer) + "payOrder";
+            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
             Log.d("url:",compeletedURL);
-            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
-            RequestBody requestBody = RequestBody.create(JSON, gson.toJson(order));
-            Log.d("日志:",gson.toJson(order));
-
-            HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){
+            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
                     Toast.makeText(PayOrderActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     Looper.loop();
                 }
                 @Override

@@ -39,14 +39,12 @@ public class LoginActivity extends BaseActivity {      //登录活动
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("日志","login???");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();     //初始化各种属性
-        //对登录按钮设置监听事件
        initEvents();    //初始化监听器
     }
+    //初始化各种属性
     private void initViews(){
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordImageView = (ImageView) findViewById(R.id.pwd_image);
@@ -59,7 +57,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
-
+    //初始化监听器
     private void initEvents(){
         normalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,9 +98,12 @@ public class LoginActivity extends BaseActivity {      //登录活动
             }
         });
     }
-    private void login() {
-        String originAddress = this.getString(R.string.TheServer) +"loginServlet";
 
+    //登录操作
+    private void login() {
+        String originAddress = this.getString(R.string.TheServer) +"loginServlet";  //访问服务器的url
+
+        //旋转等待框
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("正在登录，请稍后......");
         progressDialog.setMessage("登录中......");
@@ -117,26 +118,22 @@ public class LoginActivity extends BaseActivity {      //登录活动
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("telephone", telephoneEditText.getText().toString());
         params.put("password", passwordEditText.getText().toString());
-        Log.d("用户名，密码",telephoneEditText.getText().toString()+","+passwordEditText.getText().toString());
-
         try {
             //构造完整URL
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-
            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
                @Override
                public void onFailure(Call call, IOException e) {
                    Looper.prepare();
                    Toast.makeText(LoginActivity.this,"登录失败,未能连上服务器", Toast.LENGTH_SHORT).show();
-                   Log.d("连接服务器失败",e.toString());
                    progressDialog.dismiss();
                    Looper.loop();
                }
                @Override
                public void onResponse(Call call, Response response) throws IOException {
-                   Looper.prepare();
+                   Looper.prepare();    //在子线程中显示toast;
                    if(!response.isSuccessful()){
-                       Toast.makeText(LoginActivity.this,"登录失败", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(LoginActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
                        progressDialog.dismiss();
                        Looper.loop();
                        return;
@@ -147,6 +144,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        progressDialog.dismiss();
                    }else{
                        if(result == null || result.equals("")){
+                           progressDialog.dismiss();
                            return ;
                        }
                        USER = new Gson().fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
@@ -154,10 +152,10 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        intent.setClass(LoginActivity.this,HomeActivity.class);     //登录成功跳转到主界面
                        LoginActivity.this.startActivity(intent);
                        result = "验证成功";
-                       SharedPreferences sp= getSharedPreferences("loginSetting", 0);
+                       SharedPreferences sp= getSharedPreferences("loginSetting", 0);   //生成持久化对象
                        SharedPreferences.Editor editor = sp.edit();
                        editor.putInt("userid",USER.getId());
-                       editor.commit();
+                       editor.commit();     //提交持久化对象
                        progressDialog.dismiss();
                        LoginActivity.this.finish();
                    }

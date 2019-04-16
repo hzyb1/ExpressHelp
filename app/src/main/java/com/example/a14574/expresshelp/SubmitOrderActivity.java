@@ -61,7 +61,7 @@ public class SubmitOrderActivity extends BaseActivity {
     private EditText takeCode;
     private EditText money;
     private Timestamp submitTime;
-    private Order orderModify;
+    private Order orderModify;      //   从修改控件传来的Order
     private TextView toolBarTitle;
     private Order order;
     private ProgressDialog progressDialog;                   //上传状态对话框
@@ -72,25 +72,32 @@ public class SubmitOrderActivity extends BaseActivity {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
-            if("0".equals(result)){
-                Toast.makeText(SubmitOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(SubmitOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
-                order.setId(Integer.parseInt(result));
-                intent.putExtra("order",order);
-                startActivity(intent);
-                finish();
+
+            if(msg.arg1 == 1){      //表示提交订单
+                if("0".equals(result)){
+                    Toast.makeText(SubmitOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(SubmitOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
+                    order.setId(Integer.parseInt(result));
+                    intent.putExtra("order",order);
+                    startActivity(intent);
+                    finish();
+                }
+            }else{      //表示修改订单
+                if(SubmitOrderActivity.this.getString(R.string.HTTPERROR).equals(result)){
+                    Toast.makeText(SubmitOrderActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(SubmitOrderActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SubmitOrderActivity.this,MyOrderActivity.class);
+                    intent.putExtra("style",1);     //修改完成，去我的订单界面看看
+                    startActivity(intent);
+                    finish();
+                }
             }
-
-
             progressDialog.dismiss();
-
         }
     };
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","跳转成功");
@@ -98,8 +105,7 @@ public class SubmitOrderActivity extends BaseActivity {
         initViews();
         initEvents();
     }
-
-
+    //初始化修改订单情况下控件显示内容
     private void initModifyOrder(){
         expressName.setText(orderModify.getExpressName());
         getAddress.setText(orderModify.getGetAddress());
@@ -112,7 +118,6 @@ public class SubmitOrderActivity extends BaseActivity {
         secondStartTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getSecondTakeTimeBegin()));
         secondEndTime.setText(new SimpleDateFormat("HH:mm").format(orderModify.getSecondTakeTimeEnd()));
     }
-
 
     private void initViews(){
         setContentView(R.layout.activity_submit_order);
@@ -143,8 +148,6 @@ public class SubmitOrderActivity extends BaseActivity {
             initModifyOrder();
         }
     }
-
-
     private void initEvents(){
         firstStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,23 +181,26 @@ public class SubmitOrderActivity extends BaseActivity {
                 if(order==null){
                     return;
                 }
-
                 if(orderModify!=null){  //进入修改事件
-
+                    orderModify.setExpressName(order.getExpressName());
+                    orderModify.setGetAddress(order.getGetAddress());
+                    orderModify.setTakeName(order.getTakeName());
+                    orderModify.setTakeTelephone(order.getTakeTelephone());
+                    orderModify.setTakeCode(order.getTakeCode());
+                    orderModify.setMoney(order.getMoney());
+                    orderModify.setFirstTakeTimeBegin(order.getFirstTakeTimeBegin());
+                    orderModify.setFirstTakeTimeEnd(order.getFirstTakeTimeEnd());
+                    orderModify.setSecondTakeTimeBegin(order.getSecondTakeTimeBegin());
+                    orderModify.setSecondTakeTimeEnd(order.getSecondTakeTimeEnd());
+                    updataOrder(orderModify);
                 }else{
+                    order=createOrder();
                     submitOrder(order);     //上传服务器
                 }
-
-
-
-//                Intent intent = new Intent(SubmitOrderActivity.this,PayOrderActivity.class);
-//                intent.putExtra("order",order);
-//                startActivity(intent);
-//                finish();
-
             }
         });
     }
+    //生成订单对象
     private Order createOrder(){
         String expressNameS = expressName.getText().toString().trim();
         String getAddressS = getAddress.getText().toString().trim();
@@ -258,8 +264,6 @@ public class SubmitOrderActivity extends BaseActivity {
             Log.d("日志","user是空的");
             return null;
         }
-
-
         order.setSendId(LoginActivity.USER.getId());
         order.setExpressName(expressNameS);
         order.setGetAddress(getAddressS);
@@ -311,7 +315,7 @@ public class SubmitOrderActivity extends BaseActivity {
             }
         }, hour, minute, true).show();
     }
-
+    //访问服务器提交订单
     private void submitOrder(Order order){
         progressDialog = new ProgressDialog(SubmitOrderActivity.this);
         progressDialog.setTitle("正在上传，请稍后......");
@@ -320,9 +324,9 @@ public class SubmitOrderActivity extends BaseActivity {
         progressDialog.show();
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.VirtualTheServer) + "submitOrder";
-            String compeletedURL = originAddress ;
-            Log.d("url:",compeletedURL);
+            String originAddress = this.getString(R.string.TheServer) + "submitOrder";
+
+            Log.d("url:",originAddress);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
 
@@ -330,7 +334,7 @@ public class SubmitOrderActivity extends BaseActivity {
 
             Log.d("日志:",gson.toJson(order));
 
-            HttpUtil.sendPostOkHttpRequest(compeletedURL,requestBody,new okhttp3.Callback(){
+            HttpUtil.sendPostOkHttpRequest(originAddress,requestBody,new okhttp3.Callback(){
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
@@ -350,6 +354,7 @@ public class SubmitOrderActivity extends BaseActivity {
                     }
                     Message message = new Message();
                     message.obj = response.body().string().trim();
+                    message.arg1 = 1;
                     mHandler.sendMessage(message);
                 }
             });
@@ -357,6 +362,53 @@ public class SubmitOrderActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+    //访问服务器更新订单
+    private void updataOrder(Order order){
+        progressDialog = new ProgressDialog(SubmitOrderActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) + "updataOrder";
+            Log.d("url:",originAddress);
+            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+
+            RequestBody requestBody = RequestBody.create(JSON, gson.toJson(order));
+
+            Log.d("日志:",gson.toJson(order));
+
+            HttpUtil.sendPostOkHttpRequest(originAddress,requestBody,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(SubmitOrderActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Looper.loop();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        Looper.prepare();
+                        Toast.makeText(SubmitOrderActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    message.arg1 = 2;
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

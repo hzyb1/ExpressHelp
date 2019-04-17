@@ -21,7 +21,7 @@ public class BeginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
-        spLogin();
+        spLogin();          //持久化登录
 
     }
 

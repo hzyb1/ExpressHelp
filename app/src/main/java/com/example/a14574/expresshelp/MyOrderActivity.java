@@ -59,6 +59,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
             }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
                 Gson gson = new Gson();
+                orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }
             find();     //查找想要显示的订单列表
@@ -269,5 +270,13 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
         radioButton4.setOnClickListener(this);
         radioButton5.setOnClickListener(this);
         radioButton6.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("日志","aa");
+        initOrders();
+        showItem();
     }
 }

@@ -1,8 +1,11 @@
 package com.example.a14574.expresshelp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,29 +15,31 @@ import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
 import fragment.MyInfoFragment;
+import http.HttpUtil;
+import model.User;
+import okhttp3.Call;
+import okhttp3.Response;
 
-
-public class HomeActivity extends AppCompatActivity {           //主界面活动
+public class HomeActivity extends BaseActivity {           //主界面活动
 
     private Fragment fragment[] = new Fragment[3];
     RadioButton[ ] rbs = new RadioButton[3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-                /*//去掉标题栏
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //设置全屏
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        /*if(Build.VERSION.SDK_INT>=21){
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }*/
+        Log.d("日志","home???");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         fragment[0] = new HomePageFragment();
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
@@ -95,6 +100,5 @@ public class HomeActivity extends AppCompatActivity {           //主界面活�
         drawable_my_info.setBounds(0, 0,  realHeight,  realHeight);
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
-
     }
 }

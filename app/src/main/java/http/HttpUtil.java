@@ -12,65 +12,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 public class HttpUtil {
     private static String session_id = null;
-
-    public static void sendHttpRequest(final String address, final HttpCallbackListener listener) {
-        if (!HttpUtil.isNetworkAvailable()){
-            //这里写相应的网络设置处理
-            return;
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection = null;
-                try{
-                    URL url = new URL(address);
-                    //使用HttpURLConnection
-                    connection = (HttpURLConnection) url.openConnection();
-                    //设置方法和参数
-                    Log.d("连接","连接成功?");
-                    connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
-                    if (session_id != null) {
-                        connection.setRequestProperty("Cookie", session_id);//设置sessionid
-                    }
-                    InputStream is = connection.getInputStream();
-                    String cookieval = connection.getHeaderField("Set-Cookie");
-                    if (cookieval != null) {
-                        session_id = cookieval.substring(0, cookieval.indexOf(";"));//获取sessionid
-                        Log.d("SESSION", "session_id=" + session_id);
-                    }
-                    //获取返回结果
-                    InputStream inputStream = connection.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null){
-                        response.append(line);
-                    }
-                    //成功则回调onFinish
-                    if (listener != null){
-                        listener.onFinish(response.toString());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    //出现异常则回调onError
-                    if (listener != null){
-                        listener.onError(e);
-                    }
-                }finally {
-                    if (connection != null){
-                        connection.disconnect();
-                    }
-                }
-            }
-        }).start();
-    }
-
     //组装出带参数的完整URL
     public static String getURLWithParams(String address,HashMap<String,String> params) throws UnsupportedEncodingException {
         //设置编码
@@ -93,6 +40,18 @@ public class HttpUtil {
     public static boolean isNetworkAvailable(){
         //这里检查网络，后续再添加
         return true;
+    }
+
+    public static void sendPostOkHttpRequest(String address, RequestBody requestBody, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void sendGetOkHttpRequest(String address,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(address).build();
+        client.newCall(request).enqueue(callback);
     }
 
 }

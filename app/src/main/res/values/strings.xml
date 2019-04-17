@@ -1,6 +1,15 @@
 <resources>
+
+    <string name="HTTPSUCCESS">HTTPSUCCESS</string>
+    <string name="HTTPERROR">HTTPERROR</string>
+    <string name="TheServer">http://45.32.84.43:8080/ExpressHelpServce/</string>
+    <string name="VirtualTheServer">http://10.0.2.2:1111/ExpressHelpServce/</string>
+
     <string name="app_name">ExpressHelp</string>
     <string name="normal_user_login_title">用户登录</string>
+    <string name="register_new_user_title">新用户注册</string>
+    <string name="pay_order_title">支付订单</string>
+    <string name="modify_information_title">修改个人信息</string>
     <string name="admin_user_login_title">管理员登录</string>
     <string name="username_edit_hint">请输入用户名</string>
     <string name="admin_username_edit_hint">请输入管理员账户名</string>
@@ -9,6 +18,7 @@
     <string name="register_account">注册</string>
     <string name="forget_password">忘记密码</string>
     <string name="into_admin_login">管理员登录</string>
+    <string name="temp_time">00:00</string>
 
 
     <string name="home">首页</string>
@@ -39,9 +49,40 @@
     <string name="receiver_telephone">收货人电话：</string>
     <string name="pick_up_code">取货码：</string>
     <string name="arrive_time">送达时间：</string>
-    <string name="start_time">起始时间：</string>
-    <string name="hour">时</string>
-    <string name="minute">分</string>
-    <string name="end_time">结束时间：</string>
+    <string name="first_start_time">第一个起始时间：</string>
+    <string name="first_end_time">第一个结束时间：</string>
+    <string name="second_start_time">第二个起始时间：</string>
+    <string name="second_end_time">第二个结束时间：</string>
     <string name="money_unit">￥</string>
+
+    <string name="username_tv">用户名：</string>
+    <string name="temp_username">弹指尘梦空山语</string>
+    <string name="id_tv">id：</string>
+    <string name="temp_id">123456789</string>
+    <string name="sex_tv">性别：</string>
+    <string name="temp_sex">男</string>
+
+    <string name="submit_times">发布任务次数：</string>
+    <string name="user_credit">用户信誉度：</string>
+    <string name="more_info">更多信息</string>
+    <string name="send_message">发消息</string>
+
+    <string name="modify_order">修改订单</string>
+    <string name="confirm_payment">确认支付</string>
+
+    <string name="confirm_modify">确认修改</string>
+
+    <string name="setting">设置</string>
+
+    <string name="current_user">当前用户：</string>
+
+    <string name="exit_current_account">退出当前账号</string>
+
+    <string name="current_balance">当前余额：</string>
+
+    <string name="temp_balance">10.0￥</string>
+
+    <string name="top_up">充值</string>
+
+    <string name="modify_admit">上传信息</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SettingActivity;
 import com.example.a14574.expresshelp.SpecificUserInfoActivity;
+import com.wildma.pictureselector.PictureSelector;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private Button setting;
-    private CircleImageView headImage;
+    private CircleImageView headImage;   //头像
     private LinearLayout pendingPaymentLayout;
 
     private TextView userName;
@@ -57,6 +62,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         if(LoginActivity.USER != null){
             userName.setText(LoginActivity.USER.getUsername());
             String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Log.d("userimage",LoginActivity.USER.getHeadImage());
             Glide.with(getContext()).load(url).into(headImage);
         }
 
@@ -116,6 +122,15 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         wait_take_image.setOnClickListener(this);
         finish.setOnClickListener(this);
         finish_image.setOnClickListener(this);
+        headImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PictureSelector
+                        .create(getActivity(), PictureSelector.SELECT_REQUEST_CODE)
+                        .selectPicture(true, 200, 200, 1, 1);
+
+            }
+        });
     }
 
     @Override
@@ -148,9 +163,13 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             case R.id.finish_image:
                 intent.putExtra("style",5);
                 break;
+            /*case R.id.head_image:
+                break;*/
                 default:
                     break;
         }
         startActivity(intent);
     }
+
+
 }

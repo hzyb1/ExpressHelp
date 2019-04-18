@@ -122,15 +122,6 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         wait_take_image.setOnClickListener(this);
         finish.setOnClickListener(this);
         finish_image.setOnClickListener(this);
-        headImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PictureSelector
-                        .create(getActivity(), PictureSelector.SELECT_REQUEST_CODE)
-                        .selectPicture(true, 200, 200, 1, 1);
-
-            }
-        });
     }
 
     @Override

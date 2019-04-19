@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wildma.pictureselector.PictureSelector;
 
 import org.w3c.dom.Text;
@@ -32,9 +36,12 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import Adapter.OrderBriefAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 import http.HttpUtil;
+import model.Order;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -51,6 +58,22 @@ public class SettingActivity extends BaseActivity {
     private TextView balance;
     private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
     public static final int CHOOSE_PHOTO = 2;
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+            Log.d("日志",result);
+            LoginActivity.USER.setHeadImage(result);
+            String url = SettingActivity.this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Glide.with(SettingActivity.this).load(url).into(headImage);;
+
+        }
+    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,12 +179,13 @@ public class SettingActivity extends BaseActivity {
 
     private void uploadImage(File file) {    //上传照片
         //接口地址
-        String urlAddress = this.getString(R.string.TheServer)+"headImages";
+        String urlAddress = this.getString(R.string.TheServer)+"saveHeadImage";
         if (file != null && file.exists()) {
             MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("files", "img" + "_" + System.currentTimeMillis() + ".jpg",
+                    .addFormDataPart("files", System.currentTimeMillis()+ ".jpg",
                             RequestBody.create(MEDIA_TYPE_PNG, file));
+            builder.addFormDataPart("userId",LoginActivity.USER.getId()+"");
             HttpUtil.sendMultipart(urlAddress, builder.build(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -169,8 +193,13 @@ public class SettingActivity extends BaseActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().string();
-                    Log.e("---", "onResponse: 成功上传图片之后服务器的返回数据：" + result);
+                    if(!response.isSuccessful()){
+                        return ;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    mHandler.sendMessage(message);
+
                     //result就是图片服务器返回的图片地址。
                 }
             });

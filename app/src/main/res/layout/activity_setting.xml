@@ -88,6 +88,7 @@
 
         </LinearLayout>
         <Button
+            android:id="@+id/to_modify_myinfo"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="6dp"
             android:layout_width="0dp"

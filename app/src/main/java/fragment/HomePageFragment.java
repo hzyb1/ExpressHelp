@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,11 +65,14 @@ public class HomePageFragment extends Fragment {
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
             recyclerView.setAdapter(adapter);
+            if(swipeRefresh.isRefreshing()){
+                swipeRefresh.setRefreshing(false);
+            }
         }
     };
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //initOrders();
         View view = inflater.inflate(R.layout.fragment_home_page,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.order_brief_recycler);
@@ -100,20 +104,18 @@ public class HomePageFragment extends Fragment {
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {
-                initAdapter();
+                swipeRefresh.setRefreshing(true);
+                initOrders();
             }
         });
 
-
-
         return view;
     }
-
     private void refresh(){
         swipeRefresh.setRefreshing(true);
         initOrders();
-        swipeRefresh.setRefreshing(false);
     }
+
     private void initAdapter(){
         swipeRefresh.setRefreshing(true);
         initOrders();
@@ -122,6 +124,7 @@ public class HomePageFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         swipeRefresh.setRefreshing(false);
     }
+
 
 
     private void initOrders(){

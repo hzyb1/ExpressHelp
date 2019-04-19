@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,6 +58,7 @@ public class SettingActivity extends BaseActivity {
     private TextView userName;
     private TextView balance;
     private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
+    private Button toModifyMyInfo;
     public static final int CHOOSE_PHOTO = 2;
     Handler mHandler = new Handler(){
         @Override
@@ -87,6 +89,7 @@ public class SettingActivity extends BaseActivity {
         headImage = (CircleImageView) findViewById(R.id.head_image);
         userName = (TextView)findViewById(R.id.user_name);
         balance = (TextView)findViewById(R.id.balance);
+        toModifyMyInfo = (Button)findViewById(R.id.to_modify_myinfo);
         if(LoginActivity.USER!=null){
             userName.setText(LoginActivity.USER.getUsername());
             balance.setText(LoginActivity.USER.getBalance()+"￥");
@@ -128,6 +131,13 @@ public class SettingActivity extends BaseActivity {
                 }else {
                     openAlbum();
                 }
+            }
+        });
+        toModifyMyInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this,ModifyInformationActivity.class);
+                startActivity(intent);
             }
         });
     }

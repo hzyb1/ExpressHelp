@@ -185,8 +185,8 @@ public class RegisterActivity extends BaseActivity {
     private void submitUser(User user){
         //旋转等待框
         progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setTitle("正在登录，请稍后......");
-        progressDialog.setMessage("登录中......");
+        progressDialog.setTitle("正在注册，请稍后......");
+        progressDialog.setMessage("注册中......");
         progressDialog.setCancelable(false);
         progressDialog.show();
         try {
@@ -216,10 +216,8 @@ public class RegisterActivity extends BaseActivity {
                         Looper.loop();
                         return;
                     }
-
                     String result = response.body().string().trim();
                     Log.d("日志","发布成功"+result);
-                    Looper.prepare();
                     if(RegisterActivity.this.getString(R.string.HTTPSUCCESS).equals(result)){
                         Toast.makeText(RegisterActivity.this,"注册成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);

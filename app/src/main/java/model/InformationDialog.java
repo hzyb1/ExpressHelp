@@ -1,8 +1,10 @@
 package model;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
@@ -11,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a14574.expresshelp.R;
 
@@ -64,7 +67,6 @@ public class InformationDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_infromation);
         setCanceledOnTouchOutside(true);
-        initView();
 
         Window window = getWindow();
         window.setGravity(Gravity.CENTER);
@@ -76,6 +78,7 @@ public class InformationDialog extends Dialog {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = display.getWidth(); // 设置dialog宽度为屏幕的4/5
         getWindow().setAttributes(lp);
+        initView();
     }
     private void initView(){
        order_time = (TextView)findViewById(R.id.order_time);
@@ -98,7 +101,23 @@ public class InformationDialog extends Dialog {
        accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-
+               final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+               builder.setTitle("提示");
+               builder.setMessage("是否确认接单");
+               builder.setCancelable(true);
+               builder.setPositiveButton("确认",new DialogInterface.OnClickListener(){
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       Toast.makeText(mContext,"确认接单",Toast.LENGTH_SHORT).show();
+                   }
+               });
+               builder.setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       Toast.makeText(mContext,"取消接单",Toast.LENGTH_SHORT).show();
+                   }
+               });
+               builder.show();
            }
        });
     }

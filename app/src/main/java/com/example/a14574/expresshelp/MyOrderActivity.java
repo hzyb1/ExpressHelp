@@ -70,6 +70,11 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
                 nothing_title = (TextView)findViewById(R.id.nothing_title);
                 nothing_title.setVisibility(View.VISIBLE);
                 nothing_image.setVisibility(View.VISIBLE);
+            }else{
+                nothing_image = (ImageView)findViewById(R.id.nothing_image);
+                nothing_title = (TextView)findViewById(R.id.nothing_title);
+                nothing_title.setVisibility(View.GONE);
+                nothing_image.setVisibility(View.GONE);
             }
             progressDialog.dismiss();       //结束等待
         }
@@ -275,8 +280,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("日志","aa");
-        initOrders();
-        showItem();
+        radioButton4.setChecked(true);
+
     }
 }

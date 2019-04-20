@@ -10,4 +10,7 @@
     <color name="admin_button">#8B864E</color>
     <color name="login_button">#00BFFF</color>
     <color name="separate_line">#E6E6FA</color>
+    <color name="order_selected_color">#f9a3c2</color>
+    <color name="transparent_grey">#ddf5f2f2</color>
+    <color name="black">#3b3939</color>
 </resources>

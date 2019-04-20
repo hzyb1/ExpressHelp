@@ -1,40 +1,41 @@
 package com.example.a14574.expresshelp;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RadioButton;
-import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
+import com.wildma.pictureselector.PictureSelector;
+
+
+import java.io.File;
+import java.io.IOException;
 
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
 import fragment.MyInfoFragment;
+import http.HttpUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-
-public class HomeActivity extends AppCompatActivity {           //主界面活动
+public class HomeActivity extends BaseActivity {           //主界面活动
 
     private Fragment fragment[] = new Fragment[3];
     RadioButton[ ] rbs = new RadioButton[3];
+    private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-                /*//去掉标题栏
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //设置全屏
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        /*if(Build.VERSION.SDK_INT>=21){
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }*/
+        Log.d("日志","home???");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         fragment[0] = new HomePageFragment();
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
@@ -95,6 +96,41 @@ public class HomeActivity extends AppCompatActivity {           //主界面活�
         drawable_my_info.setBounds(0, 0,  realHeight,  realHeight);
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
-
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*结果回调*/
+        if (requestCode == PictureSelector.SELECT_REQUEST_CODE) {
+            if (data != null) {
+                String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
+                //Log.d("picturePath",picturePath);
+                uploadImage(new File(picturePath));
+
+            }
+        }
+    }
+    private void uploadImage( File file) {    //上传照片
+        //接口地址
+        String urlAddress = this.getString(R.string.TheServer)+"headImages";
+        if (file != null && file.exists()) {
+            MultipartBody.Builder builder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("files", "img" + "_" + System.currentTimeMillis() + ".jpg",
+                            RequestBody.create(MEDIA_TYPE_PNG, file));
+            HttpUtil.sendMultipart(urlAddress, builder.build(), new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String result = response.body().string();
+                    Log.e("---", "onResponse: 成功上传图片之后服务器的返回数据：" + result);
+                    //result就是图片服务器返回的图片地址。
+                }
+            });
+        }
+    }
+
 }

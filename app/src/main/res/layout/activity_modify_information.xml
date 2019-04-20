@@ -41,20 +41,23 @@
                 android:layout_height="wrap_content"
                 >
 
-           <ImageView
-               android:layout_width="120dp"
-               android:layout_height="120dp"
+           <de.hdodenhof.circleimageview.CircleImageView
+               android:layout_width="140dp"
+               android:layout_height="140dp"
                android:layout_gravity="center"
                android:layout_marginTop="20dp"
                android:src="@drawable/sexwoman"
+               android:id="@+id/head_image"
                />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="25dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:text="个人基本信息"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
                     />
                 <LinearLayout
                     android:orientation="horizontal"
@@ -68,7 +71,8 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="昵称" />
+                        android:text="昵称"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_username"
@@ -95,7 +99,8 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="性别" />
+                        android:text="性别"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_sex"
@@ -120,9 +125,10 @@
                     android:layout_marginRight="20dp"
                     >
                     <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="电话号码" />
+                        android:text="电话号码"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_telephone"
@@ -144,6 +150,7 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="25dp"
                     android:text="成为跑手必填信息*"
+                    android:textSize="20sp"
                     android:textColor="@color/colorAccent"/>
                 <LinearLayout
                 android:orientation="horizontal"
@@ -156,9 +163,10 @@
                 android:layout_marginRight="20dp"
                 >
                 <TextView
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="身份证号" />
+                    android:text="身份证号"
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/modify_ID"
@@ -185,9 +193,10 @@
                     android:layout_marginRight="20dp"
                     >
                     <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="真实姓名" />
+                        android:text="真实姓名"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_name"
@@ -216,7 +225,8 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="学号" />
+                        android:text="学号"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_schoolNumber"
@@ -240,6 +250,8 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginTop="25dp"
                     android:text="可选信息"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
                    />
                 <LinearLayout
                     android:orientation="horizontal"
@@ -252,9 +264,10 @@
                     android:layout_marginRight="20dp"
                     >
                     <TextView
-                        android:layout_width="60dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="寝室楼栋" />
+                        android:text="寝室楼栋"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_bedroomBuild"
@@ -283,7 +296,8 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:text="寝室号" />
+                        android:text="寝室号"
+                        android:textSize="20sp"/>
 
                     <EditText
                         android:id="@+id/modify_bedroomNumber"
@@ -308,7 +322,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="100dp"
                     android:layout_marginRight="100dp"
-                    android:textSize="22sp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="@string/modify_admit"

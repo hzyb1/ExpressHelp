@@ -59,12 +59,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         setting = (Button) view.findViewById(R.id.setting);
         userName = (TextView)view.findViewById(R.id.name);
         headImage = (CircleImageView) view.findViewById(R.id.head_image);
-        if(LoginActivity.USER != null){
-            userName.setText(LoginActivity.USER.getUsername());
-            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
-            Log.d("userimage",LoginActivity.USER.getHeadImage());
-            Glide.with(getContext()).load(url).into(headImage);
-        }
+
 
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
         setting.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +117,6 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         wait_take_image.setOnClickListener(this);
         finish.setOnClickListener(this);
         finish_image.setOnClickListener(this);
-        headImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PictureSelector
-                        .create(getActivity(), PictureSelector.SELECT_REQUEST_CODE)
-                        .selectPicture(true, 200, 200, 1, 1);
-
-            }
-        });
     }
 
     @Override
@@ -171,5 +157,15 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         startActivity(intent);
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("日志","启动！");
+        if(LoginActivity.USER != null){
+            userName.setText(LoginActivity.USER.getUsername());
+            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Log.d("userimage",LoginActivity.USER.getHeadImage());
+            Glide.with(getContext()).load(url).into(headImage);
+        }
+    }
 }

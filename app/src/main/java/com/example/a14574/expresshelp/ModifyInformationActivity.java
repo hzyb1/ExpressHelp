@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import model.User;
 
 public class ModifyInformationActivity extends AppCompatActivity {
@@ -26,6 +29,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
     private Button admit;
     private User user;
     private boolean flag;
+    private CircleImageView headImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
      ID.setText(user.getIdCard());
      name.setText(user.getTrueName());
      schoolNumber.setText(user.getSchoolNumber());
+     headImage = (CircleImageView) findViewById(R.id.head_image);
      if (user.getBedroomBuild() == 0){
          bedroomBuild.setText("");
      }else{
@@ -88,6 +93,10 @@ public class ModifyInformationActivity extends AppCompatActivity {
          bedroomNumber.setText(user.getBedroomNumber()+"");
      }
      Log.d("日志","目前的user状态"+user.getTrueName());
+     if(LoginActivity.USER!=null){
+            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Glide.with(this).load(url).into(headImage);
+        }
     }
 
     private boolean check(){

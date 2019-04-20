@@ -25,7 +25,7 @@ public class BeginActivity extends BaseActivity {
         closeAndroidPDialog();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
-        spLogin();
+        spLogin();          //持久化登录
 
     }
 

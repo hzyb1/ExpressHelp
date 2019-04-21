@@ -101,23 +101,7 @@ public class InformationDialog extends Dialog {
        accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-               builder.setTitle("提示");
-               builder.setMessage("是否确认接单");
-               builder.setCancelable(true);
-               builder.setPositiveButton("确认",new DialogInterface.OnClickListener(){
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       Toast.makeText(mContext,"确认接单",Toast.LENGTH_SHORT).show();
-                   }
-               });
-               builder.setNegativeButton("取消",new DialogInterface.OnClickListener(){
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       Toast.makeText(mContext,"取消接单",Toast.LENGTH_SHORT).show();
-                   }
-               });
-               builder.show();
+
            }
        });
     }

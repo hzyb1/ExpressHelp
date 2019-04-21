@@ -281,6 +281,5 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     protected void onRestart() {
         super.onRestart();
         radioButton4.setChecked(true);
-
     }
 }

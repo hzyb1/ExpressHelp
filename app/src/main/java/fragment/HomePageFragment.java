@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.a14574.expresshelp.ChatActivity;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
@@ -53,6 +54,7 @@ public class HomePageFragment extends Fragment {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private TextView toolbarTitle;
+    private TextView search;
    private SwipeRefreshLayout swipeRefresh;
 
     Handler mHandler = new Handler(){
@@ -73,7 +75,6 @@ public class HomePageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //initOrders();
         View view = inflater.inflate(R.layout.fragment_home_page,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.order_brief_recycler);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -108,7 +109,14 @@ public class HomePageFragment extends Fragment {
                 initOrders();
             }
         });
-
+        search = (TextView) view.findViewById(R.id.tv_search_conform);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
     private void refresh(){

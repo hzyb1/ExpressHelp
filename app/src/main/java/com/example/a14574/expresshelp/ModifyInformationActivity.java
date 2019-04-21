@@ -1,8 +1,12 @@
 package com.example.a14574.expresshelp;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,9 +17,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import http.HttpUtil;
+import model.Order;
 import model.User;
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ModifyInformationActivity extends AppCompatActivity {
     private EditText username;
@@ -30,6 +44,27 @@ public class ModifyInformationActivity extends AppCompatActivity {
     private User user;
     private boolean flag;
     private CircleImageView headImage;
+
+    private ProgressDialog progressDialog;                   //上传状态对话框
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+            if(ModifyInformationActivity.this.getString(R.string.HTTPERROR).equals(result)){
+                Toast.makeText(ModifyInformationActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(ModifyInformationActivity.this,"上传成功！！！",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ModifyInformationActivity.this,SettingActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            progressDialog.dismiss();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +78,9 @@ public class ModifyInformationActivity extends AppCompatActivity {
                     user.setSex(sex.getText().toString());
                     user.setTelephone(phone.getText().toString());
                     user.setIdCard(ID.getText().toString());
+                    user.setSchoolNumber(schoolNumber.getText().toString());
                     user.setTrueName(name.getText().toString().trim());
+                    user.setSchoolNumber(schoolNumber.getText().toString().trim());
                     if (bedroomBuild.getText().toString().isEmpty()){
                         user.setBedroomBuild(0);
                     }else{
@@ -56,8 +93,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
                     }
                     //上传服务器
 
-
-
+                    updataUser(user);
                 }
             }
         });
@@ -122,8 +158,55 @@ public class ModifyInformationActivity extends AppCompatActivity {
         }else if (name.getText().toString().isEmpty() || ID.getText().toString().isEmpty() || schoolNumber.getText().toString().isEmpty()){
            Toast.makeText(ModifyInformationActivity.this,"注册跑手信息要填写完善",Toast.LENGTH_SHORT).show();
            return false;
-       }else{
+       }/*else if(ID.getText().toString().matches("\\d{18}")){
+            Toast.makeText(ModifyInformationActivity.this,"请输入正确的身份证号",Toast.LENGTH_SHORT).show();
+            return false;
+        }*/else {
            return true;
        }
     }
+    private void updataUser(User user){
+        progressDialog = new ProgressDialog(ModifyInformationActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) + "updataUser";
+            Log.d("url:",originAddress);
+            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+
+            RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user));
+
+            Log.d("日志:",gson.toJson(user));
+            HttpUtil.sendPostOkHttpRequest(originAddress,requestBody,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(ModifyInformationActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        Looper.prepare();
+                        Toast.makeText(ModifyInformationActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

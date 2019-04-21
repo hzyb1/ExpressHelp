@@ -172,8 +172,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         accomplishedOrders.setVisibility(View.VISIBLE);
         finishTime.setText(dateFormat01.format(order.getFinishTime()));
 
-
-
     }
     private void initEvents(){
         readMore.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +183,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         modifyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent intent = new Intent(OrderDetailsActivity.this,SubmitOrderActivity.class);
+                intent.putExtra("order",order);
+                startActivity(intent);
+
                 //修改订单
             }
         });
@@ -237,8 +240,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override

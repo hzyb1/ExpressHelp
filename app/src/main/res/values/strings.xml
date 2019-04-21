@@ -90,7 +90,7 @@
     <string name="modify_admit">上传信息</string>
 
     <string name="wait_pick">待取货</string>
-    <string name="wait_give">待送货</string>
+    <string name="wait_give">已送达</string>
     <string name="finish">已完成</string>
 
     <string name="order_detail">订单详情</string>

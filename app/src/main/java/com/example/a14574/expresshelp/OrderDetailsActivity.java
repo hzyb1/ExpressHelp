@@ -1,19 +1,35 @@
 package com.example.a14574.expresshelp;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 
+import Adapter.OrderBriefAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
+import http.HttpUtil;
 import model.Order;
+import model.User;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class OrderDetailsActivity extends AppCompatActivity {
     private Order order;        //订单
@@ -30,16 +46,38 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView secondTakeTime;   //第二个取货时间段
     private LinearLayout runnerInfo;    //有跑手接单时显示
     private CircleImageView runnerImage;       //跑手头像
-    private TextView acceptId;            //跑手id
+    private TextView runnerName;            //跑手id
     private Button readMore;               //查看跑手详情
     private TextView ordeId;               //订单id
     private TextView submitTime;           //订单创建时间
     private TextView money;                //订单价格
     private Button modifyOrder;           //修改订单
     private Button deleteOrder;           //删除订单
+    private User runner;
 
     private SimpleDateFormat dateFormat01 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateFormat02 = new SimpleDateFormat("HH:mm");//时分格式
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+            if (OrderDetailsActivity.this.getString(R.string.HTTPERROR).equals(result)){
+
+            }else{
+                if(result == null || result.equals("")){
+
+                }
+                runner = new Gson().fromJson(result, User.class);          //将服务器返回的用户信息转化为user类的对象
+                String url = OrderDetailsActivity.this.getString(R.string.TheServer)+"headImages/"+ runner.getHeadImage();
+                Glide.with(OrderDetailsActivity.this).load(url).into(runnerImage);
+                runnerName.setText(runner.getUsername());
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +99,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         secondTakeTime = (TextView) findViewById(R.id.second_take_time);
         runnerInfo = (LinearLayout) findViewById(R.id.runner_info);
         runnerImage = (CircleImageView) findViewById(R.id.runner_image);
-        acceptId = (TextView) findViewById(R.id.accept_id);
+        runnerName = (TextView) findViewById(R.id.runner_name);
         readMore = (Button) findViewById(R.id.read_more);
         ordeId = (TextView) findViewById(R.id.order_id);
         submitTime = (TextView) findViewById(R.id.submit_time);
@@ -114,11 +152,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void runnerInfoInit(){  //初始化跑手信息布局
         runnerInfo.setVisibility(View.VISIBLE);
-        acceptId.setText(order.getAcceptId());
+
+        selectRunner(order.getAcceptId());
+
     }
     private void accomplishedOrdersInit(){   //初始化完成信息布局
         accomplishedOrders.setVisibility(View.VISIBLE);
         finishTime.setText(dateFormat01.format(order.getFinishTime()));
+
+
+
     }
     private void initEvents(){
         readMore.setOnClickListener(new View.OnClickListener() {
@@ -141,5 +184,40 @@ public class OrderDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void selectRunner(int id){
+        User runner= new User();
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("userId", id+"");
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) + "selectUserById";
+            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+            Log.d("URL:",compeletedURL);
+
+            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(OrderDetailsActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //访问异常，返回值不是200
+                    if(!response.isSuccessful()){
+                        return;
+                    }else{
+                        Message message = new Message();
+                        message.obj = response.body().string().trim();
+                        mHandler.sendMessage(message);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 }

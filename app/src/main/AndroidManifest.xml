@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RunnerActivity"></activity>
+        <activity android:name=".RunnerActivity" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".BeginActivity"
@@ -52,9 +52,8 @@
         <activity
             android:name=".ModifyInformationActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
-
-        <activity android:name=".OrderDetailsActivity"></activity>
-
+        <activity android:name=".OrderDetailsActivity" />
+        <activity android:name=".MyInfoSpecificActivity"></activity>
     </application>
 
 </manifest>

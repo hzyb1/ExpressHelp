@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.MyInfoSpecificActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.RunnerActivity;
@@ -66,25 +67,10 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         setting = (Button) view.findViewById(R.id.setting);
         userName = (TextView)view.findViewById(R.id.name);
         headImage = (CircleImageView) view.findViewById(R.id.head_image);
-
+        toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
 
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(),SettingActivity.class);
-                startActivity(intent);
-            }
-        });
-  //      Glide.with(getContext()).load(R.drawable.temp_head2).into(headImage);
-        toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
-        toSpecificInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Intent intent = new Intent(MyInfoFragment.this.getActivity(),SpecificUserInfoActivity.class);
-                startActivity(intent);*/
-            }
-        });
+        initEvents();
         return view;
     }
     private void initEvents(){
@@ -92,6 +78,20 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
 
+            }
+        });
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+        toSpecificInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyInfoFragment.this.getActivity(),MyInfoSpecificActivity.class);
+                startActivity(intent);
             }
         });
     }

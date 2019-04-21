@@ -107,7 +107,7 @@
     <string name="submit_time">订单创建时间</string>
     <string name="order_id">订单编号</string>
     <string name="runner_info">跑手信息</string>
-    
+
     <string name="pending_payment_status">您的订单尚未支付哦</string>
     <string name="pending_receive_status">您的订单还未有跑手接收，请耐心等待</string>
     <string name="pending_take_status">跑手正在路途中，请耐心等待</string>
@@ -115,4 +115,6 @@
 
     <string name="delete_order">删除订单</string>
     <string name="arrived">已送达</string>
+
+    <string name="my_specific_info">个人详情</string>
 </resources>

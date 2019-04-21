@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,6 +57,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Button modifyOrder;           //修改订单
     private Button deleteOrder;           //删除订单
     private User runner;
+    private Toolbar toolbar;
 
     private SimpleDateFormat dateFormat01 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateFormat02 = new SimpleDateFormat("HH:mm");//时分格式
@@ -110,6 +114,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         accomplishedOrders.setVisibility(View.GONE);
         runnerInfo.setVisibility(View.GONE);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         order = (Order) getIntent().getSerializableExtra("order");
         if(order!=null){
@@ -227,6 +239,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

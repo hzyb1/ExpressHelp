@@ -327,14 +327,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
-                        android:text="@string/id_tv"/>
+                        android:text="@string/username_tv"/>
                     <TextView
-                        android:id="@+id/accept_id"
+                        android:id="@+id/runner_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textSize="18sp"
-                        android:text="@string/temp_id"/>
+                        android:text="@string/temp_username"/>
 
 
                 </LinearLayout>

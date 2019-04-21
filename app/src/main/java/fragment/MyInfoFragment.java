@@ -74,8 +74,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         toSpecificInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyInfoFragment.this.getActivity(),SpecificUserInfoActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(MyInfoFragment.this.getActivity(),SpecificUserInfoActivity.class);
+                startActivity(intent);*/
             }
         });
         return view;

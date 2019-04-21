@@ -63,6 +63,9 @@
     <string name="temp_sex">男</string>
 
     <string name="submit_times">发布任务次数：</string>
+    <string name="accept_times">接受任务次数：</string>
+    <string name="runner_grade">跑手评分：</string>
+    <string name="runner_telephone">电话号码：</string>
     <string name="user_credit">用户信誉度：</string>
     <string name="more_info">更多信息</string>
     <string name="send_message">发消息</string>
@@ -107,4 +110,5 @@
     <string name="accomplish_order_status">交易成功</string>
 
     <string name="delete_order">删除订单</string>
+    <string name="arrived">已送达</string>
 </resources>

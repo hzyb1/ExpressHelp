@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -114,7 +115,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void runnerInfoInit(){  //初始化跑手信息布局
         runnerInfo.setVisibility(View.VISIBLE);
-        acceptId.setText(order.getAcceptId());
+        Log.d("查看跑手id",order.getAcceptId()+"");
+        acceptId.setText(order.getAcceptId()+"");
     }
     private void accomplishedOrdersInit(){   //初始化完成信息布局
         accomplishedOrders.setVisibility(View.VISIBLE);

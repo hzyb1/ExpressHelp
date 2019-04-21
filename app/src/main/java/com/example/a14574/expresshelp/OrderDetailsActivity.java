@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -29,6 +31,8 @@ import http.HttpUtil;
 import model.Order;
 import model.User;
 import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OrderDetailsActivity extends AppCompatActivity {
@@ -57,6 +61,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private SimpleDateFormat dateFormat01 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateFormat02 = new SimpleDateFormat("HH:mm");//时分格式
+
+    private ProgressDialog progressDialog;                   //等待对话框
 
     Handler mHandler = new Handler(){
         @Override
@@ -183,6 +189,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //删除订单
+                deleteOrder();
+
+
             }
         });
         readMore.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +237,62 @@ public class OrderDetailsActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void deleteOrder(){
+        progressDialog = new ProgressDialog(OrderDetailsActivity.this);
+        progressDialog.setTitle("正在注册，请稍后......");
+        progressDialog.setMessage("注册中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("id", order.getId()+"");
+
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) +  "deleteOrder";
+            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+            Log.d("url:",compeletedURL);
+            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+
+            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(OrderDetailsActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        progressDialog.dismiss();
+                        return ;
+                    }
+                    String result = null;
+                    result = response.body().string().trim();
+                    Looper.prepare();
+                    if(OrderDetailsActivity.this.getString(R.string.HTTPSUCCESS).equals(result)){
+                        Toast.makeText(OrderDetailsActivity.this,"删除成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(OrderDetailsActivity.this,MyOrderActivity.class);
+                        startActivity(intent);
+                        progressDialog.dismiss();
+                        finish();
+                    }else{
+                        Toast.makeText(OrderDetailsActivity.this,"删除失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                    Looper.loop();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

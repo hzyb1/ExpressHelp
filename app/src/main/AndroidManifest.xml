@@ -54,6 +54,7 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
 
         <activity android:name=".OrderDetailsActivity"></activity>
+
     </application>
 
 </manifest>

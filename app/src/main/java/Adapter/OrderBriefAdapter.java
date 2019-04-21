@@ -24,6 +24,7 @@ import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import model.InformationDialog;
@@ -33,6 +34,7 @@ import model.Order;
 public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.ViewHolder>{
 
     private List<Order> mOrderList;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView address;
@@ -107,6 +109,7 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
         holder.address.setText(order.getGetAddress());
         holder.money.setText(""+order.getMoney());
         holder.expressName.setText(order.getExpressName());
+        holder.time.setText(simpleDateFormat.format(order.getSubmitTime()));
     }
 
     @Override

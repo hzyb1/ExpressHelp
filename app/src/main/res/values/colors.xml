@@ -13,4 +13,6 @@
     <color name="order_selected_color">#f9a3c2</color>
     <color name="transparent_grey">#ddf5f2f2</color>
     <color name="black">#3b3939</color>
+    <color name="deep_grey">#808080</color>
+    <color name="red">#f20e16</color>
 </resources>

@@ -176,7 +176,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 intent.putExtra("order",order);
                 startActivity(intent);
 
-                
                 //修改订单
             }
         });

@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +47,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
     private User user;
     private boolean flag;
     private CircleImageView headImage;
+    private Toolbar toolbar;
 
     private ProgressDialog progressDialog;                   //上传状态对话框
 
@@ -118,6 +122,13 @@ public class ModifyInformationActivity extends AppCompatActivity {
      name.setText(user.getTrueName());
      schoolNumber.setText(user.getSchoolNumber());
      headImage = (CircleImageView) findViewById(R.id.head_image);
+     toolbar = (Toolbar) findViewById(R.id.toolbar);
+     toolbar.setTitle("");
+     setSupportActionBar(toolbar);
+     ActionBar actionBar = getSupportActionBar();
+     if(actionBar!=null){
+         actionBar.setDisplayHomeAsUpEnabled(true);
+     }
      if (user.getBedroomBuild() == 0){
          bedroomBuild.setText("");
      }else{
@@ -206,6 +217,16 @@ public class ModifyInformationActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

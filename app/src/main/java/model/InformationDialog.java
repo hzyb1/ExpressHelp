@@ -116,7 +116,6 @@ public class InformationDialog extends Dialog {
        accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-
                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                builder.setTitle("提示");
                builder.setMessage("是否确认接单");

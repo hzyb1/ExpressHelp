@@ -19,6 +19,7 @@ import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
+import com.example.a14574.expresshelp.RunnerActivity;
 import com.example.a14574.expresshelp.SettingActivity;
 import com.example.a14574.expresshelp.SpecificUserInfoActivity;
 import com.wildma.pictureselector.PictureSelector;
@@ -50,7 +51,13 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private TextView finish;
     private ImageView finish_image;
 
-    private Button toSpecificInfo;  //去查看详情页面
+    private Button toSpecificInfo;//去查看详情页面
+
+    private LinearLayout pick;
+    private LinearLayout give;
+    private LinearLayout runner;
+    private LinearLayout all;
+
 
     @Nullable
     @Override
@@ -107,6 +114,11 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         finish = (TextView)getActivity().findViewById(R.id.finish);
         finish_image = (ImageView)getActivity().findViewById(R.id.finish_image);
 
+        pick = (LinearLayout)getActivity().findViewById(R.id.pick);
+        give = (LinearLayout)getActivity().findViewById(R.id.give) ;
+        runner = (LinearLayout)getActivity().findViewById(R.id.runner) ;
+        all = (LinearLayout)getActivity().findViewById(R.id.runner_all);
+
         my_orders.setOnClickListener(this);
         my_orders_image.setOnClickListener(this);
         wait_accept.setOnClickListener(this);
@@ -117,11 +129,43 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         wait_take_image.setOnClickListener(this);
         finish.setOnClickListener(this);
         finish_image.setOnClickListener(this);
+        pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RunnerActivity.class);
+                intent.putExtra("style",1);
+                Log.d("日志","Pick方法");
+                startActivity(intent);
+            }
+        });
+        give.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RunnerActivity.class);
+                intent.putExtra("style",2);
+                startActivity(intent);
+            }
+        });
+        runner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RunnerActivity.class);
+                intent.putExtra("style",3);
+                startActivity(intent);
+            }
+        });
+        all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RunnerActivity.class);
+                intent.putExtra("style",4);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
-        //Intent intent = new Intent(getActivity(), MyOrderActivity.class);
         Intent intent = new Intent(getActivity(), MyOrderActivity.class);
         switch (view.getId()){
             case R.id.my_orders:
@@ -149,8 +193,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             case R.id.finish_image:
                 intent.putExtra("style",5);
                 break;
-            /*case R.id.head_image:
-                break;*/
+
                 default:
                     break;
         }

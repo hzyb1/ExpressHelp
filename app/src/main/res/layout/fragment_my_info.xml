@@ -241,6 +241,7 @@
                         android:text="@string/delivery_orders"/>
 
                     <LinearLayout
+                        android:id="@+id/runner_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -274,6 +275,7 @@
                     android:padding="10dp">
 
                     <LinearLayout
+                        android:id="@+id/pick"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -295,6 +297,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/give"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -317,6 +320,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/runner"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

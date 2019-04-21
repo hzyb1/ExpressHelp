@@ -12,6 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RunnerActivity"></activity>
+        <activity android:name=".ChatActivity" />
         <activity
             android:name=".BeginActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
@@ -50,7 +52,10 @@
         <activity
             android:name=".ModifyInformationActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
+<<<<<<< HEAD
+=======
         <activity android:name=".OrderDetailsActivity"></activity>
+>>>>>>> 80b8d4be8661fa7a33439fa10f78a4789af98c4a
     </application>
 
 </manifest>

@@ -274,30 +274,9 @@
                     android:orientation="horizontal"
                     android:padding="10dp">
 
+
                     <LinearLayout
                         android:id="@+id/pick"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/pending_pick_up"
-                            android:layout_gravity="center"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pending_pick_up"
-                            android:textSize="14sp"
-                            android:layout_gravity="center"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/give"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -313,6 +292,27 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/delivery"
+                            android:textSize="14sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/give"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/arrived"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/arrived"
                             android:textSize="14sp"
                             android:layout_gravity="center"/>
 

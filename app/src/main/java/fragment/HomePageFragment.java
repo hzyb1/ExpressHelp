@@ -13,12 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,8 +58,9 @@ public class HomePageFragment extends Fragment {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private TextView toolbarTitle;
-    private TextView search;
-   private SwipeRefreshLayout swipeRefresh;
+    private SwipeRefreshLayout swipeRefresh;
+    private TextView search;           //搜索按钮
+    private EditText searchKey;        //搜索内容
 
     Handler mHandler = new Handler(){
         @Override
@@ -77,6 +82,8 @@ public class HomePageFragment extends Fragment {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_page,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.order_brief_recycler);
+        search = (TextView) view.findViewById(R.id.tv_search_conform);
+        searchKey = (EditText) view.findViewById(R.id.et_search_key);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -87,21 +94,8 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         submitOrder = (Button) view.findViewById(R.id.submit_order);
-        submitOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),SubmitOrderActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //swipeRefresh.setRefreshing(false);
-                refresh();
-            }
-        });
+        initEvents();   //事件初始化代码
         swipeRefresh.post(new Runnable() {
             @Override
             public void run() {
@@ -171,5 +165,35 @@ public class HomePageFragment extends Fragment {
     } catch (Exception e) {
         e.printStackTrace();
     }
+    }
+
+    private void initEvents(){   //事件处理初始化
+        submitOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SubmitOrderActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //swipeRefresh.setRefreshing(false);
+                refresh();
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //搜索事件
+                doSearch();
+            }
+        });
+
+    }
+
+    private void doSearch(){    //搜索方法
+        Toast.makeText(getActivity(),"执行搜索方法",Toast.LENGTH_SHORT).show();
     }
 }

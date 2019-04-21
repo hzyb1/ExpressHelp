@@ -1,6 +1,8 @@
 package model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 	private int id;		//主键
 	private String telephone;		//电话号
 	private String username;		//用户名

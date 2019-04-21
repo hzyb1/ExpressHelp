@@ -74,6 +74,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 String url = OrderDetailsActivity.this.getString(R.string.TheServer)+"headImages/"+ runner.getHeadImage();
                 Glide.with(OrderDetailsActivity.this).load(url).into(runnerImage);
                 runnerName.setText(runner.getUsername());
+                Log.d("runneraaa",runner.getId()+"");
             }
         }
     };
@@ -152,7 +153,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void runnerInfoInit(){  //初始化跑手信息布局
         runnerInfo.setVisibility(View.VISIBLE);
-
         selectRunner(order.getAcceptId());
 
     }
@@ -183,6 +183,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //删除订单
+            }
+        });
+        readMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到用户详情界面
+                Intent intent = new Intent(OrderDetailsActivity.this,SpecificUserInfoActivity.class);
+                intent.putExtra("user",runner);
+                startActivity(intent);
             }
         });
     }

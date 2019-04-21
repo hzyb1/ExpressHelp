@@ -38,6 +38,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     private Toolbar toolbar;
     private RadioButton radioButton;
     private int state;      //我想看的订单状态
+    private int flag;
     private List<Order> orderList = new ArrayList<>();      //所有我的订单列表
     private List<Order> needorderList = new ArrayList<>();      //我需要显示的订单列表
     private RadioButton radioButton2;

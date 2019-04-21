@@ -80,6 +80,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
                     user.setIdCard(ID.getText().toString());
                     user.setSchoolNumber(schoolNumber.getText().toString());
                     user.setTrueName(name.getText().toString().trim());
+                    user.setSchoolNumber(schoolNumber.getText().toString().trim());
                     if (bedroomBuild.getText().toString().isEmpty()){
                         user.setBedroomBuild(0);
                     }else{
@@ -91,6 +92,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
                         user.setBedroomNumber(Integer.parseInt(bedroomNumber.getText().toString()));
                     }
                     //上传服务器
+
                     updataUser(user);
                 }
             }
@@ -156,11 +158,13 @@ public class ModifyInformationActivity extends AppCompatActivity {
         }else if (name.getText().toString().isEmpty() || ID.getText().toString().isEmpty() || schoolNumber.getText().toString().isEmpty()){
            Toast.makeText(ModifyInformationActivity.this,"注册跑手信息要填写完善",Toast.LENGTH_SHORT).show();
            return false;
-       }else{
+       }/*else if(ID.getText().toString().matches("\\d{18}")){
+            Toast.makeText(ModifyInformationActivity.this,"请输入正确的身份证号",Toast.LENGTH_SHORT).show();
+            return false;
+        }*/else {
            return true;
        }
     }
-
     private void updataUser(User user){
         progressDialog = new ProgressDialog(ModifyInformationActivity.this);
         progressDialog.setTitle("正在上传，请稍后......");

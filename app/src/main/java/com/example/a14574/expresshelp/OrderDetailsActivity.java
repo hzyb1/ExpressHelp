@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -58,6 +61,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Button modifyOrder;           //修改订单
     private Button deleteOrder;           //删除订单
     private User runner;
+    private Toolbar toolbar;
 
     private SimpleDateFormat dateFormat01 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat dateFormat02 = new SimpleDateFormat("HH:mm");//时分格式
@@ -116,6 +120,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         accomplishedOrders.setVisibility(View.GONE);
         runnerInfo.setVisibility(View.GONE);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         order = (Order) getIntent().getSerializableExtra("order");
         if(order!=null){
@@ -240,7 +252,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     }
 
 
-    private void deleteOrder(){
+    private void deleteOrder() {
         progressDialog = new ProgressDialog(OrderDetailsActivity.this);
         progressDialog.setTitle("正在注册，请稍后......");
         progressDialog.setMessage("注册中......");
@@ -248,41 +260,42 @@ public class OrderDetailsActivity extends AppCompatActivity {
         progressDialog.show();
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("id", order.getId()+"");
+        params.put("id", order.getId() + "");
 
         try {
             //构造完整URL
-            String originAddress = this.getString(R.string.TheServer) +  "deleteOrder";
+            String originAddress = this.getString(R.string.TheServer) + "deleteOrder";
             String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
-            Log.d("url:",compeletedURL);
+            Log.d("url:", compeletedURL);
             final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
 
-            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+            HttpUtil.sendGetOkHttpRequest(compeletedURL, new okhttp3.Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Looper.prepare();
-                    Toast.makeText(OrderDetailsActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, "未能连接到网络", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Looper.loop();
                 }
+
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if(!response.isSuccessful()){
+                    if (!response.isSuccessful()) {
                         progressDialog.dismiss();
-                        return ;
+                        return;
                     }
                     String result = null;
                     result = response.body().string().trim();
                     Looper.prepare();
-                    if(OrderDetailsActivity.this.getString(R.string.HTTPSUCCESS).equals(result)){
-                        Toast.makeText(OrderDetailsActivity.this,"删除成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(OrderDetailsActivity.this,MyOrderActivity.class);
+                    if (OrderDetailsActivity.this.getString(R.string.HTTPSUCCESS).equals(result)) {
+                        Toast.makeText(OrderDetailsActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(OrderDetailsActivity.this, MyOrderActivity.class);
                         startActivity(intent);
                         progressDialog.dismiss();
                         finish();
-                    }else{
-                        Toast.makeText(OrderDetailsActivity.this,"删除失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(OrderDetailsActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                     Looper.loop();
@@ -291,8 +304,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

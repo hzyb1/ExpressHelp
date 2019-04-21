@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -46,7 +47,6 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
     private ImageView nothing_image;      //need订单列表为空的时候显示的图片
     private TextView nothing_title;     //need订单列表为空的时候显示的文字
     private int state;
-
     private ProgressDialog progressDialog;     //等待状态对话框
     Handler mHandler = new Handler(){
         @Override
@@ -83,8 +83,11 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_runner);
-        initView();
         initOrders();
+        initView();
+        //initOrders();
+
+
     }
 
     private void initView(){
@@ -92,8 +95,6 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         LinearLayoutManager layoutManager = new LinearLayoutManager(RunnerActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-        OrderAdapter adapter = new OrderAdapter(needorderList);     //适配器
-        recyclerView.setAdapter(adapter);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -119,19 +120,16 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         switch (style) {
             case 1:
                 radioButton1.setChecked(true);
-                ;
                 break;
             case 2:
                 radioButton2.setChecked(true);
-                ;
                 break;
             case 3:
                 radioButton3.setChecked(true);
-                ;
                 break;
             case 4:
                 radioButton4.setChecked(true);
-                ;
+
                 break;
             default:
                 break;
@@ -153,6 +151,14 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
                 state = 4;
                 break;
         }
+        progressDialog = new ProgressDialog(RunnerActivity.this);
+        progressDialog.setTitle("正在登录，请稍后......");
+        progressDialog.setMessage("登录中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Message message = new Message();
+        message.arg1 = 1;
+        mHandler.sendMessage(message);
     }
     private void find(){
         switch (state){
@@ -188,15 +194,7 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
                 break;
         }
     }
-    public void test(){
-        Order order = new Order();
-        order.setMoney(1.2f);
-        order.setGetAddress("123");
-        order.setExpressName("321");
-        order.setState(2);
-        orderList.add(order);
-        finish();
-    }
+
 
     private void initOrders(){
         progressDialog = new ProgressDialog(RunnerActivity.this);
@@ -204,7 +202,7 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         progressDialog.setMessage("正在加载......");
         progressDialog.setCancelable(false);
         progressDialog.show();
-
+        Log.d("日志","jiazaixianshile");
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
             progressDialog.dismiss();
@@ -242,4 +240,13 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

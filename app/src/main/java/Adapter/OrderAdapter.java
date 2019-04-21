@@ -83,6 +83,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.readmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("日志","hdshgudshgudshgkjghs");
                 toOrderInfoActivity(context,holder.needorder);
             }
         });

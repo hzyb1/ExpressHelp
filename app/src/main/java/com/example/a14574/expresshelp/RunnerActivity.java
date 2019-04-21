@@ -140,13 +140,6 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
                 break;
         }
     }
-    public void test(){
-        Order order = new Order();
-        order.setMoney(1.2f);
-        order.setGetAddress("123");
-        order.setExpressName("321");
-        order.setState(2);
-        orderList.add(order);
-        finish();
-    }
+
+
 }

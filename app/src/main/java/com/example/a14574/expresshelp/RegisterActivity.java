@@ -234,8 +234,6 @@ public class RegisterActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override

@@ -127,6 +127,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 Glide.with(this).load(R.drawable.pending_receive_status).into(statusImage);
                 break;
             case 2:
+
             case 3:
                 orderStatus.setText(getResources().getString(R.string.pending_take_status));
                 Glide.with(this).load(R.drawable.pending_take_status).into(statusImage);

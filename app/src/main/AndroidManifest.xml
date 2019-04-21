@@ -37,7 +37,7 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".MyOrderActivity"
-            android:launchMode="singleTask"
+
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".SpecificUserInfoActivity"

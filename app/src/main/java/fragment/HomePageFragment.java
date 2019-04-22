@@ -69,6 +69,7 @@ public class HomePageFragment extends Fragment {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
             recyclerView.setAdapter(adapter);

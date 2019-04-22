@@ -51,6 +51,7 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
         holder.handle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //上传服务器
             }
         });

@@ -118,10 +118,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         money = (TextView) findViewById(R.id.money);
         modifyOrder = (Button) findViewById(R.id.modify_order);
         deleteOrder = (Button) findViewById(R.id.delete_order);
-
         accomplishedOrders.setVisibility(View.GONE);
         runnerInfo.setVisibility(View.GONE);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -129,7 +127,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         order = (Order) getIntent().getSerializableExtra("order");
         if(order!=null){
             initOrderView();
@@ -257,8 +254,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private void deleteOrder() {
         progressDialog = new ProgressDialog(OrderDetailsActivity.this);
-        progressDialog.setTitle("正在注册，请稍后......");
-        progressDialog.setMessage("注册中......");
+        progressDialog.setTitle("正在删除，请稍后......");
+        progressDialog.setMessage("删除中......");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -281,7 +278,6 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     Looper.loop();
                 }
-
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (!response.isSuccessful()) {

@@ -49,7 +49,7 @@
                 android:layout_marginBottom="5dp">
 
                 <ImageView
-                    android:src="@drawable/complish_order"
+                    android:src="@drawable/runner_complish_order"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"/>
@@ -63,7 +63,7 @@
                         android:textColor="@color/selector_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/accomplish_text"/>
+                        android:text="@string/runner_accomplish_text"/>
                     <TextView
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
@@ -105,14 +105,14 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/circular_shape"
                 android:orientation="vertical"
-                android:id="@+id/runner_info">
+                android:id="@+id/user_info">
                 <TextView
                     android:layout_margin="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="@string/runner_info"/>
+                    android:text="@string/user_info"/>
                 <LinearLayout
                     android:padding="5dp"
                     android:orientation="horizontal"
@@ -124,7 +124,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:src="@drawable/temp_head2"
-                        android:id="@+id/runner_image"/>
+                        android:id="@+id/user_image"/>
 
                     <TextView
                         android:layout_marginLeft="20dp"
@@ -134,7 +134,7 @@
                         android:textSize="18sp"
                         android:text="@string/username_tv"/>
                     <TextView
-                        android:id="@+id/runner_name"
+                        android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -169,6 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:layout_marginBottom="20dp"
                 >
 
                 <TextView
@@ -189,34 +190,7 @@
                     android:text="@string/temp_money"/>
 
             </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/modify_order"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/item_button"
-                    android:textSize="14sp"
-                    android:textColor="@color/deep_grey"
-                    android:text="@string/modify_order"
-                    android:layout_toLeftOf="@+id/delete_order"/>
-                <Button
-                    android:id="@+id/delete_order"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/item_button"
-                    android:textSize="14sp"
-                    android:textColor="@color/deep_grey"
-                    android:text="@string/delete_order"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
 
         </LinearLayout>
 
@@ -224,3 +198,4 @@
 
 
 </LinearLayout>
+

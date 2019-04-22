@@ -19,9 +19,12 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,6 +56,7 @@ import util.ActivityCollector;
 
 public class SettingActivity extends BaseActivity {
 
+    private Toolbar toolbar;
     private Button logout;
     private CircleImageView headImage;
     private TextView userName;
@@ -96,7 +100,13 @@ public class SettingActivity extends BaseActivity {
             String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
             Glide.with(this).load(url).into(headImage);;
         }
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
 
@@ -253,5 +263,15 @@ public class SettingActivity extends BaseActivity {
             cursor.close();
         }
         return path;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

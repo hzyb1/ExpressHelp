@@ -12,6 +12,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name="com.example.a14574.practice.ChatService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".RunnerActivity" />
         <activity android:name=".ChatActivity" />
         <activity
@@ -53,7 +58,7 @@
             android:name=".ModifyInformationActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity android:name=".OrderDetailsActivity" />
-        <activity android:name=".MyInfoSpecificActivity"></activity>
+        <activity android:name=".MyInfoSpecificActivity" />
     </application>
 
 </manifest>

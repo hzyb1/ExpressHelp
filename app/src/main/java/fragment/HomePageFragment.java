@@ -32,6 +32,7 @@ import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -68,7 +69,8 @@ public class HomePageFragment extends Fragment {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+  //          Gson gson = new Gson();
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
             recyclerView.setAdapter(adapter);

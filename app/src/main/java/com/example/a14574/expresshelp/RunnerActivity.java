@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -57,7 +58,8 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
 
             }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
-                Gson gson = new Gson();
+         //       Gson gson = new Gson();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                 orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }

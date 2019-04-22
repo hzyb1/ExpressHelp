@@ -59,6 +59,7 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
 
             }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                 orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }

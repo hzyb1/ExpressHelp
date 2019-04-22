@@ -45,6 +45,7 @@ public class PayOrderActivity extends BaseActivity {
     private Order order;
     private ProgressDialog progressDialog;//上传状态对话框
     private boolean flag = false;
+    private Gson gson;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -92,6 +93,7 @@ public class PayOrderActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);

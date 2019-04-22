@@ -4,10 +4,14 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RadioButton;
+import android.widget.TextView;
+
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
 import fragment.MyInfoFragment;
@@ -28,13 +32,12 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
 
-        fragmentManager.beginTransaction().add(R.id.container,fragment[0]).commit();
-        currentFragment=fragment[0];
-
-        homePageFragment(null);
         rbs[0] = (RadioButton) findViewById(R.id.home_page);
         rbs[1] = (RadioButton) findViewById(R.id.message);
         rbs[2] = (RadioButton) findViewById(R.id.my_info);
+        fragmentManager.beginTransaction().add(R.id.container,fragment[0]).commit();
+        currentFragment=fragment[0];
+        homePageFragment(null);
         initView();
     }
     public void homePageFragment(View view){

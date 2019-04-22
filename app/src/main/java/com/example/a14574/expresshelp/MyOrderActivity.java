@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
     private ProgressDialog  progressDialog;     //等待状态对话框
+    private Gson gson;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -60,7 +62,6 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
 
             }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
-                Gson gson = new Gson();
                 orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }
@@ -95,6 +96,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
     }
     @Override
     public void onClick(View view) {

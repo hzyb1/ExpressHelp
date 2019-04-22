@@ -62,14 +62,13 @@ public class HomePageFragment extends Fragment {
     private SwipeRefreshLayout swipeRefresh;
     private TextView search;           //搜索按钮
     private EditText searchKey;        //搜索内容
-
+    private Gson gson;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
-            Gson gson = new Gson();
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
             recyclerView.setAdapter(adapter);
@@ -85,17 +84,14 @@ public class HomePageFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.order_brief_recycler);
         search = (TextView) view.findViewById(R.id.tv_search_conform);
         searchKey = (EditText) view.findViewById(R.id.et_search_key);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle("");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.selector_color);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         submitOrder = (Button) view.findViewById(R.id.submit_order);
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         initEvents();   //事件初始化代码
         swipeRefresh.post(new Runnable() {
             @Override

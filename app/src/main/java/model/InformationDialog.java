@@ -27,6 +27,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import fragment.HomePageFragment;
 import http.HttpUtil;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -48,11 +49,13 @@ public class InformationDialog extends Dialog {
     private TextView order_first_time;
     private TextView order_second_time;
     private ProgressDialog progressDialog;                   //上传状态对话框
-    public InformationDialog(Context context,Order order) {
+    private HomePageFragment homePageFragment;
+    public InformationDialog(Context context, Order order, HomePageFragment fragment) {
        // super(context,R.style.dialog);
         super(context);
         this.mContext = context;
         this.order = order;
+        this.homePageFragment = fragment;
     }
 
     public InformationDialog(Context context, int themeResId, String content ,Order order) {
@@ -128,6 +131,8 @@ public class InformationDialog extends Dialog {
                        order.setState(2);
 
                        updataOrder(order);
+                       InformationDialog.this.dismiss();
+                       homePageFragment.refresh();
 
                    }
                });

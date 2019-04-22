@@ -70,7 +70,7 @@ public class HomePageFragment extends Fragment {
             String result = "";
             result = msg.obj.toString();
             orderBriefList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
-            OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+            OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList,HomePageFragment.this);
             recyclerView.setAdapter(adapter);
             if(swipeRefresh.isRefreshing()){
                 swipeRefresh.setRefreshing(false);
@@ -110,7 +110,7 @@ public class HomePageFragment extends Fragment {
         });
         return view;
     }
-    private void refresh(){
+    public void refresh(){
         swipeRefresh.setRefreshing(true);
         initOrders();
     }
@@ -118,7 +118,7 @@ public class HomePageFragment extends Fragment {
     private void initAdapter(){
         swipeRefresh.setRefreshing(true);
         initOrders();
-        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList);
+        OrderBriefAdapter adapter = new OrderBriefAdapter(orderBriefList,this);
         adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         swipeRefresh.setRefreshing(false);

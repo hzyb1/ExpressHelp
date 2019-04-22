@@ -3,6 +3,7 @@ package com.example.a14574.expresshelp;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,7 +15,9 @@ import fragment.MyInfoFragment;
 public class HomeActivity extends BaseActivity {           //主界面活动
 
     private Fragment fragment[] = new Fragment[3];
+    private Fragment currentFragment;     //当前fragment
     RadioButton[ ] rbs = new RadioButton[3];
+    private FragmentManager fragmentManager = getSupportFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","home???");
@@ -25,10 +28,8 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container,fragment[0])
-                .add(R.id.container, fragment[1])
-                .add(R.id.container, fragment[2]).commit();
+        fragmentManager.beginTransaction().add(R.id.container,fragment[0]).commit();
+        currentFragment=fragment[0];
 
         homePageFragment(null);
         rbs[0] = (RadioButton) findViewById(R.id.home_page);
@@ -37,22 +38,34 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         initView();
     }
     public void homePageFragment(View view){
-        getSupportFragmentManager().beginTransaction()
-                .hide(fragment[1])
-                .hide(fragment[2])
-                .show(fragment[0]).commit();
+        if(currentFragment!=fragment[0]){
+            if(!fragment[0].isAdded()){
+                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[0]).commit();
+            }else {
+                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[0]).commit();
+            }
+            currentFragment=fragment[0];
+        }
     }
     public void messageFragment(View view){
-        getSupportFragmentManager().beginTransaction()
-                .hide(fragment[0])
-                .hide(fragment[2])
-                .show(fragment[1]).commit();
+        if(currentFragment!=fragment[1]){
+            if(!fragment[1].isAdded()){
+                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[1]).commit();
+            }else {
+                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[1]).commit();
+            }
+            currentFragment=fragment[1];
+        }
     }
     public void myInfoFragment(View view){
-        getSupportFragmentManager().beginTransaction()
-                .hide(fragment[1])
-                .hide(fragment[0])
-                .show(fragment[2]).commit();
+        if(currentFragment!=fragment[2]){
+            if(!fragment[2].isAdded()){
+                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[2]).commit();
+            }else {
+                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[2]).commit();
+            }
+            currentFragment=fragment[2];
+        }
     }
     private void initView() {
         WindowManager wm = this.getWindowManager();

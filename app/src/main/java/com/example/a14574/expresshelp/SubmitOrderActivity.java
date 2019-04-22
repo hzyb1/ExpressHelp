@@ -3,6 +3,7 @@ package com.example.a14574.expresshelp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.LocaleDisplayNames;
 import android.os.Handler;
@@ -53,7 +54,6 @@ public class SubmitOrderActivity extends BaseActivity {
     private TextView firstEndTime;
     private TextView secondStartTime;
     private TextView secondEndTime;
-    private int hour,minute;
     private Button submitOrder;
     private EditText expressName;
     private EditText getAddress;
@@ -66,6 +66,8 @@ public class SubmitOrderActivity extends BaseActivity {
     private TextView toolBarTitle;
     private Order order;
     private ProgressDialog progressDialog;                   //上传状态对话框
+    private SimpleDateFormat dateFormatHm = new SimpleDateFormat("HH:mm");//时分格式
+    private Timestamp flagTime = new Timestamp(System.currentTimeMillis());  //进入发单页面的时间
 
     Handler mHandler = new Handler(){
         @Override
@@ -142,6 +144,10 @@ public class SubmitOrderActivity extends BaseActivity {
         firstEndTime = (TextView) findViewById(R.id.first_end_time);
         secondStartTime = (TextView) findViewById(R.id.second_start_time);
         secondEndTime = (TextView) findViewById(R.id.second_end_time);
+        firstStartTime.setText(dateFormatHm.format(flagTime));
+        firstEndTime.setText(dateFormatHm.format(flagTime));
+        secondStartTime.setText(dateFormatHm.format(flagTime));
+        secondEndTime.setText(dateFormatHm.format(flagTime));
         orderModify = (Order)getIntent().getSerializableExtra("order");
         if(orderModify!=null){
             toolBarTitle.setText("修改订单");
@@ -153,25 +159,29 @@ public class SubmitOrderActivity extends BaseActivity {
         firstStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog(firstStartTime);
+                String split[]=splitTime(firstStartTime.getText().toString().trim());
+                showTimePickerDialog(firstStartTime,Integer.parseInt(split[0]),Integer.parseInt(split[1]));
             }
         });
         firstEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog(firstEndTime);
+                String split[]=splitTime(firstEndTime.getText().toString().trim());
+                showTimePickerDialog(firstEndTime,Integer.parseInt(split[0]),Integer.parseInt(split[1]));
             }
         });
         secondStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog(secondStartTime);
+                String split[]=splitTime(secondStartTime.getText().toString().trim());
+                showTimePickerDialog(secondStartTime,Integer.parseInt(split[0]),Integer.parseInt(split[1]));
             }
         });
         secondEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog(secondEndTime);
+                String split[]=splitTime(secondEndTime.getText().toString().trim());
+                showTimePickerDialog(secondEndTime,Integer.parseInt(split[0]),Integer.parseInt(split[1]));
             }
         });
         submitOrder.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +236,10 @@ public class SubmitOrderActivity extends BaseActivity {
             e.printStackTrace();
             return null;
         }
+        /*if(!takeTelephoneS.matches("[1][3578]\\d{9}")){
+            Toast.makeText(this,"电话号码格式不对哦！！！",Toast.LENGTH_LONG).show();
+            return null;
+        }*/
         if(firstStartTimeS.equals("") || firstEndTimeS.equals("")|| secondStartTimeS.equals("")|| secondEndTimeS.equals("")){
             Toast.makeText(this,"请注意设置时间哦！！！",Toast.LENGTH_LONG).show();
             return null;
@@ -245,19 +259,11 @@ public class SubmitOrderActivity extends BaseActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        if(fet.before(fst)){
-            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
-            return null;
-        }
-        if(set.before(sst)){
-            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
-            return null;
-        }
-        if(sst.before(fet)){
-            Toast.makeText(this,"时间设定存在冲突！！！",Toast.LENGTH_LONG).show();
-            return null;
-        }
         submitTime = new Timestamp(System.currentTimeMillis());
+        if(!checkTime(fst,fet,sst,set,submitTime)){
+            showTimeAlertDialog();
+            return null;
+        }
         Order order = new Order();
         if(LoginActivity.USER != null){
             Log.d("日志",LoginActivity.USER.getId()+" ");
@@ -290,29 +296,25 @@ public class SubmitOrderActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showTimePickerDialog(final TextView textView){
+    private void showTimePickerDialog(final TextView textView,int hour,int minute){
         new TimePickerDialog(SubmitOrderActivity.this,AlertDialog.THEME_HOLO_LIGHT,new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                hour = hourOfDay;
-                SubmitOrderActivity.this.minute = minute;
+                int hourTemp = hourOfDay;
+                int minuteTemp = minute;
                 String hourS="";String minuteS="";
-                if(hour<10){
-                    hourS = "0"+hour;
+                if(hourTemp<10){
+                    hourS = "0"+hourTemp;
                 }else{
-                    hourS = hour+"";
+                    hourS = hourTemp+"";
                 }
-                if(minute<10){
-                    minuteS = "0"+SubmitOrderActivity.this.minute;
+                if(minuteTemp<10){
+                    minuteS = "0"+minuteTemp;
                 }else {
-                    minuteS = ""+SubmitOrderActivity.this.minute;
+                    minuteS = ""+minuteTemp;
                 }
-                if (SubmitOrderActivity.this.minute < 10){
-                    textView.setText(hourS+":"+minuteS);
-                }else {
-                    textView.setText(hourS+":"+minuteS);
-                }
+                textView.setText(hourS+":"+minuteS);
             }
         }, hour, minute, true).show();
     }
@@ -409,6 +411,58 @@ public class SubmitOrderActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+    private boolean checkTime(Timestamp fst,Timestamp fet,Timestamp sst,Timestamp set,Timestamp submitTime){
+        //校验时间是否合理
+        if(!checkTimeGap(submitTime,fst,0)){
+            //初始时间不得早于发单时间
+            return false;
+        }
+        if(!(checkTimeGap(fst,fet,30) && checkTimeGap(fet,sst,30) && checkTimeGap(sst,set,30))){
+            //时间间隔最短不得低于30分钟
+            return false;
+        }
+        return true;
+    }
+    private boolean checkTimeGap(Timestamp a,Timestamp b,int gap){
+        int aHour = a.getHours();
+        int bHour = b.getHours();
+        int aMinute = a.getMinutes();
+        int bMinute = b.getMinutes();
+        Log.d("timeTest",aHour+":"+aMinute+" "+bHour+":"+bMinute);
+        if(aHour<bHour){
+            if(bHour-aHour==1){
+                if((bMinute+60-aMinute)<=gap){
+                    return false;
+                }
+            }
+        }else if(aHour == bHour){
+            if(bMinute-aMinute<gap){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showTimeAlertDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("时间设定存在冲突");
+        dialog.setMessage("请检查是否具有以下冲突：\n  1.设定时间不得早于发单时间 \n  2.各个时间间隔不得短于30分钟");
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return ;
+            }
+        });
+        dialog.show();
+    }
+
+    private String[] splitTime(String time){
+        String[] split;
+        split=time.split(":");
+        return split;
+    }
+
 
 
 }

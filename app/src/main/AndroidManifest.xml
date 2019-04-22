@@ -53,7 +53,8 @@
             android:name=".ModifyInformationActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
         <activity android:name=".OrderDetailsActivity" />
-        <activity android:name=".MyInfoSpecificActivity"></activity>
+        <activity android:name=".MyInfoSpecificActivity" />
+        <activity android:name=".RunnerOrderDatailsActivity"></activity>
     </application>
 
 </manifest>

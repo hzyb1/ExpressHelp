@@ -96,7 +96,7 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         submitOrder = (Button) view.findViewById(R.id.submit_order);
-
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         initEvents();   //事件初始化代码
         swipeRefresh.post(new Runnable() {
             @Override

@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.a14574.expresshelp.OrderDetailsActivity;
 import com.example.a14574.expresshelp.PayOrderActivity;
 import com.example.a14574.expresshelp.R;
+import com.example.a14574.expresshelp.RunnerOrderDatailsActivity;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
 
 import java.util.List;
@@ -43,9 +45,9 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.runner_item,viewGroup,false);
-        ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
         holder.handle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +58,7 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
         holder.read_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                toOrderInfoActivity(viewGroup.getContext(),holder.need_order);
             }
         });
         return holder;
@@ -71,7 +73,7 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
         holder.money.setText(Float.toString(order.getMoney()));
         switch (order.getState()) {
             case 2:
-                holder.state.setText("待取货");
+                holder.state.setText("送货中");
                 holder.handle.setText("已送达");
                 break;
             case 3:
@@ -89,6 +91,11 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
     @Override
     public int getItemCount() {
         return mOrderList.size();
+    }
+    private void toOrderInfoActivity(Context context,Order order){
+        Intent intent = new Intent(context,RunnerOrderDatailsActivity.class);
+        intent.putExtra("order",order);
+        context.startActivity(intent);
     }
 }
 

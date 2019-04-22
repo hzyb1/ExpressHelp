@@ -104,10 +104,10 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        radioButton1 = (RadioButton)findViewById(R.id.wait_pick);
-        radioButton2 = (RadioButton)findViewById(R.id.wait_give);
-        radioButton3 = (RadioButton)findViewById(R.id.runner_finish);
-        radioButton4 = (RadioButton)findViewById(R.id.renner_all);
+        radioButton1 = (RadioButton)findViewById(R.id.delivering);
+        radioButton2 = (RadioButton)findViewById(R.id.arrived);
+        radioButton3 = (RadioButton)findViewById(R.id.finished);
+        radioButton4 = (RadioButton)findViewById(R.id.runner_all);
         showItem();
         radioButton1.setOnClickListener(this);
         radioButton2.setOnClickListener(this);
@@ -140,16 +140,16 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.wait_pick:
+            case R.id.delivering:
                 state = 1;
                 break;
-            case R.id.wait_give:
+            case R.id.arrived:
                 state = 2;
                 break;
-            case R.id.runner_finish:
+            case R.id.finished:
                 state = 3;
                 break;
-            case R.id.renner_all:
+            case R.id.runner_all:
                 state = 4;
                 break;
         }

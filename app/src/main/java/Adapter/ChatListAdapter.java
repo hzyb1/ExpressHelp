@@ -29,22 +29,23 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     }
     public ChatListAdapter(List<ChatUser> ChatUserList){
         mChatUserList = ChatUserList;
+        Log.d("测试","测试1");
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_list_item,viewGroup,false);
         ViewHolder holder = new ViewHolder(view);
-        Log.d("日志","测试");
+        Log.d("测试","测试2");
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
         ChatUser chatUser = mChatUserList.get(i);
-        holder.id.setText(chatUser.getUsername());
-        holder.message.setText(chatUser.getMessage());
-        Log.d("日志","测试");
+//        holder.id.setText(chatUser.getUsername());
+//        holder.message.setText(chatUser.getMessage());
+        Log.d("测试","测试3");
     }
 
     @Override

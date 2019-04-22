@@ -32,7 +32,6 @@ public class MessageFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         ChatListAdapter adapter = new ChatListAdapter(chatUserList);
         recyclerView.setAdapter(adapter);
-        Log.d("日志","是否来到这个界面了"+adapter);
         return view;
     }
     public void init(){

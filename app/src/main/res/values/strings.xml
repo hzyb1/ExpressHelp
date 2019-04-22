@@ -88,15 +88,13 @@
     <string name="top_up">充值</string>
 
     <string name="modify_admit">上传信息</string>
-
-    <string name="wait_pick">待取货</string>
-    <string name="wait_give">已送达</string>
-    <string name="finish">已完成</string>
+    <string name="arrived">已送达</string>
+    <string name="finishd">已完成</string>
 
     <string name="order_detail">订单详情</string>
 
     <string name="accomplish_text">您已从跑手手中完成取件，感谢您使用本软件，期待再次为您服务。</string>
-
+    <string name="runner_accomplish_text">用户已确认收货，感谢您使用本软件，期待再次为您服务。</string>
     <string name="order_info">订单信息</string>
 
     <string name="take_time">取货时间</string>
@@ -107,14 +105,16 @@
     <string name="submit_time">订单创建时间</string>
     <string name="order_id">订单编号</string>
     <string name="runner_info">跑手信息</string>
-
+    <string name="user_info">用户信息</string>
     <string name="pending_payment_status">您的订单尚未支付哦</string>
     <string name="pending_receive_status">您的订单还未有跑手接收，请耐心等待</string>
     <string name="pending_take_status">跑手正在路途中，请耐心等待</string>
     <string name="accomplish_order_status">交易成功</string>
 
     <string name="delete_order">删除订单</string>
-    <string name="arrived">已送达</string>
 
     <string name="my_specific_info">个人详情</string>
+
+    <string name="delivering_status">您已接单，请在规定时间内送达哦</string>
+    <string name="arrived_status">您已送达，请耐心等待用户确认</string>
 </resources>

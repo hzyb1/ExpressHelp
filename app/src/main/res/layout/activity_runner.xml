@@ -34,43 +34,43 @@
         android:textSize="24sp">
 
         <RadioButton
-            android:id="@+id/wait_pick"
+            android:id="@+id/delivering"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@drawable/watch_order_text_selector"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:button="@null"
-            android:text="@string/wait_pick"
+            android:text="@string/delivery"
             android:gravity="center"
             android:background="@drawable/orders_selector"/>
 
         <RadioButton
-            android:id="@+id/wait_give"
+            android:id="@+id/arrived"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@drawable/watch_order_text_selector"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:button="@null"
-            android:text="@string/wait_give"
+            android:text="@string/arrived"
             android:gravity="center"
             android:background="@drawable/orders_selector"/>
 
         <RadioButton
-            android:id="@+id/runner_finish"
+            android:id="@+id/finished"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@drawable/watch_order_text_selector"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:button="@null"
-            android:text="@string/finish"
+            android:text="@string/finishd"
             android:gravity="center"
             android:background="@drawable/orders_selector"/>
 
         <RadioButton
-            android:id="@+id/renner_all"
+            android:id="@+id/runner_all"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@drawable/watch_order_text_selector"

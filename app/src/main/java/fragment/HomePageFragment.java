@@ -32,6 +32,7 @@ import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
 
         submitOrder = (Button) view.findViewById(R.id.submit_order);
-
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         initEvents();   //事件初始化代码
         swipeRefresh.post(new Runnable() {
             @Override

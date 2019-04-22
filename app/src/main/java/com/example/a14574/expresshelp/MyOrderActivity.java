@@ -49,6 +49,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     private ImageView nothing_image;      //need订单列表为空的时候显示的图片
     private TextView nothing_title;     //need订单列表为空的时候显示的文字
     private RecyclerView recyclerView;
+    private OrderAdapter adapter;
     private ProgressDialog  progressDialog;     //等待状态对话框
     Handler mHandler = new Handler(){
         @Override
@@ -64,7 +65,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }
             find();     //查找想要显示的订单列表
-            OrderAdapter adapter = new OrderAdapter(needorderList);     //适配器
+            OrderAdapter adapter  = new OrderAdapter(needorderList);     //适配器
             recyclerView.setAdapter(adapter);
             if (needorderList.isEmpty()){       //订单列表为空的时候显示图片和文字
                 nothing_image = (ImageView)findViewById(R.id.nothing_image);
@@ -281,6 +282,26 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
     @Override
     protected void onRestart() {
         super.onRestart();
-        radioButton4.setChecked(true);
+        /*switch (adapter.getFlag()){
+            case 1:
+                initOrders();
+                radioButton4.setChecked(true);
+                //initOrders();
+                break;
+            case 2:
+                initOrders();
+                break;
+            case 3:
+                //initOrders();
+                radioButton6.setChecked(true);
+                //initOrders();
+                break;
+            case 4:
+                initOrders();
+                break;
+        }*/
+        initOrders();
     }
+
+
 }

@@ -1,5 +1,6 @@
 package Adapter;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +42,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ProgressDialog progressDialog;                   //等待对话框
     private  Context context = null;
-
+    private int flag;
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView state;
         private TextView address;
@@ -76,13 +77,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.handle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Order order = mOrderList.get(position);
+
                 if (holder.handle.getText().toString().trim().equals("确认付款")){
                     Intent intent = new Intent(context, PayOrderActivity.class);
-                    Log.d("日志","needorder  "+ holder.needorder.getExpressName());
                     intent.putExtra("order",holder.needorder);
-                    //
                     context.startActivity(intent);
+                    flag =1;
+
                 }else if (holder.handle.getText().toString().trim().equals("修改订单")){
 
                     Intent intent = new Intent(context,SubmitOrderActivity.class);
@@ -90,10 +91,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     intent.putExtra("order",holder.needorder);
                     Log.d("修改事件",holder.needorder.getSecondTakeTimeBegin().toString());
                     context.startActivity(intent);
+                    flag = 2;
                     //
                 }else if (holder.handle.getText().toString().trim().equals("确认收货")){
                     completeOrder(holder.needorder.getId());
-
+                    flag = 3;
 
 
                 }
@@ -105,6 +107,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             public void onClick(View v) {
                 Log.d("日志","hdshgudshgudshgkjghs");
                 toOrderInfoActivity(context,holder.needorder);
+                flag =4;
             }
         });
         return holder;
@@ -155,8 +158,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     private void completeOrder(int id ){
         progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("正在注册，请稍后......");
-        progressDialog.setMessage("注册中......");
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -204,7 +207,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        flag = 1;
     }
+
+    public int getFlag() {
+        return flag;
+    }
+
 }

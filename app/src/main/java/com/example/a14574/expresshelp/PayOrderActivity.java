@@ -43,7 +43,8 @@ public class PayOrderActivity extends BaseActivity {
     private Button change;      //修改订单按钮
     private Toolbar toolbar;
     private Order order;
-    private ProgressDialog progressDialog;                   //上传状态对话框
+    private ProgressDialog progressDialog;//上传状态对话框
+    private boolean flag = false;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -122,6 +123,7 @@ public class PayOrderActivity extends BaseActivity {
             public void onClick(View view) {
                 if(LoginActivity.USER.getBalance() >= order.getMoney()){
                     pay(order);
+                    flag = true;
                     //上传服务器
                 }else{
                     Toast.makeText(PayOrderActivity.this,"你的余额不足，请先进行充值",Toast.LENGTH_LONG).show();
@@ -179,5 +181,12 @@ public class PayOrderActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("flag",flag);
+        setResult(1,intent);
+        Log.d("日志","zhixingle onbackpressed");
+        finish();
+    }
 }

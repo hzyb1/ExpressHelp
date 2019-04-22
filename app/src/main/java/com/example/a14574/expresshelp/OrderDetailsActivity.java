@@ -67,6 +67,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat02 = new SimpleDateFormat("HH:mm");//时分格式
 
     private ProgressDialog progressDialog;                   //等待对话框
+    private Gson gson;
 
     Handler mHandler = new Handler(){
         @Override
@@ -130,6 +131,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         if(order!=null){
             initOrderView();
         }
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
     }
     private void initOrderView(){
         switch (order.getState()){

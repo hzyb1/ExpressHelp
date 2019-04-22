@@ -49,6 +49,7 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
     private TextView nothing_title;     //need订单列表为空的时候显示的文字
     private int state;
     private ProgressDialog progressDialog;     //等待状态对话框
+    private Gson gson;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -58,7 +59,6 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
 
             }else if(msg.arg1 == 2){        //第一次访问
                 result = msg.obj.toString();
-         //       Gson gson = new Gson();
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                 orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
@@ -87,6 +87,7 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         setContentView(R.layout.activity_runner);
         initOrders();
         initView();
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         //initOrders();
 
 

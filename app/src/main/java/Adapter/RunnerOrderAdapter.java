@@ -48,13 +48,17 @@ public class RunnerOrderAdapter extends RecyclerView.Adapter<RunnerOrderAdapter.
     public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.runner_item,viewGroup,false);
         final ViewHolder holder = new ViewHolder(view);
-        holder.handle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                //上传服务器
-            }
-        });
+            holder.handle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (holder.handle.getText().toString().equals("已送达")) {
+                        // 上传服务服务器内容
+                        Log.d("日志","已送达的监听事件");
+                    }
+
+                }
+            });
         holder.read_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

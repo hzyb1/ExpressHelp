@@ -10,7 +10,8 @@ import model.ChatUser;
 public class ChatService extends Service {
     private ChatBinder mBinder = new ChatBinder();
 
-    class ChatBinder extends Binder{
+    public class ChatBinder extends Binder{
+
         private ChatUser chat;
 
         private void addMessage(){//发来信息
@@ -33,7 +34,10 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         return super.onStartCommand(intent, flags, startId);
+
+
     }
 
     @Override

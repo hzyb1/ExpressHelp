@@ -43,6 +43,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private ProgressDialog progressDialog;                   //等待对话框
     private  Context context = null;
     private int flag;
+    private MyOrderActivity activity;
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView state;
         private TextView address;
@@ -65,8 +66,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             readmore = (Button) view.findViewById(R.id.read_more);
         }
     }
-    public OrderAdapter(List<Order> orderList){
+    public OrderAdapter(List<Order> orderList,MyOrderActivity activity){
+
         mOrderList = orderList;
+        this.activity = activity;
     }
 
     @Override
@@ -95,7 +98,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                     //
                 }else if (holder.handle.getText().toString().trim().equals("确认收货")){
                     completeOrder(holder.needorder.getId());
-                    flag = 3;
+                    activity.reflsh();
 
 
                 }

@@ -117,4 +117,6 @@
 
     <string name="delivering_status">您已接单，请在规定时间内送达哦</string>
     <string name="arrived_status">您已送达，请耐心等待用户确认</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
 </resources>

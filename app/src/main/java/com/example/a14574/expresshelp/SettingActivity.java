@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -20,13 +18,17 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +66,7 @@ public class SettingActivity extends BaseActivity {
     private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
     private Button toModifyMyInfo;
     public static final int CHOOSE_PHOTO = 2;
+    private RelativeLayout topUp;    //充值
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -94,6 +97,7 @@ public class SettingActivity extends BaseActivity {
         userName = (TextView)findViewById(R.id.user_name);
         balance = (TextView)findViewById(R.id.balance);
         toModifyMyInfo = (Button)findViewById(R.id.to_modify_myinfo);
+        topUp = (RelativeLayout) findViewById(R.id.top_up);
         if(LoginActivity.USER!=null){
             userName.setText(LoginActivity.USER.getUsername());
             balance.setText(LoginActivity.USER.getBalance()+"￥");
@@ -148,6 +152,14 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SettingActivity.this,ModifyInformationActivity.class);
                 startActivity(intent);
+            }
+        });
+        topUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //充值方法
+                //Toast.makeText(SettingActivity.this,"You clicked top_up",Toast.LENGTH_SHORT).show();
+                showTopUpDialog();
             }
         });
     }
@@ -273,5 +285,35 @@ public class SettingActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void showTopUpDialog(){
+        View view = LayoutInflater.from(this).inflate(R.layout.top_up_layout,null,false);
+        Button cancel = (Button) view.findViewById(R.id.cancel);
+        Button confirm = (Button) view.findViewById(R.id.confirm);
+        final EditText money = (EditText) view.findViewById(R.id.money);
+        final AlertDialog dialog = new AlertDialog.Builder(this).setView(view).create();
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String moneyS = money.getText().toString().trim();
+                float moneyF=0;
+                try {
+                    moneyF = Float.parseFloat(moneyS);
+                }catch (Exception e){
+                    Toast.makeText(SettingActivity.this,"金额需为数字哦！！！",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    return;
+                }
+                //充值操作
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

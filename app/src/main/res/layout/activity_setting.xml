@@ -126,24 +126,33 @@
             android:textColor="@color/black"/>
 
         <RelativeLayout
-            android:id="@+id/top_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <RelativeLayout
+                android:id="@+id/top_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/top_up"
-                android:layout_toLeftOf="@+id/top_up_arrow"
-                android:layout_marginRight="6dp"/>
-            <Button
-                android:id="@+id/top_up_arrow"
-                android:layout_marginRight="6dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/head_btn_selector"/>
+                android:layout_marginLeft="80dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_toStartOf="@+id/top_up_arrow"
+                    android:layout_toLeftOf="@+id/top_up_arrow"
+                    android:text="@string/top_up"
+                    android:textSize="20sp" />
+                <Button
+                    android:id="@+id/top_up_arrow"
+                    android:layout_marginRight="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/head_btn_selector"/>
+            </RelativeLayout>
         </RelativeLayout>
 
     </LinearLayout>

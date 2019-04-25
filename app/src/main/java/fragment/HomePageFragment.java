@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -189,7 +190,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void doSearch(String searchText){    //搜索方法
-        Toast.makeText(getActivity(),"执行搜索方法",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"搜索成功",Toast.LENGTH_SHORT).show();
         Log.d("orderSize","searchText："+searchText);
         List<Order> searchOrder = new ArrayList<>();
         for(int i=0;i<orderBriefList.size();i++){
@@ -203,5 +204,10 @@ public class HomePageFragment extends Fragment {
         OrderBriefAdapter adapter = new OrderBriefAdapter(searchOrder,HomePageFragment.this);
         recyclerView.setAdapter(adapter);
 
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        View v = getActivity().getWindow().peekDecorView();
+        if (null != v) {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 }

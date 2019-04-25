@@ -101,14 +101,6 @@ public class HomePageFragment extends Fragment {
                 initOrders();
             }
         });
-        search = (TextView) view.findViewById(R.id.tv_search_conform);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                startActivity(intent);
-            }
-        });
         return view;
     }
     public void refresh(){
@@ -185,13 +177,31 @@ public class HomePageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //搜索事件
-                doSearch();
+                String searchKeyS = searchKey.getText().toString().trim();
+                if(searchKeyS.equals("")){
+                    Toast.makeText(getActivity(),"搜索内容不能为空哦！！！！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                doSearch(searchKeyS);
             }
         });
 
     }
 
-    private void doSearch(){    //搜索方法
+    private void doSearch(String searchText){    //搜索方法
         Toast.makeText(getActivity(),"执行搜索方法",Toast.LENGTH_SHORT).show();
+        Log.d("orderSize","searchText："+searchText);
+        List<Order> searchOrder = new ArrayList<>();
+        for(int i=0;i<orderBriefList.size();i++){
+            Order tempOrder = orderBriefList.get(i);
+            if(tempOrder.getExpressName().contains(searchText) || tempOrder.getGetAddress().contains(searchText)){
+                searchOrder.add(tempOrder);
+                continue;
+            }
+        }
+        Log.d("orderSize",searchOrder.size()+"");
+        OrderBriefAdapter adapter = new OrderBriefAdapter(searchOrder,HomePageFragment.this);
+        recyclerView.setAdapter(adapter);
+
     }
 }

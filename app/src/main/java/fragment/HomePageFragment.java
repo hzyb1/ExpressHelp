@@ -204,6 +204,7 @@ public class HomePageFragment extends Fragment {
         OrderBriefAdapter adapter = new OrderBriefAdapter(searchOrder,HomePageFragment.this);
         recyclerView.setAdapter(adapter);
 
+        //收起软键盘
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         View v = getActivity().getWindow().peekDecorView();
         if (null != v) {

@@ -30,6 +30,7 @@ import java.util.List;
 import fragment.HomePageFragment;
 import model.InformationDialog;
 import model.Order;
+import util.Dialog;
 
 
 public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.ViewHolder>{
@@ -76,30 +77,12 @@ public class OrderBriefAdapter extends RecyclerView.Adapter<OrderBriefAdapter.Vi
                 //跑手验证功能
                 Log.d("日志","getIDCard"+LoginActivity.USER.getIdCard());
               if (LoginActivity.USER.getIdCard() == null){
-
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(a);
-                    dialog.setTitle("还未成为跑手");
-                    dialog.setMessage("接单信息需要成为跑手才能查看，是否前往信息界面完善信息，成为跑手");
-                    dialog.setCancelable(false);
-                    dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(a, ModifyInformationActivity.class);
-                            a.startActivity(intent);
-                        }
-                    });
-                    dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-                    dialog.show();
-                }else {
-                    int position = holder.getAdapterPosition();
+                  Dialog.showToBecomeRunnerDialog(a);
+              }else {
+                  int position = holder.getAdapterPosition();
                   InformationDialog informationDialog = new InformationDialog(view.getContext(), mOrderList.get(position),homePageFragment);
                   informationDialog.show();
-                }
+              }
             }
         });
         return holder;

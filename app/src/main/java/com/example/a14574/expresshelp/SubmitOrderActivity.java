@@ -158,6 +158,8 @@ public class SubmitOrderActivity extends BaseActivity {
             toolBarTitle.setText("修改订单");
             submitOrder.setText("修改订单");
             initModifyOrder();
+        }else{
+            initSubmitOrder();
         }
         expressList = new ArrayList<>();
         String expressStringList[]=getResources().getStringArray(R.array.express_name_list);
@@ -506,6 +508,23 @@ public class SubmitOrderActivity extends BaseActivity {
             }
         }
         return -1;
+    }
+
+    private void initSubmitOrder(){
+        String getAddress="";
+        if(LoginActivity.USER.getBedroomBuild()!=0){
+            getAddress+=(LoginActivity.USER.getBedroomBuild()+" -");
+        }
+        if(LoginActivity.USER.getBedroomNumber()!=0){
+            getAddress+=(" "+LoginActivity.USER.getBedroomNumber());
+        }
+        this.getAddress.setText(getAddress);
+        if(LoginActivity.USER.getTrueName()!=null && !LoginActivity.USER.getTrueName().trim().equals("")){
+            this.takeName.setText(LoginActivity.USER.getTrueName());
+        }
+        if(LoginActivity.USER.getTelephone()!=null && !LoginActivity.USER.getTelephone().trim().equals("")){
+            this.takeTelephone.setText(LoginActivity.USER.getTelephone());
+        }
     }
 
 

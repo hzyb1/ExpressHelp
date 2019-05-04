@@ -8,16 +8,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
 import fragment.MyInfoFragment;
+import view.BadgeView;
 
-public class HomeActivity extends BaseActivity {           //主界面活动
+public class HomeActivity extends BaseActivity implements View.OnClickListener{           //主界面活动
 
     private Fragment fragment[] = new Fragment[3];
     private Fragment currentFragment;     //当前fragment
@@ -25,7 +27,12 @@ public class HomeActivity extends BaseActivity {           //主界面活动
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private IntentFilter intentFilter;
     private MessageFragment.ChatListReceiver chatListReceiver;
+
+    private Button homePage,message,myInfo;
+    private BadgeView badgeView;
+
     private ChatActivity.ChatListReceiver ListReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,13 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         fragment[0] = new HomePageFragment();
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
+
+        homePage = (Button) findViewById(R.id.btn_home_page);
+        message = (Button) findViewById(R.id.btn_message);
+        myInfo = (Button) findViewById(R.id.btn_my_info);
+        homePage.setOnClickListener(this);
+        message.setOnClickListener(this);
+        myInfo.setOnClickListener(this);
 
         rbs[0] = (RadioButton) findViewById(R.id.home_page);
         rbs[1] = (RadioButton) findViewById(R.id.message);
@@ -46,6 +60,12 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         chatListReceiver = new MessageFragment().new ChatListReceiver();
         ListReceiver = new ChatActivity().new ChatListReceiver();
         registerReceiver(chatListReceiver,intentFilter);
+        badgeView = new BadgeView(this);
+        badgeView.setTargetView(message);
+        badgeView.setBadgeCount(12);
+        badgeView.setBadgeGravity(Gravity.RIGHT | Gravity.TOP);
+        badgeView.setBadgeMargin(5,5,25,20);
+        badgeView.setBackground(20, getResources().getColor(R.color.red));
         registerReceiver( ListReceiver,intentFilter);
     }
     public void homePageFragment(View view){
@@ -103,5 +123,24 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         drawable_my_info.setBounds(0, 0,  realHeight,  realHeight);
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_home_page:
+                rbs[0].setChecked(true);
+                homePageFragment(null);
+                break;
+            case R.id.btn_message:
+                rbs[1].setChecked(true);
+                messageFragment(null);
+                break;
+            case R.id.btn_my_info:
+                rbs[2].setChecked(true);
+                myInfoFragment(null);
+                break;
+
+        }
     }
 }

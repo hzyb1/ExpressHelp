@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.a14574.practice.DeleteOrderService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -245,6 +247,9 @@ public class SubmitOrderActivity extends BaseActivity {
                 }else{
                     order=createOrder();
                     submitOrder(order);     //上传服务器
+                    /*Intent intent = new Intent(SubmitOrderActivity.this,DeleteOrderService.class);
+                    startService(intent);
+                    DeleteOrderService.createOrderTimer(order);*/
                 }
             }
         });

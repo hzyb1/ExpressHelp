@@ -27,7 +27,6 @@ public class BeginActivity extends BaseActivity {
     private ImageView beginImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        closeAndroidPDialog();
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21){
             View decorView = getWindow().getDecorView();
@@ -104,25 +103,5 @@ public class BeginActivity extends BaseActivity {
         intent.setClass(BeginActivity.this,LoginActivity.class);     //跳转到登录界面
         BeginActivity.this.startActivity(intent);
         finish();
-    }
-    private void closeAndroidPDialog() {
-        try {
-            Class aClass = Class.forName("android.content.pm.PackageParser$Package");
-            Constructor declaredConstructor = aClass.getDeclaredConstructor(String.class);
-            declaredConstructor.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            Class cls = Class.forName("android.app.ActivityThread");
-            Method declaredMethod = cls.getDeclaredMethod("currentActivityThread");
-            declaredMethod.setAccessible(true);
-            Object activityThread = declaredMethod.invoke(null);
-            Field mHiddenApiWarningShown = cls.getDeclaredField("mHiddenApiWarningShown");
-            mHiddenApiWarningShown.setAccessible(true);
-            mHiddenApiWarningShown.setBoolean(activityThread, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -16,12 +16,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a14574.practice.DeleteOrderService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import http.HttpUtil;
 import model.Order;
@@ -29,6 +33,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import util.TimeUtil;
 
 public class PayOrderActivity extends BaseActivity {
     private TextView address;
@@ -39,6 +44,7 @@ public class PayOrderActivity extends BaseActivity {
     private TextView money;
     private TextView first_time;
     private TextView second;
+    private TextView validTime;       //计时
     private Button admit;       //支付按钮
     private Button change;      //修改订单按钮
     private Toolbar toolbar;
@@ -46,6 +52,26 @@ public class PayOrderActivity extends BaseActivity {
     private ProgressDialog progressDialog;//上传状态对话框
     private boolean flag = false;
     private Gson gson;
+
+    public Runnable timeRunable = new Runnable() {
+        @Override
+        public void run() {
+
+            currentSecond = currentSecond - 1000;
+            validTime.setText(PayOrderActivity.getFormatHMS(currentSecond));
+            if (!isPause) {
+                //递归调用本runable对象，实现每隔一秒一次执行任务
+                mhandle.postDelayed(this, 1000);
+            }
+        }
+    };
+    //计时器
+    public Handler mhandle = null;
+    private static boolean isPause = false;//是否暂停
+    public long currentSecond = 30*60*1000;//当前毫秒数
+    private Thread timeThread=null;
+    /*****************计时器*******************/
+
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -73,6 +99,7 @@ public class PayOrderActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_order);
         Intent intent = getIntent();
         order = (Order)intent.getSerializableExtra("order");
+        setCurrentSecond();
         initView();
 
         initEvents();
@@ -91,6 +118,8 @@ public class PayOrderActivity extends BaseActivity {
         admit = (Button)findViewById(R.id.pay_admit);
         change = (Button)findViewById(R.id.pay_change);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        validTime = (TextView) findViewById(R.id.valid_time);
+        mhandle = new Handler();
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
@@ -190,5 +219,45 @@ public class PayOrderActivity extends BaseActivity {
         setResult(1,intent);
         Log.d("日志","zhixingle onbackpressed");
         finish();
+    }
+    public static String getFormatHMS(long time){
+        time=time/1000;//总秒数
+        int s= (int) (time%60);//秒
+        int m= (int) (time/60);//分
+        return String.format("%02d:%02d",m,s);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        mhandle.postDelayed(timeRunable,1000);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        mhandle.removeCallbacks(timeRunable);
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mhandle.removeCallbacks(timeRunable);
+        super.onDestroy();
+    }
+    private void setCurrentSecond(){
+        //currentSecond=DeleteOrderService.getTime(order);
+        long diff = TimeUtil.compareTime(order);
+        long maxStep = 30*60*1000;
+        if(diff<=maxStep){
+            currentSecond = maxStep-diff;
+        }else{
+            currentSecond = 0;
+            Toast.makeText(this,"该任务已超出时限，请重新发单！！！",Toast.LENGTH_SHORT).show();
+            this.finish();
+        }
     }
 }

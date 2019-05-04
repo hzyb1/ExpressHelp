@@ -57,6 +57,8 @@ public class ChatActivity extends AppCompatActivity {
     public void init(){
         for (int i = 0;i<10;i++) {
             ChatRecord record = new ChatRecord();
+            Log.d("日志","id"+LoginActivity.USER.getId());
+            record.setGeterId(1);
             record.setMessage("测试聊天内容");
             chatRecords.add(record);
         }

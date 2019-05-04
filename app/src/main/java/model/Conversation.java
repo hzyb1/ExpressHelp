@@ -69,6 +69,4 @@ public class Conversation {
     public void setUser2Delete(boolean isUser2Delete) {
         this.isUser2Delete = isUser2Delete;
     }
-	
-	
 }

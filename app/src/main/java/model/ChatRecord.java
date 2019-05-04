@@ -10,8 +10,7 @@ public class ChatRecord {
 	private String message;		//发送内容
 	private Timestamp sendTime;	//发送时间
 	private int conversationId;		//该聊天记录所属的对话id
-	
-	
+
 	
 	public Timestamp getSendTime() {
 		return sendTime;

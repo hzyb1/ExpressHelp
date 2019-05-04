@@ -33,7 +33,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
     public static User USER = null;
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
-    private Button adminLoginButton;        //切换到客服登录的按钮
+    //private Button adminLoginButton;        //切换到客服登录的按钮
     private boolean passwordStatus = false;     //密码状态
     private EditText passwordEditText;      //密码编辑框
     private Button normalLogin;     //登录按钮
@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
+        //adminLoginButton =  (Button) findViewById(R.id.admin_login_button);
         normalLogin = (Button) findViewById(R.id.normal_login);
     }
     //初始化监听器
@@ -70,13 +70,13 @@ public class LoginActivity extends BaseActivity {      //登录活动
                 startActivity(intent);*/
             }
         });
-        adminLoginButton.setOnClickListener(new View.OnClickListener() {
+        /*adminLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this,AdminLoginActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         passwordImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

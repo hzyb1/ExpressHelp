@@ -199,6 +199,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             userName.setText(LoginActivity.USER.getUsername());
             String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
             Log.d("userimage",LoginActivity.USER.getHeadImage());
+            Log.d("testImageUrl",url);
             Glide.with(getContext()).load(url).into(headImage);
         }
     }

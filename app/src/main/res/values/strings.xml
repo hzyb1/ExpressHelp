@@ -15,7 +15,7 @@
     <string name="admin_username_edit_hint">请输入管理员账户名</string>
     <string name="password_edit_hint">请输入密码</string>
     <string name="login">登录</string>
-    <string name="register_account">注册</string>
+    <string name="register_account"><u>未有账号？点击注册</u></string>
     <string name="forget_password">忘记密码</string>
     <string name="into_admin_login">管理员登录</string>
     <string name="temp_time">00:00</string>

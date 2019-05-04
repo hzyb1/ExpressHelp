@@ -3,7 +3,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/circular_shape"
     android:layout_margin="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -13,15 +12,26 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/defaule_head_image"/>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/accept_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         <TextView
         android:id="@+id/chat_accept_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="内容"/>
+
+        </LinearLayout>
+
 
 </LinearLayout>

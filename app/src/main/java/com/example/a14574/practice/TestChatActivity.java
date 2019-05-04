@@ -25,13 +25,13 @@ import java.util.Date;
 
 import Adapter.MyAdapter;
 import http.ClientSender;
+import model.ChatRecord;
 import model.MyBean;
 
 public class TestChatActivity extends AppCompatActivity {
     private RecyclerView rv;
     private EditText et;
     private Button btn;
-    private Socket socket;
     private ArrayList<MyBean> list;
     private MyAdapter adapter;
     private int sendId;
@@ -52,15 +52,19 @@ public class TestChatActivity extends AppCompatActivity {
         btn = (Button) findViewById(R.id.btn);
         list = new ArrayList<>();
         adapter = new MyAdapter(this);
-
         final Handler handler = new MyHandler();
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    socket = new Socket(ip, 10010);
+  //                  socket = new Socket(ip, 10010);
                     //        new ClientSender(socket).send();
-                    InputStream inputStream = socket.getInputStream();
+                    if(LoginActivity.socket != null){
+                       return ;
+                    }
+                    InputStream inputStream = LoginActivity.socket.getInputStream();
                     byte[] buffer = new byte[1024];
                     int len;
                     while ((len = inputStream.read(buffer)) != -1) {
@@ -71,17 +75,6 @@ public class TestChatActivity extends AppCompatActivity {
                         message.obj = data;
                         handler.sendMessage(message);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-       //             new ClientSender(new Socket(ip, 10010)).send();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -96,8 +89,10 @@ public class TestChatActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            OutputStream outputStream = socket.getOutputStream();
+                            OutputStream outputStream = LoginActivity.socket.getOutputStream();
                             SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");    //设置日期格式
+                      //      ChatRecord chatRecord = new ChatRecord();
+
                             MyBean myBean = new MyBean();
                             myBean.setData(df.format(new Date()).toString());
                             myBean.setSendId(LoginActivity.USER.getId());

@@ -1,9 +1,14 @@
 package com.example.a14574.expresshelp;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,14 +20,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
 import Adapter.ChatAdapter;
-import Adapter.ChatListAdapter;
+import http.HttpUtil;
 import model.ChatRecord;
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText content;
@@ -30,15 +45,57 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<ChatRecord> chatRecords = new ArrayList<>();
     private Bitmap bitmap;
+    private ProgressDialog progressDialog;     //等待状态对话框
+    private int id1,id2;
+    private int conversationId;
     private ChatListReceiver chatListReceiver;
     private TextView logo;
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            result = msg.obj.toString();
+            if(msg.arg1 == 1){      //初始化record；
+                if(result.length() >= 5){
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+                    chatRecords = gson.fromJson(result, new TypeToken<List<ChatRecord>>(){}.getType());
+                    Log.d("日志","大小"+chatRecords.size());
+                    conversationId = chatRecords.get(0).getConversationId();
+                    ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
+
+                    recyclerView.setAdapter(adapter);
+                    
+                }else{
+                    conversationId = Integer.parseInt(result);
+                }
+                progressDialog.dismiss();       //结束等待
+            }else if(msg.arg1 == 2){
+                ChatRecord chatRecord = (ChatRecord) msg.obj;
+                chatRecords.add(chatRecord);
+                ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
+                if(recyclerView == null){
+                    Log.d("日志","啥玩意");
+      //              recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
+       //             LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
+        //            recyclerView.setLayoutManager(layoutManager);
+                }else{
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         bitmap = getIntent().getParcelableExtra("photo");
         initView();
-        init();
+        id1 = getIntent().getIntExtra("id1",0);
+        id2 = getIntent().getIntExtra("id2",0);
+        initList();
         content.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -65,7 +122,7 @@ public class ChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChatRecord record = new ChatRecord();
+                final ChatRecord record = new ChatRecord();
                 record.setSenderId(LoginActivity.USER.getId());
                 if (LoginActivity.USER.getId() == id1){
                     record.setGeterId(id2);
@@ -74,9 +131,38 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 record.setMessage(content.getText().toString());
                 record.setSendTime(new Timestamp(System.currentTimeMillis()));
+                if(conversationId == 0){
+                    initList();
+                }else{
+                    record.setConversationId(conversationId);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                OutputStream outputStream = LoginActivity.socket.getOutputStream();
+                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+                                String text = gson.toJson(record);
+                                Log.d("日志",text);
+                                outputStream.write(text.getBytes("utf-8"));
+                                outputStream.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+                Message message = new Message();
+                message.obj = record;
+                message.arg1 = 2;
+                mHandler.sendMessage(message);
+                content.setText("");
             }
         });
+
         chatListReceiver = new ChatListReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("CHAT_LIST");
+        registerReceiver(chatListReceiver,intentFilter);
     }
     private void initView(){
         content = (EditText)findViewById(R.id.et_content);
@@ -85,17 +171,47 @@ public class ChatActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         logo.setText(name);
     }
-    public void init(){
-        for (int i = 0;i<2;i++) {
-            ChatRecord record = new ChatRecord();
-            record.setSenderId(10010);
-            record.setMessage("测试聊天内容");
-            chatRecords.add(record);
-
-            ChatRecord record1 = new ChatRecord();
-            record.setSenderId(10086);
-            record.setMessage("测试聊天内容");
-            chatRecords.add(record1);
+    public void initList(){
+        progressDialog = new ProgressDialog(ChatActivity.this);
+        progressDialog.setTitle("请稍后......");
+        progressDialog.setMessage("正在加载......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        HashMap<String, String> params = new HashMap<String, String>();
+        if(LoginActivity.USER == null){
+            progressDialog.dismiss();
+            return ;
+        }else{
+        }
+        params.put("id1", id1+"");
+        params.put("id2", id2+"");
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) +  "chatRecordsServlet";
+            String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+            Log.d("日志",compeletedURL);
+            HttpUtil.sendGetOkHttpRequest(compeletedURL,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(ChatActivity.this,"未能连接到网络", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        progressDialog.dismiss();
+                        return ;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    message.arg1 = 1;
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -103,12 +219,18 @@ public class ChatActivity extends AppCompatActivity {
         public ChatListReceiver() {
             super();
         }
-
         @Override
         public void onReceive(Context context, Intent intent) {
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
-            Log.d("日志","在聊天界面收到了广播");
+            if(record.getConversationId() == conversationId){
+                Message message = new Message();
+                message.obj = record;
+                message.arg1 = 2;
+                mHandler.sendMessage(message);
+                Log.d("日志",record.getMessage());
+            }else{
 
+            }
         }
     }
 }

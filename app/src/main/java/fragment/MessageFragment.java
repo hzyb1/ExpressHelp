@@ -42,13 +42,14 @@ import okhttp3.Response;
 public class MessageFragment extends Fragment {
     private RecyclerView recyclerView;
     private  ChatListAdapter adapter;
-    private List<ConversationVo> conversationList = new ArrayList<>();
-    private ChatService.ChatBinder chatBinder;
+    static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
+    private int unReadMessage = 0;
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             super.handleMessage(msg);
             String result = "";
+            if(msg == null || msg.obj == null) return;
             result = msg.obj.toString();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             conversationList = gson.fromJson(result, new TypeToken<List<ConversationVo>>(){}.getType());
@@ -56,6 +57,19 @@ public class MessageFragment extends Fragment {
 
             adapter = new ChatListAdapter(conversationList,getContext());
             //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show()
+            unReadMessage = 0;
+            for(int i = 0;i<conversationList.size();i++){
+                if(LoginActivity.USER.getId() == conversationList.get(i).getUserId1()){
+                    unReadMessage+=conversationList.get(i).getUser1UnRead();
+                }else{
+                    unReadMessage+=conversationList.get(i).getUser2UnRead();
+                }
+
+            }
+            Log.d("日志","信息数量"+unReadMessage);
+            adapter = new ChatListAdapter(conversationList,getContext());
+                //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
+            Log.d("日志","最后的对象"+conversationList.size());
             recyclerView.setAdapter(adapter);
 
         }
@@ -72,13 +86,26 @@ public class MessageFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ChatListAdapter(conversationList,getContext());
         recyclerView.setAdapter(adapter);
-
         chatListReceiver = new ChatListReceiver();
-
-
-
         return view;
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        super.onHiddenChanged(hidden);
+        if(hidden){//不在最前端界面显示，相当于调用了onPause()
+
+
+        }else{//重新显示到最前端 ,相当于调用了onResume()
+            init();
+            //进行网络数据刷新  此处执行必须要在 Fragment与Activity绑定了 即需要添加判断是否完成绑定，否则将会报空（即非第一个显示出来的fragment，虽然onCreateView没有被调用,
+            //但是onHiddenChanged也会被调用，所以如果你尝试去获取活动的话，注意防止出现空指针）
+
+        }
+
+    }
+
+
 
     public void update(ChatRecord record){
 

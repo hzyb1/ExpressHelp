@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -24,21 +25,25 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     private Bitmap bitmap;
     class AcceptViewHolder extends RecyclerView.ViewHolder{
     private TextView message;
+    private TextView time;
     private ChatRecord chatRecord;
     private CircleImageView image;
         public  AcceptViewHolder(View view){
             super(view);
             message = (TextView)view.findViewById(R.id.chat_accept_message);
             image = (CircleImageView)view.findViewById(R.id.chat_accept_photo);
+            time = (TextView)view.findViewById(R.id.accept_time);
         }
     }
 
     class SendViewHolder extends RecyclerView.ViewHolder{
         private TextView message;
         private ChatRecord chatRecord;
+        private TextView time;
         public  SendViewHolder(View view){
             super(view);
             message = (TextView)view.findViewById(R.id.chat_send_message);
+            time = (TextView)view.findViewById(R.id.send_time);
         }
     }
     public ChatAdapter (List<ChatRecord> list ,Bitmap bitmap){
@@ -67,10 +72,14 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
         if (holder instanceof SendViewHolder){
             Log.d("日志","发送方");
             ((SendViewHolder) holder).message.setText(record.getMessage());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            ((SendViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
             ((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            ((AcceptViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
         }
     }
 

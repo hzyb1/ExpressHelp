@@ -23,7 +23,9 @@
 
 
         <activity android:name=".RunnerActivity" />
-        <activity android:name=".ChatActivity" />
+        <activity android:name=".ChatActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".BeginActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">

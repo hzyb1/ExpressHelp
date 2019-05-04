@@ -40,7 +40,7 @@ import okhttp3.Response;
 
 
 public class MessageFragment extends Fragment {
-    static private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private  ChatListAdapter adapter;
     static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
@@ -53,6 +53,10 @@ public class MessageFragment extends Fragment {
             result = msg.obj.toString();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             conversationList = gson.fromJson(result, new TypeToken<List<ConversationVo>>(){}.getType());
+
+
+            adapter = new ChatListAdapter(conversationList,getContext());
+            //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show()
             unReadMessage = 0;
             for(int i = 0;i<conversationList.size();i++){
                 if(LoginActivity.USER.getId() == conversationList.get(i).getUserId1()){

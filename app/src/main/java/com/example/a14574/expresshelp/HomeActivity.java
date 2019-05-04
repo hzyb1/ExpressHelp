@@ -116,7 +116,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
     }
 
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_home_page:

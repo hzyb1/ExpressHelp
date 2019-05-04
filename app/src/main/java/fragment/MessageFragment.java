@@ -6,22 +6,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.a14574.expresshelp.R;
+import com.example.a14574.practice.ChatService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.ChatListAdapter;
-import model.ChatUser;
 
 
 public class MessageFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<ChatUser>chatUserList = new ArrayList<>();
+    private ChatService.ChatBinder chatBinder;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

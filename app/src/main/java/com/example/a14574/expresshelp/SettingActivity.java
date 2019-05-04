@@ -2,14 +2,11 @@ package com.example.a14574.expresshelp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -20,39 +17,33 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.wildma.pictureselector.PictureSelector;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
-import Adapter.OrderBriefAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 import http.HttpUtil;
-import model.Order;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import util.ActivityCollector;
 
 public class SettingActivity extends BaseActivity {
 
@@ -64,6 +55,12 @@ public class SettingActivity extends BaseActivity {
     private final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/jpg");
     private Button toModifyMyInfo;
     public static final int CHOOSE_PHOTO = 2;
+    private RelativeLayout topUp;    //充值
+
+    private String RSA_PRIVATE = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwM+k1zTRxNJEz+rGNZpmAg3H+ipw0u/PcQ0Cqd4L5aIHNGJc3YgcFPU0aIT29gT0TDWz5/yjimnWdiMplwanvwdSKqMaXP9xjSzg61HAxfXQBFsY+CHi1Pkwtu+K0D2soAS7tE2v+zI3IKp524aAlqFOe+nj0Zcj8fdRf7RnbXAK9s8lhmAVs9PpwvO/LAaQBeVG6NeYcGy4EfoxbLyq/zmV16qPL27mwBqEUfN2mHbORLEWCrv8eewdriyeJeHCrp5wyMmq1LUcbJsfLONWuwXjgjvhQ/Fu082hvXKRU7g7cNKWK+0j/14NvcnCwpjevf/ZFF4bPCfJX6yUxwRfOwIDAQAB";
+    public static final String APPID = "2019042464304405";
+    private static final int SDK_PAY_FLAG = 1001;
+
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -73,10 +70,13 @@ public class SettingActivity extends BaseActivity {
             Log.d("日志",result);
             LoginActivity.USER.setHeadImage(result);
             String url = SettingActivity.this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
-            Glide.with(SettingActivity.this).load(url).into(headImage);;
+            Glide.with(SettingActivity.this).load(url).into(headImage);
 
         }
     };
+
+
+
 
 
 
@@ -94,6 +94,7 @@ public class SettingActivity extends BaseActivity {
         userName = (TextView)findViewById(R.id.user_name);
         balance = (TextView)findViewById(R.id.balance);
         toModifyMyInfo = (Button)findViewById(R.id.to_modify_myinfo);
+        topUp = (RelativeLayout) findViewById(R.id.top_up);
         if(LoginActivity.USER!=null){
             userName.setText(LoginActivity.USER.getUsername());
             balance.setText(LoginActivity.USER.getBalance()+"￥");
@@ -150,6 +151,14 @@ public class SettingActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        topUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //充值方法
+                //Toast.makeText(SettingActivity.this,"You clicked top_up",Toast.LENGTH_SHORT).show();
+                showTopUpDialog();
+            }
+        });
     }
 
     @Override
@@ -185,8 +194,6 @@ public class SettingActivity extends BaseActivity {
                 } else {
                     Toast.makeText(this,"您拒绝了该项权限，软件无法访问相册",Toast.LENGTH_LONG).show();
                 }
-                break;
-            default:
                 break;
         }
     }
@@ -274,4 +281,36 @@ public class SettingActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private void showTopUpDialog(){
+        View view = LayoutInflater.from(this).inflate(R.layout.top_up_layout,null,false);
+        Button cancel = (Button) view.findViewById(R.id.cancel);
+        Button confirm = (Button) view.findViewById(R.id.confirm);
+        final EditText money = (EditText) view.findViewById(R.id.money);
+        final AlertDialog dialog = new AlertDialog.Builder(this).setView(view).create();
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String moneyS = money.getText().toString().trim();
+                float moneyF=0;
+                try {
+                    moneyF = Float.parseFloat(moneyS);
+                }catch (Exception e){
+                    Toast.makeText(SettingActivity.this,"金额需为数字哦！！！",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    return;
+                }
+                //充值操作
+
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 }

@@ -24,10 +24,8 @@ public class HomeActivity extends BaseActivity {           //主界面活动
     private FragmentManager fragmentManager = getSupportFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("日志","home???");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         fragment[0] = new HomePageFragment();
         fragment[1] = new MessageFragment();
         fragment[2] = new MyInfoFragment();
@@ -74,9 +72,7 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         WindowManager wm = this.getWindowManager();
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
-        Log.d("Myheight",height+"");
         int realHeight = (int)(height/22.48);
-        Log.d("Realheight",realHeight+"");
         //定义底部标签图片大小和位置
         Drawable drawable_home_page = getResources().getDrawable(R.drawable.selector_home_page);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形

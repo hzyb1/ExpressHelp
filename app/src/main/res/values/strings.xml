@@ -5,7 +5,7 @@
     <string name="TheServer">http://45.32.84.43:8080/ExpressHelpServce/</string>
     <string name="VirtualTheServer">http://10.0.2.2:1111/ExpressHelpServce/</string>
 
-    <string name="app_name">ExpressHelp</string>
+    <string name="app_name">快递帮</string>
     <string name="normal_user_login_title">用户登录</string>
     <string name="register_new_user_title">新用户注册</string>
     <string name="pay_order_title">支付订单</string>
@@ -119,4 +119,19 @@
     <string name="arrived_status">您已送达，请耐心等待用户确认</string>
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
+
+    <string name="start_text">跑手正马不停蹄的向您赶来呢</string>
+
+    <array name="express_name_list">
+        <item>申通快递</item>
+        <item>中通快递</item>
+        <item>圆通快递</item>
+        <item>韵达快递</item>
+        <item>百世快递</item>
+        <item>天天快递</item>
+        <item>顺丰快运</item>
+        <item>EMS邮政</item>
+        <item>天猫</item>
+        <item>京东快递</item>
+    </array>
 </resources>

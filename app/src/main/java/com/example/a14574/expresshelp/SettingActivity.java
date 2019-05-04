@@ -2,7 +2,6 @@ package com.example.a14574.expresshelp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,28 +32,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.wildma.pictureselector.PictureSelector;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
-import Adapter.OrderBriefAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 import http.HttpUtil;
-import model.Order;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import util.ActivityCollector;
 
 public class SettingActivity extends BaseActivity {
 
@@ -67,6 +56,11 @@ public class SettingActivity extends BaseActivity {
     private Button toModifyMyInfo;
     public static final int CHOOSE_PHOTO = 2;
     private RelativeLayout topUp;    //充值
+
+    private String RSA_PRIVATE = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwM+k1zTRxNJEz+rGNZpmAg3H+ipw0u/PcQ0Cqd4L5aIHNGJc3YgcFPU0aIT29gT0TDWz5/yjimnWdiMplwanvwdSKqMaXP9xjSzg61HAxfXQBFsY+CHi1Pkwtu+K0D2soAS7tE2v+zI3IKp524aAlqFOe+nj0Zcj8fdRf7RnbXAK9s8lhmAVs9PpwvO/LAaQBeVG6NeYcGy4EfoxbLyq/zmV16qPL27mwBqEUfN2mHbORLEWCrv8eewdriyeJeHCrp5wyMmq1LUcbJsfLONWuwXjgjvhQ/Fu082hvXKRU7g7cNKWK+0j/14NvcnCwpjevf/ZFF4bPCfJX6yUxwRfOwIDAQAB";
+    public static final String APPID = "2019042464304405";
+    private static final int SDK_PAY_FLAG = 1001;
+
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -76,10 +70,13 @@ public class SettingActivity extends BaseActivity {
             Log.d("日志",result);
             LoginActivity.USER.setHeadImage(result);
             String url = SettingActivity.this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
-            Glide.with(SettingActivity.this).load(url).into(headImage);;
+            Glide.with(SettingActivity.this).load(url).into(headImage);
 
         }
     };
+
+
+
 
 
 
@@ -198,8 +195,6 @@ public class SettingActivity extends BaseActivity {
                     Toast.makeText(this,"您拒绝了该项权限，软件无法访问相册",Toast.LENGTH_LONG).show();
                 }
                 break;
-            default:
-                break;
         }
     }
 
@@ -305,6 +300,7 @@ public class SettingActivity extends BaseActivity {
                     return;
                 }
                 //充值操作
+
                 dialog.dismiss();
             }
         });
@@ -316,4 +312,5 @@ public class SettingActivity extends BaseActivity {
         });
         dialog.show();
     }
+
 }

@@ -28,6 +28,7 @@ import com.wildma.pictureselector.PictureSelector;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import util.Dialog;
 
 
 public class MyInfoFragment extends Fragment implements View.OnClickListener{
@@ -132,34 +133,25 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RunnerActivity.class);
-                intent.putExtra("style",1);
-                Log.d("日志","Pick方法");
-                startActivity(intent);
+                toRunnerOrder(1);
             }
         });
         give.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RunnerActivity.class);
-                intent.putExtra("style",2);
-                startActivity(intent);
+                toRunnerOrder(2);
             }
         });
         runner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RunnerActivity.class);
-                intent.putExtra("style",3);
-                startActivity(intent);
+                toRunnerOrder(3);
             }
         });
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RunnerActivity.class);
-                intent.putExtra("style",4);
-                startActivity(intent);
+                toRunnerOrder(4);
             }
         });
     }
@@ -209,6 +201,16 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
             Log.d("userimage",LoginActivity.USER.getHeadImage());
             Glide.with(getContext()).load(url).into(headImage);
+        }
+    }
+
+    private void toRunnerOrder(int style){
+        if (LoginActivity.USER.getIdCard() == null){
+            Dialog.showToBecomeRunnerDialog(this.getActivity());
+        }else {
+            Intent intent = new Intent(getActivity(), RunnerActivity.class);
+            intent.putExtra("style",style);
+            startActivity(intent);
         }
     }
 }

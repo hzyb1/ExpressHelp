@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -46,6 +48,7 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import view.WheelView;
 
 public class SubmitOrderActivity extends BaseActivity {
 
@@ -55,7 +58,7 @@ public class SubmitOrderActivity extends BaseActivity {
     private TextView secondStartTime;
     private TextView secondEndTime;
     private Button submitOrder;
-    private EditText expressName;
+    private TextView expressName;
     private EditText getAddress;
     private EditText takeName;
     private EditText takeTelephone;
@@ -68,6 +71,8 @@ public class SubmitOrderActivity extends BaseActivity {
     private ProgressDialog progressDialog;                   //上传状态对话框
     private SimpleDateFormat dateFormatHm = new SimpleDateFormat("HH:mm");//时分格式
     private Timestamp flagTime = new Timestamp(System.currentTimeMillis());  //进入发单页面的时间
+
+    private List<String> expressList;
 
     Handler mHandler = new Handler(){
         @Override
@@ -133,7 +138,7 @@ public class SubmitOrderActivity extends BaseActivity {
         }
         toolBarTitle = (TextView) findViewById(R.id.toolbar_title);
         submitOrder = (Button) findViewById(R.id.submit_order_button);
-        expressName = (EditText) findViewById(R.id.express_name);
+        expressName = (TextView) findViewById(R.id.express_name);
         getAddress = (EditText) findViewById(R.id.get_address);
         takeName = (EditText) findViewById(R.id.take_name);
         takeTelephone = (EditText) findViewById(R.id.take_telephone);
@@ -153,6 +158,13 @@ public class SubmitOrderActivity extends BaseActivity {
             toolBarTitle.setText("修改订单");
             submitOrder.setText("修改订单");
             initModifyOrder();
+        }else{
+            initSubmitOrder();
+        }
+        expressList = new ArrayList<>();
+        String expressStringList[]=getResources().getStringArray(R.array.express_name_list);
+        for(int i=0;i<expressStringList.length;i++){
+            expressList.add(expressStringList[i]);
         }
     }
     private void initEvents(){
@@ -182,6 +194,32 @@ public class SubmitOrderActivity extends BaseActivity {
             public void onClick(View view) {
                 String split[]=splitTime(secondEndTime.getText().toString().trim());
                 showTimePickerDialog(secondEndTime,Integer.parseInt(split[0]),Integer.parseInt(split[1]));
+            }
+        });
+        expressName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = getExpressPosition();
+                if(position==-1){
+                    position=2;
+                }
+                View outerView = LayoutInflater.from(SubmitOrderActivity.this).inflate(R.layout.wheel_view, null);
+                WheelView wv = (WheelView) outerView.findViewById(R.id.wheel_view_wv);
+                wv.setOffset(2);
+                wv.setItems(expressList);
+                wv.setSeletion(position);
+                wv.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+                    @Override
+                    public void onSelected(int selectedIndex, String item) {
+                        //Log.d(TAG, "[Dialog]selectedIndex: " + selectedIndex + ", item: " + item);
+                        expressName.setText(item);
+                    }
+                });
+                new AlertDialog.Builder(SubmitOrderActivity.this)
+                        .setTitle("选择快递名")
+                        .setView(outerView)
+                        .setPositiveButton("确认", null)
+                        .show();
             }
         });
         submitOrder.setOnClickListener(new View.OnClickListener() {
@@ -461,6 +499,32 @@ public class SubmitOrderActivity extends BaseActivity {
         String[] split;
         split=time.split(":");
         return split;
+    }
+    private int getExpressPosition(){
+        String a = expressName.getText().toString().trim();
+        for(int i=0;i<expressList.size();i++){
+            if(a.equals(expressList.get(i))){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void initSubmitOrder(){
+        String getAddress="";
+        if(LoginActivity.USER.getBedroomBuild()!=0){
+            getAddress+=(LoginActivity.USER.getBedroomBuild()+" -");
+        }
+        if(LoginActivity.USER.getBedroomNumber()!=0){
+            getAddress+=(" "+LoginActivity.USER.getBedroomNumber());
+        }
+        this.getAddress.setText(getAddress);
+        if(LoginActivity.USER.getTrueName()!=null && !LoginActivity.USER.getTrueName().trim().equals("")){
+            this.takeName.setText(LoginActivity.USER.getTrueName());
+        }
+        if(LoginActivity.USER.getTelephone()!=null && !LoginActivity.USER.getTelephone().trim().equals("")){
+            this.takeTelephone.setText(LoginActivity.USER.getTelephone());
+        }
     }
 
 

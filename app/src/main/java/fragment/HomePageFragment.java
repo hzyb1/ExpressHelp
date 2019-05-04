@@ -29,9 +29,12 @@ import android.widget.Toast;
 
 
 import com.example.a14574.expresshelp.ChatActivity;
+import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.PayOrderActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.expresshelp.SubmitOrderActivity;
+import com.example.a14574.practice.TestChatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -177,13 +180,17 @@ public class HomePageFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //搜索事件
-                String searchKeyS = searchKey.getText().toString().trim();
-                if(searchKeyS.equals("")){
-                    Toast.makeText(getActivity(),"搜索内容不能为空哦！！！！",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                doSearch(searchKeyS);
+                TestChatActivity.getId = Integer.parseInt(searchKey.getText().toString());
+                Intent intent = new Intent(HomePageFragment.this.getActivity(),TestChatActivity.class);
+                startActivity(intent);
+
+//                //搜索事件
+//                String searchKeyS = searchKey.getText().toString().trim();
+//                if(searchKeyS.equals("")){
+//                    Toast.makeText(getActivity(),"搜索内容不能为空哦！！！！",Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                doSearch(searchKeyS);
             }
         });
 

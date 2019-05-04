@@ -36,7 +36,6 @@ public class BeginActivity extends BaseActivity {
         setContentView(R.layout.activity_begin);
         beginImage = (ImageView) findViewById(R.id.begin_image);
      //   Glide.with(this).load(R.drawable.start_image).into(beginImage);
-        Log.d("日志","闪退问题0");
         spLogin();          //持久化登录
 
     }

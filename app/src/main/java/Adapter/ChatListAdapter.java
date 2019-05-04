@@ -7,34 +7,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
+import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
-
 import java.util.List;
 
-import model.ChatUser;
-
+import de.hdodenhof.circleimageview.CircleImageView;
+import model.ConversationVo;
+import model.User;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHolder> {
-    private List<ChatUser> mChatUserList;
+    private List<ConversationVo> mConversationVo;
+    private Context context;
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView id;
         private TextView message;
         private LinearLayout chat;
+        private CircleImageView conversationHeadImage;
+
         public ViewHolder(View view){
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
             message = (TextView)view.findViewById(R.id.chat_list_message);
             chat = (LinearLayout)view.findViewById(R.id.chat);
+            conversationHeadImage = (CircleImageView)view.findViewById(R.id.conversationHeadImage);
         }
     }
-    public ChatListAdapter(List<ChatUser> ChatUserList){
-        mChatUserList = ChatUserList;
+    public ChatListAdapter(List<ConversationVo> List,Context context){
+        this.context = context;
+        mConversationVo = List;
     }
 
     @Override
@@ -54,13 +60,17 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
-        ChatUser chatUser = mChatUserList.get(i);
-       holder.id.setText(chatUser.getUsername());
-      holder.message.setText(chatUser.getMessage());
+        ConversationVo conversation = mConversationVo.get(i);
+        User user = LoginActivity.USER;
+        holder.id.setText(conversation.getName());
+        holder.message.setText(conversation.getLastMessage());
+        String url = context.getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
+        Log.d("userimage",LoginActivity.USER.getHeadImage());
+        Glide.with(context).load(url).into(holder.conversationHeadImage);
     }
 
     @Override
     public int getItemCount() {
-        return mChatUserList.size();
+        return mConversationVo.size();
     }
 }

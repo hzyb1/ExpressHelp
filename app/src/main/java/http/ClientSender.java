@@ -25,7 +25,7 @@ public class ClientSender {
                 OutputStream outputStream = sender.getOutputStream();
                 outputStream.write("heart8848".getBytes("utf-8"));
                 outputStream.flush();
-                Thread.sleep(10000);
+                Thread.sleep(60000);
             }
         }
         catch(Exception e){

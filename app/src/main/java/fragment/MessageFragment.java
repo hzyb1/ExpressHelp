@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Adapter.ChatListAdapter;
+import model.ChatRecord;
 import http.HttpUtil;
 import model.ConversationVo;
 import model.Order;
@@ -42,51 +43,76 @@ public class MessageFragment extends Fragment {
     static private RecyclerView recyclerView;
     private  ChatListAdapter adapter;
     static private List<ConversationVo> conversationList = new ArrayList<>();
-    private ChatService.ChatBinder chatBinder;
     private ChatListReceiver chatListReceiver;
+    private int unReadMessage = 0;
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             super.handleMessage(msg);
             String result = "";
+            if(msg == null || msg.obj == null) return;
             result = msg.obj.toString();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             conversationList = gson.fromJson(result, new TypeToken<List<ConversationVo>>(){}.getType());
-                adapter = new ChatListAdapter(conversationList,getContext());
+            unReadMessage = 0;
+            for(int i = 0;i<conversationList.size();i++){
+                if(LoginActivity.USER.getId() == conversationList.get(i).getUserId1()){
+                    unReadMessage+=conversationList.get(i).getUser1UnRead();
+                }else{
+                    unReadMessage+=conversationList.get(i).getUser2UnRead();
+                }
+
+            }
+            Log.d("日志","信息数量"+unReadMessage);
+            adapter = new ChatListAdapter(conversationList,getContext());
                 //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
-                Log.d("日志","最后的对象"+conversationList.size());
-                recyclerView.setAdapter(adapter);
+            Log.d("日志","最后的对象"+conversationList.size());
+            recyclerView.setAdapter(adapter);
 
         }
     };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_message,container,false);
         init();
-
+        View view = inflater.inflate(R.layout.fragment_message,container,false);
         Intent startIntent = new Intent(container.getContext(),ChatService.class);
         container.getContext().startService(startIntent);
-
-
         recyclerView = (RecyclerView)view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ChatListAdapter(conversationList,getContext());
         recyclerView.setAdapter(adapter);
-
         chatListReceiver = new ChatListReceiver();
-
-
-
         return view;
     }
 
-    public void update(ConversationVo conversation){
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        super.onHiddenChanged(hidden);
+        if(hidden){//不在最前端界面显示，相当于调用了onPause()
+
+
+        }else{//重新显示到最前端 ,相当于调用了onResume()
+            init();
+            //进行网络数据刷新  此处执行必须要在 Fragment与Activity绑定了 即需要添加判断是否完成绑定，否则将会报空（即非第一个显示出来的fragment，虽然onCreateView没有被调用,
+            //但是onHiddenChanged也会被调用，所以如果你尝试去获取活动的话，注意防止出现空指针）
+
+        }
+
+    }
+
+
+
+    public void update(ChatRecord record){
 
        Log.d("日志","update方法");
         Log.d("日志","update方法"+conversationList.size());
-       //list.add(user);
-        conversationList.add(0,conversationList.remove(conversationList.size()-1));
+       for (int i = 0;i<conversationList.size()-1;i++){
+           if (record.getConversationId() == conversationList.get(i).getId()){
+               conversationList.get(i).setLastMessage(record.getMessage());
+               conversationList.add(0,conversationList.remove(i));
+           }
+       }
        new Thread(new Runnable() {
            @Override
            public void run() {
@@ -96,6 +122,7 @@ public class MessageFragment extends Fragment {
            }
        }).start();
     }
+
 
     public void init(){
         HashMap<String, String> params = new HashMap<String, String>();
@@ -133,16 +160,17 @@ public class MessageFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public  class ChatListReceiver extends BroadcastReceiver{
+    public class ChatListReceiver extends BroadcastReceiver{
         public ChatListReceiver() {
             super();
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-        //    ChatUser user = (ChatUser) intent.getSerializableExtra("user");
-         //   Toast.makeText(context,user.getMessage(),Toast.LENGTH_SHORT).show();;
-        //    update(user);
+            ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
+            if (record.getGeterId() == LoginActivity.USER.getId()){
+                update(record);
+            }
         }
     }
 }

@@ -2,6 +2,9 @@ package Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +32,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         private TextView message;
         private LinearLayout chat;
         private CircleImageView conversationHeadImage;
-
+        private ConversationVo conversationVo;
         public ViewHolder(View view){
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
@@ -46,12 +49,20 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_list_item,viewGroup,false);
-        ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
         final Context context = viewGroup.getContext();
         holder.chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatActivity.class);
+                Drawable drawable = holder.conversationHeadImage.getDrawable();
+                intent.putExtra("id1",holder.conversationVo.getUserId1());
+                intent.putExtra("id2",holder.conversationVo.getUserId2());
+
+                holder.conversationHeadImage.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(holder.conversationHeadImage.getDrawingCache());
+                holder.conversationHeadImage.setDrawingCacheEnabled(false);
+                intent.putExtra("photo",bitmap);
                 context.startActivity(intent);
             }
         });
@@ -61,6 +72,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
         ConversationVo conversation = mConversationVo.get(i);
+        holder.conversationVo = conversation;
         User user = LoginActivity.USER;
         holder.id.setText(conversation.getName());
         holder.message.setText(conversation.getLastMessage());

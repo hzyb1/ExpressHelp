@@ -84,6 +84,23 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         String url = context.getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
         Log.d("userimage",LoginActivity.USER.getHeadImage());
         Glide.with(context).load(url).into(holder.conversationHeadImage);
+        if(LoginActivity.USER.getId() == conversation.getUserId1()){
+            if(conversation.getUser1UnRead() == 0){
+                holder.newMessage.setVisibility(View.GONE);
+            }else{
+                holder.newMessage.setVisibility(View.VISIBLE);
+                holder.messageNum.setText(conversation.getUser1UnRead()+"");
+            }
+
+        }else{
+            if(conversation.getUser2UnRead() == 0){
+                holder.newMessage.setVisibility(View.GONE);
+            }else{
+                holder.newMessage.setVisibility(View.VISIBLE);
+                holder.messageNum.setText(conversation.getUser2UnRead()+"");
+            }
+        }
+
     }
 
     @Override

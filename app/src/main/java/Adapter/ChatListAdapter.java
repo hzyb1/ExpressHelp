@@ -56,8 +56,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatActivity.class);
                 Drawable drawable = holder.conversationHeadImage.getDrawable();
-                intent.putExtra("id1",holder.conversationVo.getUser1());
-                intent.putExtra("id2",holder.conversationVo.getUser2());
+                intent.putExtra("id1",holder.conversationVo.getUserId1());
+                intent.putExtra("id2",holder.conversationVo.getUserId2());
 
                 holder.conversationHeadImage.setDrawingCacheEnabled(true);
                 Bitmap bitmap = Bitmap.createBitmap(holder.conversationHeadImage.getDrawingCache());

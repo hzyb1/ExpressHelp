@@ -18,10 +18,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.RunnerOrderAdapter;
+import http.ClientSender;
 import model.ChatRecord;
 import model.Order;
 
@@ -57,7 +59,19 @@ public class ChatService extends Service {
         Log.d("日志","服务被启动了");
 
         super.onCreate();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String ip = "45.32.84.43";
+                  //  String ip = "10.86.98.159";
+                    LoginActivity.socket = new Socket(ip, 10239);
+                    new ClientSender(LoginActivity.socket).send();
+                } catch (Exception e) {
 
+                }
+            }
+        }).start();
 
     }
 
@@ -70,8 +84,8 @@ public class ChatService extends Service {
                 try {
                     //                  socket = new Socket(ip, 10010);
                     //        new ClientSender(socket).send();
-                    if(LoginActivity.socket != null){
-                        return ;
+                    while(LoginActivity.socket == null){
+                        Thread.sleep(1000);
                     }
                     InputStream inputStream = LoginActivity.socket.getInputStream();
                     byte[] buffer = new byte[1024];

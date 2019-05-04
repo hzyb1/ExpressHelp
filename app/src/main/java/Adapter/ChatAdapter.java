@@ -14,6 +14,7 @@ import com.example.a14574.expresshelp.R;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import model.ChatRecord;
 
 public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
@@ -24,11 +25,11 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     class AcceptViewHolder extends RecyclerView.ViewHolder{
     private TextView message;
     private ChatRecord chatRecord;
-    private ImageView image;
+    private CircleImageView image;
         public  AcceptViewHolder(View view){
             super(view);
             message = (TextView)view.findViewById(R.id.chat_accept_message);
-            image = (ImageView)view.findViewById(R.id.chat_accept_photo);
+            image = (CircleImageView)view.findViewById(R.id.chat_accept_photo);
         }
     }
 
@@ -82,7 +83,6 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        //Log.d("日志","mChatRecord.get(position).getSenderId()"+mChatRecord.get(position).getSenderId());
         if (mChatRecord.get(position).getSenderId() == LoginActivity.USER.getId()){
             return ITEM_TYPE_SEND;
         }else{

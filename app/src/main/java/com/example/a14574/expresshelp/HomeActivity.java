@@ -25,6 +25,7 @@ public class HomeActivity extends BaseActivity {           //主界面活动
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private IntentFilter intentFilter;
     private MessageFragment.ChatListReceiver chatListReceiver;
+    private ChatActivity.ChatListReceiver ListReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,9 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         intentFilter = new IntentFilter();
         intentFilter.addAction("CHAT_LIST");
         chatListReceiver = new MessageFragment().new ChatListReceiver();
+        ListReceiver = new ChatActivity().new ChatListReceiver();
         registerReceiver(chatListReceiver,intentFilter);
+        registerReceiver( ListReceiver,intentFilter);
     }
     public void homePageFragment(View view){
         if(currentFragment!=fragment[0]){
@@ -101,5 +104,4 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
     }
-
 }

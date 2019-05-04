@@ -159,17 +159,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        SharedPreferences.Editor editor = sp.edit();
                        editor.putInt("userid",USER.getId());
                        editor.commit();     //提交持久化对象
-                       new Thread(new Runnable() {
-                           @Override
-                           public void run() {
-                               try {
-                                   socket = new Socket("45.32.84.43", 10010);
-                                   new ClientSender(socket).send();
-                               } catch (Exception e) {
-
-                               }
-                           }
-                       }).start();
 
                        progressDialog.dismiss();
                        LoginActivity.this.finish();

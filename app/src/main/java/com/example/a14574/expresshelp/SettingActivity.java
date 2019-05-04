@@ -57,10 +57,6 @@ public class SettingActivity extends BaseActivity {
     public static final int CHOOSE_PHOTO = 2;
     private RelativeLayout topUp;    //充值
 
-    private String RSA_PRIVATE = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwM+k1zTRxNJEz+rGNZpmAg3H+ipw0u/PcQ0Cqd4L5aIHNGJc3YgcFPU0aIT29gT0TDWz5/yjimnWdiMplwanvwdSKqMaXP9xjSzg61HAxfXQBFsY+CHi1Pkwtu+K0D2soAS7tE2v+zI3IKp524aAlqFOe+nj0Zcj8fdRf7RnbXAK9s8lhmAVs9PpwvO/LAaQBeVG6NeYcGy4EfoxbLyq/zmV16qPL27mwBqEUfN2mHbORLEWCrv8eewdriyeJeHCrp5wyMmq1LUcbJsfLONWuwXjgjvhQ/Fu082hvXKRU7g7cNKWK+0j/14NvcnCwpjevf/ZFF4bPCfJX6yUxwRfOwIDAQAB";
-    public static final String APPID = "2019042464304405";
-    private static final int SDK_PAY_FLAG = 1001;
-
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -121,6 +117,14 @@ public class SettingActivity extends BaseActivity {
                 int userid = sp.getInt("userid",0);
                 Log.d("seeuserid",userid+"");
                 if(userid!=0){
+                    if(LoginActivity.socket != null){
+                        try{
+                            LoginActivity.socket.close();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        LoginActivity.socket = null;
+                    }
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putInt("userid",0);
                     editor.commit();

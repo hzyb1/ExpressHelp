@@ -1,6 +1,10 @@
 package com.example.a14574.expresshelp;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -30,15 +33,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import Adapter.ChatAdapter;
-import Adapter.ChatListAdapter;
-import Adapter.OrderBriefAdapter;
-import Adapter.RunnerOrderAdapter;
 import http.HttpUtil;
 import model.ChatRecord;
-import model.MyBean;
-import model.Order;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -51,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;     //等待状态对话框
     private int id1,id2;
     private int conversationId;
+    private ChatListReceiver chatListReceiver;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -58,20 +56,36 @@ public class ChatActivity extends AppCompatActivity {
             String result = "";
             result = msg.obj.toString();
             if(msg.arg1 == 1){      //初始化record；
-                if(result.length() <= 5){
+                if(result.length() >= 5){
                     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                     chatRecords = gson.fromJson(result, new TypeToken<List<ChatRecord>>(){}.getType());
+                    Log.d("日志","大小"+chatRecords.size());
                     conversationId = chatRecords.get(0).getConversationId();
                     ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
+
                     recyclerView.setAdapter(adapter);
+                    
                 }else{
                     conversationId = Integer.parseInt(result);
                 }
-
+                progressDialog.dismiss();       //结束等待
+            }else if(msg.arg1 == 2){
+                ChatRecord chatRecord = (ChatRecord) msg.obj;
+                chatRecords.add(chatRecord);
+                ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
+                if(recyclerView == null){
+                    Log.d("日志","啥玩意");
+      //              recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
+       //             LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
+        //            recyclerView.setLayoutManager(layoutManager);
+                }else{
+                    recyclerView.setAdapter(adapter);
+                }
             }
-            progressDialog.dismiss();       //结束等待
         }
     };
+
+
 
 
     @Override
@@ -80,6 +94,8 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         bitmap = getIntent().getParcelableExtra("photo");
         initView();
+        id1 = getIntent().getIntExtra("id1",0);
+        id2 = getIntent().getIntExtra("id2",0);
         initList();
         content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,8 +112,7 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
-        id1 = getIntent().getIntExtra("id1",0);
-        id2 = getIntent().getIntExtra("id2",0);
+
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -124,7 +139,9 @@ public class ChatActivity extends AppCompatActivity {
                         public void run() {
                             try {
                                 OutputStream outputStream = LoginActivity.socket.getOutputStream();
-                                String text = new Gson().toJson(record);
+                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+                                String text = gson.toJson(record);
+                                Log.d("日志",text);
                                 outputStream.write(text.getBytes("utf-8"));
                                 outputStream.flush();
                             } catch (IOException e) {
@@ -133,9 +150,18 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }).start();
                 }
+                Message message = new Message();
+                message.obj = record;
+                message.arg1 = 2;
+                mHandler.sendMessage(message);
+                content.setText("");
             }
         });
 
+        chatListReceiver = new ChatListReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("CHAT_LIST");
+        registerReceiver(chatListReceiver,intentFilter);
     }
     private void initView(){
         content = (EditText)findViewById(R.id.et_content);
@@ -182,6 +208,25 @@ public class ChatActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public class ChatListReceiver extends BroadcastReceiver {
+        public ChatListReceiver() {
+            super();
+        }
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
+            if(record.getConversationId() == conversationId){
+                Message message = new Message();
+                message.obj = record;
+                message.arg1 = 2;
+                mHandler.sendMessage(message);
+                Log.d("日志",record.getMessage());
+            }else{
+
+            }
         }
     }
 }

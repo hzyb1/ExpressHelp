@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class Conversation {
     private int id;
-    private int user1;
-    private int user2;
+    private int userId1;
+    private int userId2;
     private boolean isUser1Delete;
     private boolean isUser2Delete;
     private int user1UnRead;
@@ -13,7 +13,21 @@ public class Conversation {
     private String lastMessage;
     private Timestamp lastTime;
 
+    public int getUserId1() {
+        return userId1;
+    }
 
+    public void setUserId1(int userId1) {
+        this.userId1 = userId1;
+    }
+
+    public int getUserId2() {
+        return userId2;
+    }
+
+    public void setUserId2(int userId2) {
+        this.userId2 = userId2;
+    }
 
     public int getUser1UnRead() {
         return user1UnRead;
@@ -44,18 +58,6 @@ public class Conversation {
     }
     public void setId(int id) {
         this.id = id;
-    }
-    public int getUser1() {
-        return user1;
-    }
-    public void setUser1(int user1) {
-        this.user1 = user1;
-    }
-    public int getUser2() {
-        return user2;
-    }
-    public void setUser2(int user2) {
-        this.user2 = user2;
     }
     public boolean isUser1Delete() {
         return isUser1Delete;

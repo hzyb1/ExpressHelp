@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.practice.ChatService;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.ChatListAdapter;
+import model.ChatRecord;
 import model.ChatUser;
 import model.ConversationVo;
 
@@ -49,8 +51,6 @@ public class MessageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message,container,false);
-        init();
-
         Intent startIntent = new Intent(container.getContext(),ChatService.class);
         container.getContext().startService(startIntent);
 
@@ -68,12 +68,16 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-    public void update(ChatUser user){
+    public void update(ChatRecord record){
 
        Log.d("日志","update方法");
         Log.d("日志","update方法"+list.size());
-       //list.add(user);
-       list.add(0,list.remove(list.size()-1));
+       for (int i = 0;i<list.size()-1;i++){
+           if (record.getConversationId() == list.get(i).getId()){
+               list.get(i).setLastMessage(record.getMessage());
+               list.add(0,list.remove(i));
+           }
+       }
        new Thread(new Runnable() {
            @Override
            public void run() {
@@ -84,14 +88,6 @@ public class MessageFragment extends Fragment {
        }).start();
     }
 
-    public void init(){
-        for (int i = 0; i<7;i++) {
-            ConversationVo conversation = new ConversationVo();
-            conversation.setLastMessage("最后一条信息");
-            conversation.setName("测试人员");
-            list.add(conversation);
-        }
-    }
     public  class ChatListReceiver extends BroadcastReceiver{
         public ChatListReceiver() {
             super();
@@ -99,9 +95,10 @@ public class MessageFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ChatUser user = (ChatUser) intent.getSerializableExtra("user");
-            Toast.makeText(context,user.getMessage(),Toast.LENGTH_SHORT).show();;
-            update(user);
+            ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
+            if (record.getGeterId() == LoginActivity.USER.getId()){
+                update(record);
+            }
         }
     }
 }

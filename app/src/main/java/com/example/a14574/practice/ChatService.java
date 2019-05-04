@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import model.ChatRecord;
 import model.ChatUser;
 
 public class ChatService extends Service {
@@ -36,20 +37,11 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-      /*  Log.d("日志", "服务方法执行了");
-        try {
-            Log.d("日志", "开始睡眠");
-            Thread.sleep(3000);
-        } catch (InterruptedException e1) {
-                e1.printStackTrace();
-        }
-        Log.d("日志", "睡眠结束");
+
         Intent intent1 = new Intent("CHAT_LIST");
-        ChatUser user = new ChatUser();
-        user.setUsername("服务的");
-        user.setMessage("服务发来的");
-        intent1.putExtra("user", user);
-        sendBroadcast(intent1);*/
+        ChatRecord record = new ChatRecord();
+        intent1.putExtra("record", record);
+        sendBroadcast(intent1);
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -55,12 +55,16 @@ public class ChatActivity extends AppCompatActivity {
         send = (ImageView)findViewById(R.id.ivAdd);
     }
     public void init(){
-        for (int i = 0;i<10;i++) {
+        for (int i = 0;i<2;i++) {
             ChatRecord record = new ChatRecord();
-            Log.d("日志","id"+LoginActivity.USER.getId());
-            record.setGeterId(1);
+            record.setSenderId(10010);
             record.setMessage("测试聊天内容");
             chatRecords.add(record);
+
+            ChatRecord record1 = new ChatRecord();
+            record.setSenderId(10086);
+            record.setMessage("测试聊天内容");
+            chatRecords.add(record1);
         }
     }
 }

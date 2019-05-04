@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class ChatRecord {
+public class ChatRecord implements Serializable {
 	private int id;
 	private int senderId;	//发送者id
 	private int geterId;	//接收者id

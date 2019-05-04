@@ -17,8 +17,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 
+import http.ClientSender;
 import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.User;
@@ -27,6 +29,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends BaseActivity {      //登录活动
 
+    public static Socket socket = null;
     public static User USER = null;
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
@@ -156,6 +159,18 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        SharedPreferences.Editor editor = sp.edit();
                        editor.putInt("userid",USER.getId());
                        editor.commit();     //提交持久化对象
+                       new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               try {
+                                   socket = new Socket("45.32.84.43", 10010);
+                                   new ClientSender(socket).send();
+                               } catch (Exception e) {
+
+                               }
+                           }
+                       }).start();
+
                        progressDialog.dismiss();
                        LoginActivity.this.finish();
                    }

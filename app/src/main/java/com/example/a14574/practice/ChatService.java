@@ -33,7 +33,6 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         Intent intent1 = new Intent("CHAT_LIST");
         ChatRecord record = new ChatRecord();
         intent1.putExtra("record", record);

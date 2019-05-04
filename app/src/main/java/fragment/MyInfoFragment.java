@@ -69,7 +69,6 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         userName = (TextView)view.findViewById(R.id.name);
         headImage = (CircleImageView) view.findViewById(R.id.head_image);
         toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
-
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
         initEvents();
         return view;

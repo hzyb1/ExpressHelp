@@ -34,12 +34,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         private LinearLayout chat;
         private CircleImageView conversationHeadImage;
         private ConversationVo conversationVo;
+        private LinearLayout newMessage;
+        private TextView messageNum;
         public ViewHolder(View view){
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
             message = (TextView)view.findViewById(R.id.chat_list_message);
             chat = (LinearLayout)view.findViewById(R.id.chat);
             conversationHeadImage = (CircleImageView)view.findViewById(R.id.conversationHeadImage);
+            newMessage = (LinearLayout) view.findViewById(R.id.new_message);
+            messageNum = (TextView) view.findViewById(R.id.message_num);
         }
     }
     public ChatListAdapter(List<ConversationVo> List,Context context){

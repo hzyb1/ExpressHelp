@@ -56,7 +56,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 import util.SpaceItemDecoration;
 
-
 public class HomePageFragment extends Fragment {
     private List<Order> orderBriefList = new ArrayList<Order>();
     private Button submitOrder;

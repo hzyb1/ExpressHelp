@@ -49,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     private int id1,id2;
     private int conversationId;
     private ChatListReceiver chatListReceiver;
+    private TextView logo;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -88,8 +89,6 @@ public class ChatActivity extends AppCompatActivity {
     };
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +114,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        final int id1 = getIntent().getIntExtra("id1",0);
+        final int id2 = getIntent().getIntExtra("id2",0);
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -168,6 +169,9 @@ public class ChatActivity extends AppCompatActivity {
     private void initView(){
         content = (EditText)findViewById(R.id.et_content);
         send = (ImageView)findViewById(R.id.ivAdd);
+        logo = (TextView)findViewById(R.id.chat_logo);
+        String name = getIntent().getStringExtra("name");
+        logo.setText(name);
     }
     public void initList(){
         progressDialog = new ProgressDialog(ChatActivity.this);

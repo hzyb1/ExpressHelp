@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
@@ -59,10 +60,10 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatActivity.class);
-                Drawable drawable = holder.conversationHeadImage.getDrawable();
                 intent.putExtra("id1",holder.conversationVo.getUserId1());
                 intent.putExtra("id2",holder.conversationVo.getUserId2());
-
+                intent.putExtra("name",holder.conversationVo.getName());
+                Drawable drawable = holder.conversationHeadImage.getDrawable();
                 holder.conversationHeadImage.setDrawingCacheEnabled(true);
                 Bitmap bitmap = Bitmap.createBitmap(holder.conversationHeadImage.getDrawingCache());
                 holder.conversationHeadImage.setDrawingCacheEnabled(false);

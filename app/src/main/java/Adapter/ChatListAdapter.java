@@ -13,15 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.a14574.expresshelp.ChatActivity;
+import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 
 import java.util.List;
 
 import model.ChatUser;
+import model.Conversation;
+import model.ConversationVo;
+import model.User;
 
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHolder> {
-    private List<ChatUser> mChatUserList;
+    private List<ConversationVo> mConversationVo;
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView id;
         private TextView message;
@@ -33,8 +37,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             chat = (LinearLayout)view.findViewById(R.id.chat);
         }
     }
-    public ChatListAdapter(List<ChatUser> ChatUserList){
-        mChatUserList = ChatUserList;
+    public ChatListAdapter(List<ConversationVo> List){
+        mConversationVo = List;
     }
 
     @Override
@@ -54,13 +58,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
-        ChatUser chatUser = mChatUserList.get(i);
-       holder.id.setText(chatUser.getUsername());
-      holder.message.setText(chatUser.getMessage());
+        ConversationVo conversation = mConversationVo.get(i);
+        User user = LoginActivity.USER;
+        holder.id.setText(conversation.getName());
+        holder.message.setText(conversation.getLastMessage());
     }
 
     @Override
     public int getItemCount() {
-        return mChatUserList.size();
+        return mConversationVo.size();
     }
 }

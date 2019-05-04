@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ public class HomeActivity extends BaseActivity {           //主界面活动
     private Fragment currentFragment;     //当前fragment
     RadioButton[ ] rbs = new RadioButton[3];
     private FragmentManager fragmentManager = getSupportFragmentManager();
+    private IntentFilter intentFilter;
+    private MessageFragment.ChatListReceiver chatListReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("日志","home???");
@@ -39,6 +42,10 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         currentFragment=fragment[0];
         homePageFragment(null);
         initView();
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("CHAT_LIST");
+        chatListReceiver = new MessageFragment().new ChatListReceiver();
+        registerReceiver(chatListReceiver,intentFilter);
     }
     public void homePageFragment(View view){
         if(currentFragment!=fragment[0]){

@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ChatUser extends User {
+public class ChatUser extends User implements Serializable {
     private String message;
     private Timestamp time;
     private String photo;

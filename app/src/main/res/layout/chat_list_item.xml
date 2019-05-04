@@ -5,8 +5,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:src="@drawable/nothing"/>
     <LinearLayout
         android:id="@+id/chat"
@@ -20,7 +20,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/chat_list_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="联系人"/>
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="16dp"
+                android:text="联系人"
+                android:textSize="19sp"
+                android:textStyle="bold"/>
         </LinearLayout>
 
 
@@ -31,6 +35,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/chat_list_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="17sp"
                 android:text="最后的聊天信息"/>
         </LinearLayout>
 

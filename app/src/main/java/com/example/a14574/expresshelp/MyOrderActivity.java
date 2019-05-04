@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import Adapter.OrderAdapter;
@@ -34,6 +35,7 @@ import model.Order;
 import okhttp3.Call;
 import okhttp3.Response;
 import util.SpaceItemDecoration;
+import util.TimeUtil;
 
 public class MyOrderActivity extends AppCompatActivity implements  View.OnClickListener{
     private Toolbar toolbar;
@@ -66,6 +68,7 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
                 orderList = new ArrayList<>();
                 orderList = gson.fromJson(result, new TypeToken<List<Order>>(){}.getType());
             }
+            removeOutTimeOrder();
             find();     //查找想要显示的订单列表
             OrderAdapter adapter  = new OrderAdapter(needorderList,MyOrderActivity.this);     //适配器
             recyclerView.setAdapter(adapter);
@@ -83,6 +86,30 @@ public class MyOrderActivity extends AppCompatActivity implements  View.OnClickL
             progressDialog.dismiss();       //结束等待
         }
     };
+
+    private void removeOutTimeOrder(){
+        Iterator<Order> it = orderList.iterator();
+        while (it.hasNext())
+        {
+            Order tempOrder = it.next();
+            if (tempOrder.getState()==0) {
+                if(!isRemoveOrder(tempOrder)){
+                    it.remove();
+                    //进行删除订单操作
+                }
+            }
+        }
+    }
+
+    private boolean isRemoveOrder(Order order){
+        long diff = TimeUtil.compareTime(order);
+        long maxStep = 30*60*1000;
+        if(diff<=maxStep){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
 import com.example.a14574.practice.ChatService;
@@ -60,7 +61,7 @@ public class MessageFragment extends Fragment {
                 }else{
                     unReadMessage+=conversationList.get(i).getUser2UnRead();
                 }
-
+                HomeActivity.badgeView.setBadgeCount(unReadMessage);
             }
             Log.d("日志","信息数量"+unReadMessage);
             adapter = new ChatListAdapter(conversationList,getContext());

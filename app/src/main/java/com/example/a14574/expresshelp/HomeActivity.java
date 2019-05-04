@@ -29,7 +29,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
     private MessageFragment.ChatListReceiver chatListReceiver;
 
     private Button homePage,message,myInfo;
-    private BadgeView badgeView;
+    public static BadgeView badgeView;
 
     private ChatActivity.ChatListReceiver ListReceiver;
 
@@ -62,7 +62,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         registerReceiver(chatListReceiver,intentFilter);
         badgeView = new BadgeView(this);
         badgeView.setTargetView(message);
-        badgeView.setBadgeCount(12);
+  //      badgeView.setBadgeCount(12);
         badgeView.setBadgeGravity(Gravity.RIGHT | Gravity.TOP);
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));

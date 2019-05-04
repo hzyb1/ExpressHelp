@@ -69,7 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
-            //((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
+            ((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
         }
     }
 

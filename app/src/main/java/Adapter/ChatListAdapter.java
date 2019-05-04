@@ -58,9 +58,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                 Drawable drawable = holder.conversationHeadImage.getDrawable();
                 intent.putExtra("id1",holder.conversationVo.getUser1());
                 intent.putExtra("id2",holder.conversationVo.getUser2());
-                //Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                //Bitmap image = ((BitmapDrawable)holder.conversationHeadImage.getDrawable()).getBitmap();
-                //intent.putExtra("photo",bitmap);
+
+                holder.conversationHeadImage.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(holder.conversationHeadImage.getDrawingCache());
+                holder.conversationHeadImage.setDrawingCacheEnabled(false);
+                intent.putExtra("photo",bitmap);
                 context.startActivity(intent);
             }
         });

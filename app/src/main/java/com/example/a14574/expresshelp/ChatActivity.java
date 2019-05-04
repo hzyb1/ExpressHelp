@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        //bitmap = getIntent().getParcelableExtra("photo");
+        bitmap = getIntent().getParcelableExtra("photo");
         initView();
         init();
         content.addTextChangedListener(new TextWatcher() {
@@ -46,11 +48,29 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
+        final int id1 = getIntent().getIntExtra("id1",0);
+        final int id2 = getIntent().getIntExtra("id1",0);
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
         recyclerView.setAdapter(adapter);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChatRecord record = new ChatRecord();
+                record.setSenderId(LoginActivity.USER.getId());
+                if (LoginActivity.USER.getId() == id1){
+                    record.setGeterId(id2);
+                }else{
+                    record.setGeterId(id1);
+                }
+                record.setMessage(content.getText().toString());
+                record.setSendTime(new Timestamp(System.currentTimeMillis()));
+
+
+            }
+        });
 
     }
     private void initView(){

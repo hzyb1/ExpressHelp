@@ -1,6 +1,8 @@
 package model;
 
-public class ConversationVo extends Conversation {
+import java.io.Serializable;
+
+public class ConversationVo extends Conversation implements Serializable {
     private String photo;
     private String name;
 

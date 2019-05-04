@@ -65,7 +65,8 @@ public class ChatActivity extends AppCompatActivity {
                     ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
 
                     recyclerView.setAdapter(adapter);
-                    
+                    recyclerView.scrollToPosition(chatRecords.size()-1);
+
                 }else{
                     conversationId = Integer.parseInt(result);
                 }
@@ -81,6 +82,7 @@ public class ChatActivity extends AppCompatActivity {
         //            recyclerView.setLayoutManager(layoutManager);
                 }else{
                     recyclerView.setAdapter(adapter);
+                    recyclerView.scrollToPosition(chatRecords.size()-1);
                 }
             }
         }

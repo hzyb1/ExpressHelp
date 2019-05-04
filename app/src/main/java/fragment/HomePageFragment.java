@@ -56,7 +56,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 import util.SpaceItemDecoration;
 
-
 public class HomePageFragment extends Fragment {
     private List<Order> orderBriefList = new ArrayList<Order>();
     private Button submitOrder;
@@ -180,20 +179,15 @@ public class HomePageFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestChatActivity.getId = Integer.parseInt(searchKey.getText().toString());
-                Intent intent = new Intent(HomePageFragment.this.getActivity(),TestChatActivity.class);
-                startActivity(intent);
-
-//                //搜索事件
-//                String searchKeyS = searchKey.getText().toString().trim();
-//                if(searchKeyS.equals("")){
-//                    Toast.makeText(getActivity(),"搜索内容不能为空哦！！！！",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                doSearch(searchKeyS);
+                //搜索事件
+                String searchKeyS = searchKey.getText().toString().trim();
+                if(searchKeyS.equals("")){
+                    Toast.makeText(getActivity(),"搜索内容不能为空哦！！！！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                doSearch(searchKeyS);
             }
         });
-
     }
 
     private void doSearch(String searchText){    //搜索方法

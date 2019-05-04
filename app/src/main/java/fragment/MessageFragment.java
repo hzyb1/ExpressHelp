@@ -40,9 +40,9 @@ import okhttp3.Response;
 
 
 public class MessageFragment extends Fragment {
-    static private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private  ChatListAdapter adapter;
-    static private List<ConversationVo> conversationList = new ArrayList<>();
+    private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatService.ChatBinder chatBinder;
     private ChatListReceiver chatListReceiver;
     private Handler handler = new Handler(){
@@ -52,10 +52,11 @@ public class MessageFragment extends Fragment {
             result = msg.obj.toString();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             conversationList = gson.fromJson(result, new TypeToken<List<ConversationVo>>(){}.getType());
-                adapter = new ChatListAdapter(conversationList,getContext());
-                //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
-                Log.d("日志","最后的对象"+conversationList.size());
-                recyclerView.setAdapter(adapter);
+
+
+            adapter = new ChatListAdapter(conversationList,getContext());
+            //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show()
+            recyclerView.setAdapter(adapter);
 
         }
     };

@@ -46,7 +46,7 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         chatListReceiver = new MessageFragment().new ChatListReceiver();
         ListReceiver = new ChatActivity().new ChatListReceiver();
         registerReceiver(chatListReceiver,intentFilter);
-        registerReceiver( ListReceiver,intentFilter);
+        registerReceiver(ListReceiver,intentFilter);
     }
     public void homePageFragment(View view){
         if(currentFragment!=fragment[0]){
@@ -105,4 +105,9 @@ public class HomeActivity extends BaseActivity {           //主界面活动
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
     }
 
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
 }

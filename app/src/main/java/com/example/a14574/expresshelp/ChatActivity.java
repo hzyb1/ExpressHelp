@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<ChatRecord> chatRecords = new ArrayList<>();
     private Bitmap bitmap;
     private ChatListReceiver chatListReceiver;
+    private TextView logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +54,9 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
+
         final int id1 = getIntent().getIntExtra("id1",0);
-        final int id2 = getIntent().getIntExtra("id1",0);
+        final int id2 = getIntent().getIntExtra("id2",0);
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -71,8 +74,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 record.setMessage(content.getText().toString());
                 record.setSendTime(new Timestamp(System.currentTimeMillis()));
-
-
             }
         });
         chatListReceiver = new ChatListReceiver();
@@ -80,6 +81,9 @@ public class ChatActivity extends AppCompatActivity {
     private void initView(){
         content = (EditText)findViewById(R.id.et_content);
         send = (ImageView)findViewById(R.id.ivAdd);
+        logo = (TextView)findViewById(R.id.chat_logo);
+        String name = getIntent().getStringExtra("name");
+        logo.setText(name);
     }
     public void init(){
         for (int i = 0;i<2;i++) {

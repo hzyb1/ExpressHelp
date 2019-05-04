@@ -6,14 +6,13 @@
     android:background="@drawable/circular_shape"
     android:layout_margin="5dp">
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_accept_photo"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_marginTop="10dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/nothing"/>
+        android:src="@drawable/defaule_head_image"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

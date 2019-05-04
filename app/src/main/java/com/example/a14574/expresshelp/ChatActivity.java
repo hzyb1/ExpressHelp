@@ -1,5 +1,8 @@
 package com.example.a14574.expresshelp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<ChatRecord> chatRecords = new ArrayList<>();
     private Bitmap bitmap;
+    private ChatListReceiver chatListReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
+        chatListReceiver = new ChatListReceiver();
     }
     private void initView(){
         content = (EditText)findViewById(R.id.et_content);
@@ -88,6 +92,19 @@ public class ChatActivity extends AppCompatActivity {
             record.setSenderId(10086);
             record.setMessage("测试聊天内容");
             chatRecords.add(record1);
+        }
+    }
+
+    public class ChatListReceiver extends BroadcastReceiver {
+        public ChatListReceiver() {
+            super();
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
+            Log.d("日志","在聊天界面收到了广播");
+
         }
     }
 }

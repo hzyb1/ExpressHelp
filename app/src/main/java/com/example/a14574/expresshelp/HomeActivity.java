@@ -60,16 +60,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         chatListReceiver = new MessageFragment().new ChatListReceiver();
         ListReceiver = new ChatActivity().new ChatListReceiver();
         registerReceiver(chatListReceiver,intentFilter);
-<<<<<<< HEAD
         badgeView = new BadgeView(this);
         badgeView.setTargetView(message);
         badgeView.setBadgeCount(12);
         badgeView.setBadgeGravity(Gravity.RIGHT | Gravity.TOP);
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));
-=======
         registerReceiver( ListReceiver,intentFilter);
->>>>>>> c4bb7b3ef1f7f325918d23f31de671b630a108ea
     }
     public void homePageFragment(View view){
         if(currentFragment!=fragment[0]){
@@ -127,7 +124,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         //设置图片在文字的哪个方向
         rbs[2].setCompoundDrawables(null, drawable_my_info, null, null);
     }
-<<<<<<< HEAD
 
     @Override
     public void onClick(View v) {
@@ -147,6 +143,4 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
 
         }
     }
-=======
->>>>>>> c4bb7b3ef1f7f325918d23f31de671b630a108ea
 }

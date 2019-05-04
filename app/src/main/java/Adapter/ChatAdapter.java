@@ -1,10 +1,12 @@
 package Adapter;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a14574.expresshelp.LoginActivity;
@@ -18,12 +20,15 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     private List<ChatRecord> mChatRecord;
     private final int ITEM_TYPE_SEND = 1;
     private final int ITEM_TYPE_ACCEPT = 2;
+    private Bitmap bitmap;
     class AcceptViewHolder extends RecyclerView.ViewHolder{
     private TextView message;
     private ChatRecord chatRecord;
+    private ImageView image;
         public  AcceptViewHolder(View view){
             super(view);
             message = (TextView)view.findViewById(R.id.chat_accept_message);
+            image = (ImageView)view.findViewById(R.id.chat_accept_photo);
         }
     }
 
@@ -35,8 +40,9 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
             message = (TextView)view.findViewById(R.id.chat_send_message);
         }
     }
-    public ChatAdapter (List<ChatRecord> list){
+    public ChatAdapter (List<ChatRecord> list ,Bitmap bitmap){
         mChatRecord = list;
+        this.bitmap = bitmap;
     }
 
     @Override
@@ -63,6 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
+            //((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
         }
     }
 

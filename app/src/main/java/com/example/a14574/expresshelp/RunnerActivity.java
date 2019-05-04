@@ -205,7 +205,6 @@ public class RunnerActivity extends AppCompatActivity implements  View.OnClickLi
         progressDialog.setMessage("正在加载......");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        Log.d("日志","jiazaixianshile");
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
             progressDialog.dismiss();

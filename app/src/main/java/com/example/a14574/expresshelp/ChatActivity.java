@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,10 +23,12 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView send;
     private RecyclerView recyclerView;
     private List<ChatRecord> chatRecords = new ArrayList<>();
+    private Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        //bitmap = getIntent().getParcelableExtra("photo");
         initView();
         init();
         content.addTextChangedListener(new TextWatcher() {
@@ -46,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        ChatAdapter adapter = new ChatAdapter(chatRecords);
+        ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
         recyclerView.setAdapter(adapter);
 
     }

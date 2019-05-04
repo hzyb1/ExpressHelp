@@ -7,14 +7,10 @@ import android.os.IBinder;
 import android.util.Log;
 
 import model.ChatRecord;
-import model.ChatUser;
 
 public class ChatService extends Service {
     private ChatBinder mBinder = new ChatBinder();
     public class ChatBinder extends Binder{
-
-        private ChatUser chat;
-
         private void addMessage(){//发来信息
 
         }

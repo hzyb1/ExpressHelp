@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.MyOrderActivity;
 import com.example.a14574.expresshelp.R;
+import com.example.a14574.expresshelp.RunnerActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -187,6 +189,9 @@ public class InformationDialog extends Dialog {
 //                //        mContext.finish();
                 //    }
 
+                    Intent intent = new Intent(mContext,RunnerActivity.class);
+                    intent.putExtra("style",1);     //修改完成，去我的订单界面看看
+                    mContext.startActivity(intent);
                     progressDialog.dismiss();
                 }
             });

@@ -51,8 +51,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         rbs[0] = (RadioButton) findViewById(R.id.home_page);
         rbs[1] = (RadioButton) findViewById(R.id.message);
         rbs[2] = (RadioButton) findViewById(R.id.my_info);
-        fragmentManager.beginTransaction().add(R.id.container,fragment[0]).commit();
-        currentFragment=fragment[0];
+        fragmentManager.beginTransaction()
+                .add(R.id.container,fragment[0])
+                .add(R.id.container, fragment[1])
+                .add(R.id.container, fragment[2]).commit();
+
         homePageFragment(null);
         initView();
         intentFilter = new IntentFilter();
@@ -69,34 +72,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         registerReceiver( ListReceiver,intentFilter);
     }
     public void homePageFragment(View view){
-        if(currentFragment!=fragment[0]){
-            if(!fragment[0].isAdded()){
-                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[0]).commit();
-            }else {
-                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[0]).commit();
-            }
-            currentFragment=fragment[0];
-        }
+        getSupportFragmentManager().beginTransaction()
+                .hide(fragment[1])
+                .hide(fragment[2])
+                .show(fragment[0]).commit();
     }
     public void messageFragment(View view){
-        if(currentFragment!=fragment[1]){
-            if(!fragment[1].isAdded()){
-                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[1]).commit();
-            }else {
-                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[1]).commit();
-            }
-            currentFragment=fragment[1];
-        }
+        getSupportFragmentManager().beginTransaction()
+                .hide(fragment[0])
+                .hide(fragment[2])
+                .show(fragment[1]).commit();
     }
     public void myInfoFragment(View view){
-        if(currentFragment!=fragment[2]){
-            if(!fragment[2].isAdded()){
-                fragmentManager.beginTransaction().hide(currentFragment).add(R.id.container,fragment[2]).commit();
-            }else {
-                fragmentManager.beginTransaction().hide(currentFragment).show(fragment[2]).commit();
-            }
-            currentFragment=fragment[2];
-        }
+        getSupportFragmentManager().beginTransaction()
+                .hide(fragment[1])
+                .hide(fragment[0])
+                .show(fragment[2]).commit();
     }
     private void initView() {
         WindowManager wm = this.getWindowManager();

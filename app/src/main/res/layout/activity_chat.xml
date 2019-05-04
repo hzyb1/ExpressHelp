@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a14574.expresshelp.ChatActivity"
-    android:orientation="vertical">
+    tools:context="com.example.a14574.expresshelp.ChatActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,6 +13,7 @@
         android:background="@color/selector_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:layout_alignParentTop="true"
 
         >
         <TextView
@@ -28,12 +28,17 @@
     </android.support.v7.widget.Toolbar>
 
 
-        <android.support.v7.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_chat_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/send_message_edit"
             android:overScrollMode="never" />
     <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/send_message_edit"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#f3f3f3"
@@ -41,6 +46,7 @@
         android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
 
         >
 
@@ -65,10 +71,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:maxLines="3"
                 android:minHeight="36dp"
                 android:paddingLeft="13dp"
-                android:textSize="11dp" />
+                android:singleLine="true"
+                android:textSize="18dp" />
 
 
 
@@ -92,4 +98,4 @@
 
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

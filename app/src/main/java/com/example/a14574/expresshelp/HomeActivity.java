@@ -1,6 +1,7 @@
 package com.example.a14574.expresshelp;
 
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,6 +14,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
@@ -32,7 +37,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
     public static BadgeView badgeView;
 
     private ChatActivity.ChatListReceiver ListReceiver;
-
+    public static Bitmap PHOTO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));
         registerReceiver( ListReceiver,intentFilter);
+        Log.d("测试","是否执行了");
+        Glide.with(this).load(LoginActivity.USER.getHeadImage()).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                Log.d("测试","bitmap123"+resource);
+                PHOTO = resource;
+            }
+        });
     }
     public void homePageFragment(View view){
         getSupportFragmentManager().beginTransaction()

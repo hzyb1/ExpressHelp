@@ -40,10 +40,12 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
         private TextView message;
         private ChatRecord chatRecord;
         private TextView time;
+        private CircleImageView image;
         public  SendViewHolder(View view){
             super(view);
             message = (TextView)view.findViewById(R.id.chat_send_message);
             time = (TextView)view.findViewById(R.id.send_time);
+            image = (CircleImageView)view.findViewById(R.id.chat_send_photo);
         }
     }
     public ChatAdapter (List<ChatRecord> list ,Bitmap bitmap){
@@ -54,7 +56,6 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = null;
-        Log.d("日志","switch的类型"+i);
         switch (i){
             case 1:
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_send_item,viewGroup,false);
@@ -74,6 +75,8 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
             ((SendViewHolder) holder).message.setText(record.getMessage());
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((SendViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
+            ((SendViewHolder) holder).image.setImageBitmap(LoginActivity.photo);
+            Log.d("测试","bitmap"+LoginActivity.photo);
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());

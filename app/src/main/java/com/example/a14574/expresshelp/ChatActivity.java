@@ -38,6 +38,7 @@ import http.HttpUtil;
 import model.ChatRecord;
 import okhttp3.Call;
 import okhttp3.Response;
+import util.SpaceItemDecoration;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText content;
@@ -119,6 +120,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
         recyclerView.setAdapter(adapter);
         send.setOnClickListener(new View.OnClickListener() {

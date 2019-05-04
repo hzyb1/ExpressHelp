@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -31,6 +35,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
 
     public static Socket socket = null;
     public static User USER = null;
+    public static Bitmap photo = null;
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
     //private Button adminLoginButton;        //切换到客服登录的按钮
@@ -45,7 +50,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();     //初始化各种属性
-       initEvents();    //初始化监听器
+        initEvents();    //初始化监听器
     }
     //初始化各种属性
     private void initViews(){

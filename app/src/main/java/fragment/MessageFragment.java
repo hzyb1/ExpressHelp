@@ -38,6 +38,7 @@ import model.ConversationVo;
 import model.Order;
 import okhttp3.Call;
 import okhttp3.Response;
+import util.SpaceItemDecoration;
 
 
 public class MessageFragment extends Fragment {
@@ -88,6 +89,7 @@ public class MessageFragment extends Fragment {
         adapter = new ChatListAdapter(conversationList,getContext());
         recyclerView.setAdapter(adapter);
         chatListReceiver = new ChatListReceiver();
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         return view;
     }
 

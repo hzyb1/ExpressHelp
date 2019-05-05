@@ -37,6 +37,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private Button setting;
     public static CircleImageView headImage;   //头像
     private LinearLayout pendingPaymentLayout;
+    private TextView id;
 
     private TextView userName;
 
@@ -74,6 +75,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         headImage = (CircleImageView) view.findViewById(R.id.head_image);
         toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
+        id = (TextView) view.findViewById(R.id.account);
         initEvents();
         Log.d("myInfoFragment","oncreatview");
         return view;
@@ -101,6 +103,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         });
         if(LoginActivity.USER != null){
             userName.setText(LoginActivity.USER.getUsername());
+            id.setText("id:"+LoginActivity.USER.getId());
             final String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
             Log.d("userimage",LoginActivity.USER.getHeadImage());
             Log.d("testImageUrl",url);

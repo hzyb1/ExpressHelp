@@ -66,13 +66,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         intentFilter.addAction("CHAT_LIST");
         chatListReceiver = new MessageFragment().new ChatListReceiver();
         ListReceiver = new ChatActivity().new ChatListReceiver();
-//        registerReceiver(chatListReceiver,intentFilter);
+        registerReceiver(chatListReceiver,intentFilter);
         badgeView = new BadgeView(this);
         badgeView.setTargetView(message);
         badgeView.setBadgeGravity(Gravity.RIGHT | Gravity.TOP);
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));
-//        registerReceiver( ListReceiver,intentFilter);
+        registerReceiver( ListReceiver,intentFilter);
         Log.d("测试","是否执行了");
         Intent startIntent = new Intent(this, ChatService.class);
         startService(startIntent);

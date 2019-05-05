@@ -34,12 +34,10 @@ public class ChatService extends Service {
             super.handleMessage(msg);
             String result = "";
             result = msg.obj.toString();
-            Log.d("日志",result+"啥情况");
             if(msg.what == 1){
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                 ChatRecord chatRecord = gson.fromJson(result, ChatRecord.class);
                 if(chatRecord.getGeterId() == LoginActivity.USER.getId()){      //处理发送给我的信息
-                    Log.d("日志","是给我的");
                     Intent intent1 = new Intent("CHAT_LIST");
                     Log.d("测试","socket");
                     intent1.putExtra("record", chatRecord);
@@ -48,8 +46,6 @@ public class ChatService extends Service {
             }
         }
     };
-
-
     public ChatService() {
 
 
@@ -73,13 +69,12 @@ public class ChatService extends Service {
                         LoginActivity.socket = null;
                     }
                     LoginActivity.socket = new Socket(ip, 10239);
-              //      new ClientSender(LoginActivity.socket).send();
+                    // new ClientSender(LoginActivity.socket).send();
                 } catch (Exception e) {
 
                 }
             }
         }).start();
-
 
     }
 
@@ -113,6 +108,9 @@ public class ChatService extends Service {
             }
         }).start();
 
+
+
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -120,5 +118,9 @@ public class ChatService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         return null;
+    }
+
+    public static void SocketConnect(){
+
     }
 }

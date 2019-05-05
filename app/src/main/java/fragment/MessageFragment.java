@@ -44,11 +44,12 @@ import util.SpaceItemDecoration;
 
 public class MessageFragment extends Fragment {
     static private RecyclerView recyclerView;
-    static private  ChatListAdapter adapter;
+    static private ChatListAdapter adapter;
     static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
     private int unReadMessage = 0;
     private SwipeRefreshLayout refresh;
+
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             super.handleMessage(msg);
@@ -69,15 +70,13 @@ public class MessageFragment extends Fragment {
                 HomeActivity.badgeView.setBadgeCount(unReadMessage);
             }
             adapter = new ChatListAdapter(conversationList,getContext());
-                //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
             recyclerView.setAdapter(adapter);
             if(refresh.isRefreshing()){
                 refresh.setRefreshing(false);
             }
-
         }
     };
-
     private Handler hand = new Handler(){
         public void handleMessage(Message msg){
             super.handleMessage(msg);
@@ -88,14 +87,13 @@ public class MessageFragment extends Fragment {
 
         }
     };
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         init();
         View view = inflater.inflate(R.layout.fragment_message,container,false);
-     //   Intent startIntent = new Intent(container.getContext(),ChatService.class);
-        //   container.getContext().startService(startIntent);
+//        Intent startIntent = new Intent(container.getContext(),ChatService.class);
+//        container.getContext().startService(startIntent);
         refresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         recyclerView = (RecyclerView)view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -104,7 +102,8 @@ public class MessageFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         chatListReceiver = new ChatListReceiver();
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-       refresh.post(new Runnable() {
+
+        refresh.post(new Runnable() {
             @Override
             public void run() {
                 refresh.setRefreshing(true);
@@ -119,10 +118,16 @@ public class MessageFragment extends Fragment {
                 init();
             }
         });
+
         return view;
     }
+
+
+
     public void update(ChatRecord record){
-        Log.d("日志","???");
+
+        Log.d("测试","update方法");
+        Log.d("测试","update方法"+conversationList.size());
         for (int i = 0;i<conversationList.size()-1;i++){
             if (record.getConversationId() == conversationList.get(i).getId()){
                 conversationList.get(i).setLastMessage(record.getMessage());
@@ -132,6 +137,8 @@ public class MessageFragment extends Fragment {
                 }else{
                     conversationList.get(i).setUser2UnRead(conversationList.get(i).getUser2UnRead() + 1);
                 }
+
+
                 conversationList.add(0,conversationList.remove(i));
             }
         }
@@ -189,9 +196,11 @@ public class MessageFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("r日志","AA");
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
+                //    update(record);
+                Log.d("测试","发来了信息"+record);
+                // init();
                 update(record);
             }
         }

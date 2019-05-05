@@ -42,8 +42,8 @@ import util.SpaceItemDecoration;
 
 
 public class MessageFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private  ChatListAdapter adapter;
+    static private RecyclerView recyclerView;
+    static private ChatListAdapter adapter;
     static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
     private int unReadMessage = 0;
@@ -77,7 +77,7 @@ public class MessageFragment extends Fragment {
             super.handleMessage(msg);
             //Log.d("测试","han");
             adapter = new ChatListAdapter(conversationList,getContext());
-            Log.d("测试","han");
+            Log.d("测试","hand");
             recyclerView.setAdapter(adapter);
 
         }
@@ -87,8 +87,8 @@ public class MessageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         init();
         View view = inflater.inflate(R.layout.fragment_message,container,false);
-        Intent startIntent = new Intent(container.getContext(),ChatService.class);
-        container.getContext().startService(startIntent);
+//        Intent startIntent = new Intent(container.getContext(),ChatService.class);
+//        container.getContext().startService(startIntent);
         recyclerView = (RecyclerView)view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -123,6 +123,14 @@ public class MessageFragment extends Fragment {
        for (int i = 0;i<conversationList.size()-1;i++){
            if (record.getConversationId() == conversationList.get(i).getId()){
                conversationList.get(i).setLastMessage(record.getMessage());
+               conversationList.get(i).setLastTime(record.getSendTime());
+               if(record.getSenderId() == conversationList.get(i).getUserId1()){
+                   conversationList.get(i).setUser1UnRead(conversationList.get(i).getUser1UnRead() + 1);
+               }else{
+                   conversationList.get(i).setUser2UnRead(conversationList.get(i).getUser2UnRead() + 1);
+               }
+
+
                conversationList.add(0,conversationList.remove(i));
            }
        }

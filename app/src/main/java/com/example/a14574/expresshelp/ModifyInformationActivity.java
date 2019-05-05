@@ -167,6 +167,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
 //            });
 //            dialog.show();
             return true;
+
         }else if (name.getText().toString().isEmpty() || ID.getText().toString().isEmpty() || schoolNumber.getText().toString().isEmpty()){
            Toast.makeText(ModifyInformationActivity.this,"注册跑手信息要填写完善",Toast.LENGTH_SHORT).show();
            return false;

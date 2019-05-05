@@ -39,6 +39,7 @@ public class ChatService extends Service {
                 ChatRecord chatRecord = gson.fromJson(result, ChatRecord.class);
                 if(chatRecord.getGeterId() == LoginActivity.USER.getId()){      //处理发送给我的信息
                     Intent intent1 = new Intent("CHAT_LIST");
+                    Log.d("测试","socket");
                     intent1.putExtra("record", chatRecord);
                     sendBroadcast(intent1);
                 }
@@ -54,7 +55,7 @@ public class ChatService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("日志","服务被启动了");
+        Log.d("测试","服务被启动了");
 
         super.onCreate();
         new Thread(new Runnable() {
@@ -68,7 +69,7 @@ public class ChatService extends Service {
                         LoginActivity.socket = null;
                     }
                     LoginActivity.socket = new Socket(ip, 10239);
-                    new ClientSender(LoginActivity.socket).send();
+                   // new ClientSender(LoginActivity.socket).send();
                 } catch (Exception e) {
 
                 }
@@ -79,12 +80,13 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Log.d("测试","服务被执行了");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //                  socket = new Socket(ip, 10010);
+                    Log.d("测试","线程被启动了");
+                    //             socket = new Socket(ip, 10010);
                     //        new ClientSender(socket).send();
                     while(LoginActivity.socket == null){
                         Thread.sleep(1000);
@@ -107,6 +109,8 @@ public class ChatService extends Service {
         }).start();
 
 
+
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -114,5 +118,9 @@ public class ChatService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         return null;
+    }
+
+    public static void SocketConnect(){
+
     }
 }

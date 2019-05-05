@@ -1,5 +1,6 @@
 package com.example.a14574.expresshelp;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.widget.RadioButton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.a14574.practice.ChatService;
 
 import fragment.HomePageFragment;
 import fragment.MessageFragment;
@@ -72,6 +74,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         badgeView.setBackground(20, getResources().getColor(R.color.red));
         registerReceiver( ListReceiver,intentFilter);
         Log.d("测试","是否执行了");
+        Intent startIntent = new Intent(this, ChatService.class);
+       startService(startIntent);
     }
     public void homePageFragment(View view){
         getSupportFragmentManager().beginTransaction()

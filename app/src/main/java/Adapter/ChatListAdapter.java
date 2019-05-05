@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.MyApplication;
 import com.example.a14574.expresshelp.R;
 
 import java.text.SimpleDateFormat;
@@ -92,9 +93,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         }else {
             holder.time.setText("");
         }
-        String url = context.getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
+        String url = MyApplication.getContext().getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
         Log.d("userimage",LoginActivity.USER.getHeadImage());
-        Glide.with(context).load(url).into(holder.conversationHeadImage);
+        Glide.with(MyApplication.getContext()).load(url).into(holder.conversationHeadImage);
         if(LoginActivity.USER.getId() == conversation.getUserId1()){
             if(conversation.getUser1UnRead() == 0){
                 holder.newMessage.setVisibility(View.GONE);

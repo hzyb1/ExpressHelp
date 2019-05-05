@@ -41,6 +41,7 @@ public class ChatService extends Service {
                 if(chatRecord.getGeterId() == LoginActivity.USER.getId()){      //处理发送给我的信息
                     Log.d("日志","是给我的");
                     Intent intent1 = new Intent("CHAT_LIST");
+                    Log.d("测试","socket");
                     intent1.putExtra("record", chatRecord);
                     sendBroadcast(intent1);
                 }
@@ -58,7 +59,7 @@ public class ChatService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d("日志","服务被启动了");
+        Log.d("测试","服务被启动了");
 
         super.onCreate();
         new Thread(new Runnable() {
@@ -84,6 +85,33 @@ public class ChatService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("测试","服务被执行了");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("测试","线程被启动了");
+                    //             socket = new Socket(ip, 10010);
+                    //        new ClientSender(socket).send();
+                    while(LoginActivity.socket == null){
+                        Thread.sleep(1000);
+                    }
+                    InputStream inputStream = LoginActivity.socket.getInputStream();
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        String data = new String(buffer, 0, len);
+                        // 发到主线程中 收到的数据
+                        Message message = Message.obtain();
+                        message.what = 1;
+                        message.obj = data;
+                        mHandler.sendMessage(message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         new Thread(new Runnable() {
             @Override

@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
 import com.example.a14574.expresshelp.LoginActivity;
+import com.example.a14574.expresshelp.MyApplication;
 import com.example.a14574.expresshelp.R;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +36,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView id;
         private TextView message;
-        private LinearLayout chat;
+        private RelativeLayout chat;
         private CircleImageView conversationHeadImage;
         private ConversationVo conversationVo;
         private LinearLayout newMessage;
@@ -44,7 +46,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
             message = (TextView)view.findViewById(R.id.chat_list_message);
-            chat = (LinearLayout)view.findViewById(R.id.chat);
+            chat = (RelativeLayout)view.findViewById(R.id.chat);
             conversationHeadImage = (CircleImageView)view.findViewById(R.id.conversationHeadImage);
             newMessage = (LinearLayout) view.findViewById(R.id.new_message);
             messageNum = (TextView) view.findViewById(R.id.message_num);
@@ -91,9 +93,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         }else {
             holder.time.setText("");
         }
-        String url = context.getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
+        String url = MyApplication.getContext().getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
         Log.d("userimage",LoginActivity.USER.getHeadImage());
-        Glide.with(context).load(url).into(holder.conversationHeadImage);
+        Glide.with(MyApplication.getContext()).load(url).into(holder.conversationHeadImage);
         if(LoginActivity.USER.getId() == conversation.getUserId1()){
             if(conversation.getUser1UnRead() == 0){
                 holder.newMessage.setVisibility(View.GONE);

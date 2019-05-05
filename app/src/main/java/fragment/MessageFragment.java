@@ -121,7 +121,6 @@ public class MessageFragment extends Fragment {
         });
         return view;
     }
-
     public void update(ChatRecord record){
         Log.d("日志","???");
         for (int i = 0;i<conversationList.size()-1;i++){

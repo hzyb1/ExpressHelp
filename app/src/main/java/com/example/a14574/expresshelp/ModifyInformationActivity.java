@@ -98,6 +98,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
                     //上传服务器
 
                     updataUser(user);
+
                 }
             }
         });
@@ -148,24 +149,25 @@ public class ModifyInformationActivity extends AppCompatActivity {
 
     private boolean check(){
         if (name.getText().toString().isEmpty() && ID.getText().toString().isEmpty() && schoolNumber.getText().toString().isEmpty()){
-            AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyInformationActivity.this);
-            dialog.setTitle("信息不完善");
-            dialog.setMessage("跑手信息未注册，不能成为跑手，是否继续注册");
-            dialog.setCancelable(false);
-            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    flag = true;
-                }
-            });
-            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    flag = false;
-                }
-            });
-            dialog.show();
-            return flag;
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(ModifyInformationActivity.this);
+//            dialog.setTitle("信息不完善");
+//            dialog.setMessage("跑手信息未注册，不能成为跑手，是否继续注册");
+//            dialog.setCancelable(false);
+//            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    i =1;
+//                }
+//            });
+//            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    i =2;
+//                }
+//            });
+//            dialog.show();
+            return true;
+
         }else if (name.getText().toString().isEmpty() || ID.getText().toString().isEmpty() || schoolNumber.getText().toString().isEmpty()){
            Toast.makeText(ModifyInformationActivity.this,"注册跑手信息要填写完善",Toast.LENGTH_SHORT).show();
            return false;
@@ -176,6 +178,7 @@ public class ModifyInformationActivity extends AppCompatActivity {
            return true;
        }
     }
+
     private void updataUser(User user){
         progressDialog = new ProgressDialog(ModifyInformationActivity.this);
         progressDialog.setTitle("正在上传，请稍后......");

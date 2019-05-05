@@ -80,31 +80,7 @@ public class ChatService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //                  socket = new Socket(ip, 10010);
-                    //        new ClientSender(socket).send();
-                    while(LoginActivity.socket == null){
-                        Thread.sleep(1000);
-                    }
-                    InputStream inputStream = LoginActivity.socket.getInputStream();
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = inputStream.read(buffer)) != -1) {
-                        String data = new String(buffer, 0, len);
-                        // 发到主线程中 收到的数据
-                        Message message = Message.obtain();
-                        message.what = 1;
-                        message.obj = data;
-                        mHandler.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+
 
 
         return super.onStartCommand(intent, flags, startId);
@@ -114,5 +90,9 @@ public class ChatService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         return null;
+    }
+
+    public static void SocketConnect(){
+
     }
 }

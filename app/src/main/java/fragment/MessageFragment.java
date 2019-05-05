@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class MessageFragment extends Fragment {
     static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
     private int unReadMessage = 0;
+    private SwipeRefreshLayout refresh;
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             super.handleMessage(msg);
@@ -69,6 +71,9 @@ public class MessageFragment extends Fragment {
             adapter = new ChatListAdapter(conversationList,getContext());
                 //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
             recyclerView.setAdapter(adapter);
+            if(refresh.isRefreshing()){
+                refresh.setRefreshing(false);
+            }
 
         }
     };
@@ -78,6 +83,7 @@ public class MessageFragment extends Fragment {
         init();
         View view = inflater.inflate(R.layout.fragment_message,container,false);
         Intent startIntent = new Intent(container.getContext(),ChatService.class);
+        refresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         container.getContext().startService(startIntent);
         recyclerView = (RecyclerView)view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -86,8 +92,24 @@ public class MessageFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         chatListReceiver = new ChatListReceiver();
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+       refresh.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh.setRefreshing(true);
+                init();
+            }
+        });
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //swipeRefresh.setRefreshing(false);
+                refresh.setRefreshing(true);
+                init();
+            }
+        });
         return view;
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden){
@@ -96,7 +118,7 @@ public class MessageFragment extends Fragment {
 
 
         }else{//重新显示到最前端 ,相当于调用了onResume()
-            init();
+         //   init();
             //进行网络数据刷新  此处执行必须要在 Fragment与Activity绑定了 即需要添加判断是否完成绑定，否则将会报空（即非第一个显示出来的fragment，虽然onCreateView没有被调用,
             //但是onHiddenChanged也会被调用，所以如果你尝试去获取活动的话，注意防止出现空指针）
 
@@ -172,8 +194,8 @@ public class MessageFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
-            //    update(record);
-                init();
+                update(record);
+            //    init();
             }
         }
     }

@@ -11,7 +11,7 @@
     <string name="pay_order_title">支付订单</string>
     <string name="modify_information_title">修改个人信息</string>
     <string name="admin_user_login_title">管理员登录</string>
-    <string name="username_edit_hint">请输入用户名</string>
+    <string name="username_edit_hint">请输入电话号码</string>
     <string name="admin_username_edit_hint">请输入管理员账户名</string>
     <string name="password_edit_hint">请输入密码</string>
     <string name="login">登录</string>

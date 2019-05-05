@@ -155,13 +155,13 @@ public class ModifyInformationActivity extends AppCompatActivity {
             dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    flag = false;
+                    flag = true;
                 }
             });
             dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    flag = true;
+                    flag = false;
                 }
             });
             dialog.show();

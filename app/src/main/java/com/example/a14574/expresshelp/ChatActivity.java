@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -135,13 +136,23 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
+                                if(LoginActivity.socket == null ){
+                                    LoginActivity.socket = new Socket("45.32.84.43", 10239);
+                                }
                                 OutputStream outputStream = LoginActivity.socket.getOutputStream();
-                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+                                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ") .create();
                                 String text = gson.toJson(record);
                                 Log.d("日志",text);
                                 outputStream.write(text.getBytes("utf-8"));
                                 outputStream.flush();
-                            } catch (IOException e) {
+                            } catch (Exception e) {
+                                try {
+                                    LoginActivity.socket.close();
+                                    LoginActivity.socket = null;
+                                    LoginActivity.socket = new Socket("45.32.84.43", 10239);
+                                }catch (Exception e1){
+
+                                }
                                 e.printStackTrace();
                             }
                         }
@@ -218,6 +229,14 @@ public class ChatActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        unregisterReceiver(chatListReceiver);
+    }
+
+
 
     public class ChatListReceiver extends BroadcastReceiver {
         public ChatListReceiver() {

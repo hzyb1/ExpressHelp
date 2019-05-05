@@ -75,12 +75,15 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
             ((SendViewHolder) holder).message.setText(record.getMessage());
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((SendViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
-            ((SendViewHolder) holder).image.setImageBitmap(LoginActivity.photo);
-            Log.d("测试","bitmap"+LoginActivity.photo);
+//            ((SendViewHolder) holder).image.setImageBitmap(LoginActivity.photo);
+ //           Log.d("测试","bitmap"+LoginActivity.photo);
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
             ((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
+
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((AcceptViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
         }

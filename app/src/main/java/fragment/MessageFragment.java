@@ -55,8 +55,6 @@ public class MessageFragment extends Fragment {
             result = msg.obj.toString();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
             conversationList = gson.fromJson(result, new TypeToken<List<ConversationVo>>(){}.getType());
-
-
             adapter = new ChatListAdapter(conversationList,getContext());
             //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show()
             unReadMessage = 0;
@@ -68,10 +66,8 @@ public class MessageFragment extends Fragment {
                 }
                 HomeActivity.badgeView.setBadgeCount(unReadMessage);
             }
-            Log.d("日志","信息数量"+unReadMessage);
             adapter = new ChatListAdapter(conversationList,getContext());
                 //Toast.makeText(getActivity(),"最后的对象"+chatUserList.get(chatUserList.size()-1).getMessage(),Toast.LENGTH_SHORT).show();
-            Log.d("日志","最后的对象"+conversationList.size());
             recyclerView.setAdapter(adapter);
 
         }
@@ -176,7 +172,8 @@ public class MessageFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
-                update(record);
+            //    update(record);
+                init();
             }
         }
     }

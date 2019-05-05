@@ -61,10 +61,8 @@ public class ChatActivity extends AppCompatActivity {
                 if(result.length() >= 5){
                     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
                     chatRecords = gson.fromJson(result, new TypeToken<List<ChatRecord>>(){}.getType());
-                    Log.d("日志","大小"+chatRecords.size());
                     conversationId = chatRecords.get(0).getConversationId();
                     ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
-
                     recyclerView.setAdapter(adapter);
                     recyclerView.scrollToPosition(chatRecords.size()-1);
 
@@ -77,7 +75,6 @@ public class ChatActivity extends AppCompatActivity {
                 chatRecords.add(chatRecord);
                 ChatAdapter adapter = new ChatAdapter(chatRecords,bitmap);
                 if(recyclerView == null){
-                    Log.d("日志","啥玩意");
       //              recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
        //             LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         //            recyclerView.setLayoutManager(layoutManager);
@@ -96,8 +93,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         bitmap = getIntent().getParcelableExtra("photo");
         initView();
-        id1 = getIntent().getIntExtra("id1",0);
-        id2 = getIntent().getIntExtra("id2",0);
         initList();
         content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,9 +109,6 @@ public class ChatActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
-
-        final int id1 = getIntent().getIntExtra("id1",0);
-        final int id2 = getIntent().getIntExtra("id2",0);
         recyclerView = (RecyclerView)findViewById(R.id.rv_chat_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -181,6 +173,14 @@ public class ChatActivity extends AppCompatActivity {
         progressDialog.setMessage("正在加载......");
         progressDialog.setCancelable(false);
         progressDialog.show();
+
+        id1 = getIntent().getIntExtra("id1",0);
+        id2 = getIntent().getIntExtra("id2",0);
+        if(LoginActivity.USER.getId() != id1){
+            id2 = id1;
+            id1 = LoginActivity.USER.getId();
+        }
+
         HashMap<String, String> params = new HashMap<String, String>();
         if(LoginActivity.USER == null){
             progressDialog.dismiss();

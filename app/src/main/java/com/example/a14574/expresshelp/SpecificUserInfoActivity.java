@@ -1,5 +1,8 @@
 package com.example.a14574.expresshelp;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,6 +87,18 @@ public class SpecificUserInfoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //跳转到聊天界面
+
+                Intent intent = new Intent(SpecificUserInfoActivity.this, ChatActivity.class);
+                intent.putExtra("id1",LoginActivity.USER.getId());
+                intent.putExtra("id2",user.getId());
+                intent.putExtra("name",user.getUsername());
+                Drawable drawable = headImage.getDrawable();
+                headImage.setDrawingCacheEnabled(true);
+                Bitmap bitmap = Bitmap.createBitmap(headImage.getDrawingCache());
+                headImage.setDrawingCacheEnabled(false);
+                intent.putExtra("photo",bitmap);
+                SpecificUserInfoActivity.this.startActivity(intent);
+
                 Toast.makeText(SpecificUserInfoActivity.this,"点击发消息",Toast.LENGTH_SHORT).show();
             }
         });

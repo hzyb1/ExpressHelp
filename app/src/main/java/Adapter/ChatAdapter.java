@@ -82,11 +82,14 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
             Bitmap sendbitmap = Bitmap.createBitmap(headImage.getDrawingCache());
             headImage.setDrawingCacheEnabled(false);
             ((SendViewHolder) holder).image.setImageBitmap(sendbitmap);
-            Log.d("测试","bitmap"+LoginActivity.photo);
+           // Log.d("测试","bitmap"+LoginActivity.photo);
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
             ((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
+
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((AcceptViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
         }

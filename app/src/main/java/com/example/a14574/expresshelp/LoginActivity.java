@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Bundle;
@@ -20,12 +21,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import http.ClientSender;
 import http.HttpCallbackListener;
 import http.HttpUtil;
@@ -37,7 +40,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
 
     public static Socket socket = null;
     public static User USER = null;
-    public static Bitmap photo = null;
     private EditText telephoneEditText;     //电话号编辑框
     private ImageView passwordImageView;
     //private Button adminLoginButton;        //切换到客服登录的按钮
@@ -47,6 +49,9 @@ public class LoginActivity extends BaseActivity {      //登录活动
     private Toolbar toolbar;        //
     private ProgressDialog progressDialog;                   //登录状态对话框
     public static Bitmap myBitmap;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +172,6 @@ public class LoginActivity extends BaseActivity {      //登录活动
                        SharedPreferences.Editor editor = sp.edit();
                        editor.putInt("userid",USER.getId());
                        editor.commit();     //提交持久化对象
-
                        progressDialog.dismiss();
                        LoginActivity.this.finish();
                    }
@@ -179,13 +183,10 @@ public class LoginActivity extends BaseActivity {      //登录活动
             e.printStackTrace();
         }
     }
-
-
     private boolean isInputValid() {
         //检查用户输入的合法性，这里暂且默认用户输入合法
         return true;
     }
-
     @Override
     protected void onPause() {
         super.onPause();

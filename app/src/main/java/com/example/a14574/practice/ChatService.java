@@ -45,8 +45,6 @@ public class ChatService extends Service {
             }
         }
     };
-
-
     public ChatService() {
 
 
@@ -65,6 +63,10 @@ public class ChatService extends Service {
                 try {
                     String ip = "45.32.84.43";
                   //  String ip = "10.86.98.159";
+                    if (LoginActivity.socket != null) {
+                        LoginActivity.socket.close();
+                        LoginActivity.socket = null;
+                    }
                     LoginActivity.socket = new Socket(ip, 10239);
                     new ClientSender(LoginActivity.socket).send();
                 } catch (Exception e) {
@@ -103,8 +105,6 @@ public class ChatService extends Service {
                 }
             }
         }).start();
-
-
 
 
         return super.onStartCommand(intent, flags, startId);

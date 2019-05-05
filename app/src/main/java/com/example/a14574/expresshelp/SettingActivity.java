@@ -2,6 +2,7 @@ package com.example.a14574.expresshelp;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -32,12 +34,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import http.HttpUtil;
+import model.User;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -56,18 +62,35 @@ public class SettingActivity extends BaseActivity {
     private Button toModifyMyInfo;
     public static final int CHOOSE_PHOTO = 2;
     private RelativeLayout topUp;    //充值
+    private ProgressDialog progressDialog;                   //上传状态对话框
+    private float moneyF=0;
 
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String result = "";
-            result = msg.obj.toString();
-            Log.d("日志",result);
-            LoginActivity.USER.setHeadImage(result);
-            String url = SettingActivity.this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
-            Glide.with(SettingActivity.this).load(url).into(headImage);
+            if(msg.arg1 == 1){
+                String result = "";
+                result = msg.obj.toString();
+                Log.d("日志",result);
+                LoginActivity.USER.setHeadImage(result);
+                String url = SettingActivity.this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+                Glide.with(SettingActivity.this).load(url).into(headImage);
+            }else if(msg.arg1 == 2){
+                String result = "";
+                result = msg.obj.toString();
+                if(SettingActivity.this.getString(R.string.HTTPERROR).equals(result)){
+                    Toast.makeText(SettingActivity.this,"上传失败！！！",Toast.LENGTH_LONG).show();
+                }else {
+                //    LoginActivity.USER.setBalance(LoginActivity.USER.getBalance() + moneyF);
+                    Toast.makeText(SettingActivity.this, "上传成功！！！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SettingActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
+                progressDialog.dismiss();
+            }
         }
     };
 
@@ -229,6 +252,7 @@ public class SettingActivity extends BaseActivity {
                     }
                     Message message = new Message();
                     message.obj = response.body().string().trim();
+                    message.arg1 = 1;
                     mHandler.sendMessage(message);
 
                     //result就是图片服务器返回的图片地址。
@@ -295,7 +319,6 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 String moneyS = money.getText().toString().trim();
-                float moneyF=0;
                 try {
                     moneyF = Float.parseFloat(moneyS);
                 }catch (Exception e){
@@ -304,7 +327,10 @@ public class SettingActivity extends BaseActivity {
                     return;
                 }
                 //充值操作
+                User user = LoginActivity.USER;
+                user.setBalance(user.getBalance()+ moneyF);
 
+                recharge(user);
                 dialog.dismiss();
             }
         });
@@ -316,5 +342,52 @@ public class SettingActivity extends BaseActivity {
         });
         dialog.show();
     }
+
+    private void recharge(User user){
+
+        progressDialog = new ProgressDialog(SettingActivity.this);
+        progressDialog.setTitle("正在上传，请稍后......");
+        progressDialog.setMessage("上传中......");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        try {
+            //构造完整URL
+            String originAddress = this.getString(R.string.TheServer) + "updataUser";
+            Log.d("url:",originAddress);
+            final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
+            RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user));
+
+            Log.d("日志:",gson.toJson(user));
+            HttpUtil.sendPostOkHttpRequest(originAddress,requestBody,new okhttp3.Callback(){
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Looper.prepare();
+                    Toast.makeText(SettingActivity.this,"网络错误,未能连上服务器", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Looper.loop();
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(!response.isSuccessful()){
+                        Looper.prepare();
+                        Toast.makeText(SettingActivity.this,"连接网络失败", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Looper.loop();
+                        return;
+                    }
+                    Message message = new Message();
+                    message.obj = response.body().string().trim();
+                    message.arg1 = 2;
+                    mHandler.sendMessage(message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

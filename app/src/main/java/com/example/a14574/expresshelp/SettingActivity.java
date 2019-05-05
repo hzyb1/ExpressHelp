@@ -64,6 +64,7 @@ public class SettingActivity extends BaseActivity {
     private RelativeLayout topUp;    //充值
     private ProgressDialog progressDialog;                   //上传状态对话框
     private float moneyF=0;
+    private TextView id;
 
     Handler mHandler = new Handler(){
         @Override
@@ -114,8 +115,10 @@ public class SettingActivity extends BaseActivity {
         balance = (TextView)findViewById(R.id.balance);
         toModifyMyInfo = (Button)findViewById(R.id.to_modify_myinfo);
         topUp = (RelativeLayout) findViewById(R.id.top_up);
+        id = (TextView) findViewById(R.id.id);
         if(LoginActivity.USER!=null){
             userName.setText(LoginActivity.USER.getUsername());
+            id.setText(LoginActivity.USER.getId()+"");
             balance.setText(LoginActivity.USER.getBalance()+"￥");
             String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
             Glide.with(this).load(url).into(headImage);;

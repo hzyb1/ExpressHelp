@@ -245,6 +245,7 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
+            Log.d("日志","广播");
             if(record.getConversationId() == conversationId){
                 Message message = new Message();
                 message.obj = record;

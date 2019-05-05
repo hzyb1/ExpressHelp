@@ -192,8 +192,10 @@ public class MessageFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("日志","发过来了");
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
+                Log.d("日志","发给我了");
                 update(record);
             //    init();
             }

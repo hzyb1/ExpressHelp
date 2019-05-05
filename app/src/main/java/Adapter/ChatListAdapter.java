@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView id;
         private TextView message;
-        private LinearLayout chat;
+        private RelativeLayout chat;
         private CircleImageView conversationHeadImage;
         private ConversationVo conversationVo;
         private LinearLayout newMessage;
@@ -44,7 +45,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
             message = (TextView)view.findViewById(R.id.chat_list_message);
-            chat = (LinearLayout)view.findViewById(R.id.chat);
+            chat = (RelativeLayout)view.findViewById(R.id.chat);
             conversationHeadImage = (CircleImageView)view.findViewById(R.id.conversationHeadImage);
             newMessage = (LinearLayout) view.findViewById(R.id.new_message);
             messageNum = (TextView) view.findViewById(R.id.message_num);

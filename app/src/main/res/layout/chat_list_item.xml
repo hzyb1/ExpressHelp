@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:id="@+id/chat">
     <RelativeLayout
         android:id="@+id/image_layout"
         android:layout_width="90dp"
@@ -32,7 +33,6 @@
         </LinearLayout>
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

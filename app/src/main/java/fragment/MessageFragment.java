@@ -72,6 +72,16 @@ public class MessageFragment extends Fragment {
 
         }
     };
+    private Handler hand = new Handler(){
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            //Log.d("测试","han");
+            adapter = new ChatListAdapter(conversationList,getContext());
+            Log.d("测试","han");
+            recyclerView.setAdapter(adapter);
+
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -108,8 +118,8 @@ public class MessageFragment extends Fragment {
 
     public void update(ChatRecord record){
 
-       Log.d("日志","update方法");
-        Log.d("日志","update方法"+conversationList.size());
+       Log.d("测试","update方法");
+        Log.d("测试","update方法"+conversationList.size());
        for (int i = 0;i<conversationList.size()-1;i++){
            if (record.getConversationId() == conversationList.get(i).getId()){
                conversationList.get(i).setLastMessage(record.getMessage());
@@ -121,7 +131,7 @@ public class MessageFragment extends Fragment {
            public void run() {
                Log.d("日志","run方法");
                Message message = new Message();
-               handler.sendMessage(message);
+               hand.sendMessage(message);
            }
        }).start();
     }
@@ -173,7 +183,9 @@ public class MessageFragment extends Fragment {
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
             //    update(record);
-                init();
+                Log.d("测试","发来了信息"+record);
+               // init();
+                update(record);
             }
         }
     }

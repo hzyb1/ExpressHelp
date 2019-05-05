@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
 import com.example.a14574.expresshelp.LoginActivity;
 import com.example.a14574.expresshelp.R;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -28,6 +30,7 @@ import model.User;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHolder> {
     private List<ConversationVo> mConversationVo;
     private Context context;
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView id;
         private TextView message;
@@ -36,6 +39,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         private ConversationVo conversationVo;
         private LinearLayout newMessage;
         private TextView messageNum;
+        private TextView time;
         public ViewHolder(View view){
             super (view);
             id = (TextView)view.findViewById(R.id.chat_list_id);
@@ -44,6 +48,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
             conversationHeadImage = (CircleImageView)view.findViewById(R.id.conversationHeadImage);
             newMessage = (LinearLayout) view.findViewById(R.id.new_message);
             messageNum = (TextView) view.findViewById(R.id.message_num);
+            time = (TextView) view.findViewById(R.id.time);
         }
     }
     public ChatListAdapter(List<ConversationVo> List,Context context){
@@ -81,6 +86,11 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
         User user = LoginActivity.USER;
         holder.id.setText(conversation.getName());
         holder.message.setText(conversation.getLastMessage());
+        if(conversation.getLastTime()!=null){
+            holder.time.setText(sdf.format(conversation.getLastTime()));
+        }else {
+            holder.time.setText("");
+        }
         String url = context.getString(R.string.TheServer)+"headImages/"+ conversation.getPhoto();
         Log.d("userimage",LoginActivity.USER.getHeadImage());
         Glide.with(context).load(url).into(holder.conversationHeadImage);

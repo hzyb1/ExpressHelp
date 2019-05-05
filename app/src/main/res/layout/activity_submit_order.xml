@@ -39,11 +39,13 @@
         android:id="@+id/submit_order_button"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="50dp"
         android:textSize="20sp"
         android:text="@string/into_submit_order"
-        android:background="@drawable/submit_order_backcolor"
+        android:background="@drawable/login_btn"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:layout_gravity="center"/>
 
 

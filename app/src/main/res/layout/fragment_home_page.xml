@@ -12,6 +12,16 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/head_image"
+            android:visibility="invisible"/>
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="?attr/colorPrimary">
+        </LinearLayout>
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"

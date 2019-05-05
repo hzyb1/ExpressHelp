@@ -1,6 +1,8 @@
 package fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +35,7 @@ import util.Dialog;
 
 public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private Button setting;
-    private CircleImageView headImage;   //头像
+    public static CircleImageView headImage;   //头像
     private LinearLayout pendingPaymentLayout;
 
     private TextView userName;
@@ -60,6 +62,8 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     private LinearLayout runner;
     private LinearLayout all;
 
+    public static Bitmap bitmap;
+
 
     @Nullable
     @Override
@@ -71,6 +75,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
         toSpecificInfo = (Button) view.findViewById(R.id.to_specific_info);
         pendingPaymentLayout = (LinearLayout) view.findViewById(R.id.pending_payment_layout);//待支付
         initEvents();
+        Log.d("myInfoFragment","oncreatview");
         return view;
     }
     private void initEvents(){
@@ -94,6 +99,13 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
             }
         });
+        if(LoginActivity.USER != null){
+            userName.setText(LoginActivity.USER.getUsername());
+            final String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Log.d("userimage",LoginActivity.USER.getHeadImage());
+            Log.d("testImageUrl",url);
+            Glide.with(getContext()).load(url).into(headImage);
+        }
     }
 
     @Override
@@ -195,13 +207,6 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
     public void onStart() {
         super.onStart();
         Log.d("日志","启动！");
-        if(LoginActivity.USER != null){
-            userName.setText(LoginActivity.USER.getUsername());
-            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
-            Log.d("userimage",LoginActivity.USER.getHeadImage());
-            Log.d("testImageUrl",url);
-            Glide.with(getContext()).load(url).into(headImage);
-        }
     }
 
     private void toRunnerOrder(int style){
@@ -213,4 +218,5 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener{
             startActivity(intent);
         }
     }
+
 }

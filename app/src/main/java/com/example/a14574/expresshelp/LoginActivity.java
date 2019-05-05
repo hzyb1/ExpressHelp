@@ -1,4 +1,5 @@
 package com.example.a14574.expresshelp;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
@@ -44,6 +46,7 @@ public class LoginActivity extends BaseActivity {      //登录活动
     private Button normalLogin;     //登录按钮
     private Toolbar toolbar;        //
     private ProgressDialog progressDialog;                   //登录状态对话框
+    public static Bitmap myBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,4 +190,5 @@ public class LoginActivity extends BaseActivity {      //登录活动
     protected void onPause() {
         super.onPause();
     }
+
 }

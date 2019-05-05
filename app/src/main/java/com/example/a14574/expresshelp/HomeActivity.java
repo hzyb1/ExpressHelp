@@ -6,8 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -60,7 +58,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
                 .add(R.id.container,fragment[0])
                 .add(R.id.container, fragment[1])
                 .add(R.id.container, fragment[2]).commit();
-
         homePageFragment(null);
         initView();
         intentFilter = new IntentFilter();
@@ -70,19 +67,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         registerReceiver(chatListReceiver,intentFilter);
         badgeView = new BadgeView(this);
         badgeView.setTargetView(message);
-  //      badgeView.setBadgeCount(12);
         badgeView.setBadgeGravity(Gravity.RIGHT | Gravity.TOP);
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));
         registerReceiver( ListReceiver,intentFilter);
         Log.d("测试","是否执行了");
-        Glide.with(this).load(LoginActivity.USER.getHeadImage()).asBitmap().into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                Log.d("测试","bitmap123"+resource);
-                PHOTO = resource;
-            }
-        });
     }
     public void homePageFragment(View view){
         getSupportFragmentManager().beginTransaction()

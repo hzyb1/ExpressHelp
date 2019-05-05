@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.a14574.expresshelp.ChatActivity;
 import com.example.a14574.expresshelp.HomeActivity;
 import com.example.a14574.expresshelp.LoginActivity;
@@ -49,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Adapter.OrderBriefAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 import http.HttpCallbackListener;
 import http.HttpUtil;
 import model.Order;
@@ -66,6 +68,7 @@ public class HomePageFragment extends Fragment {
     private TextView search;           //搜索按钮
     private EditText searchKey;        //搜索内容
     private Gson gson;
+    public static CircleImageView headImage;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -96,6 +99,7 @@ public class HomePageFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
         gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss ").create();
         submitOrder = (Button) view.findViewById(R.id.submit_order);
+        headImage = (CircleImageView) view.findViewById(R.id.head_image);
         initEvents();   //事件初始化代码
         swipeRefresh.post(new Runnable() {
             @Override
@@ -188,6 +192,13 @@ public class HomePageFragment extends Fragment {
                 doSearch(searchKeyS);
             }
         });
+        if(LoginActivity.USER != null){
+            String url = this.getString(R.string.TheServer)+"headImages/"+ LoginActivity.USER.getHeadImage();
+            Log.d("userimage",LoginActivity.USER.getHeadImage());
+            Log.d("testImageUrl",url);
+            Glide.with(getContext()).load(url).into(headImage);
+        }
+        headImage.setVisibility(View.INVISIBLE);
     }
 
     private void doSearch(String searchText){    //搜索方法

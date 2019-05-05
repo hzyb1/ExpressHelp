@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fragment.HomePageFragment;
+import fragment.MyInfoFragment;
 import model.ChatRecord;
 
 public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
@@ -75,12 +77,19 @@ public class ChatAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
             ((SendViewHolder) holder).message.setText(record.getMessage());
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((SendViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
-            ((SendViewHolder) holder).image.setImageBitmap(LoginActivity.photo);
-            Log.d("测试","bitmap"+LoginActivity.photo);
+            CircleImageView headImage = HomePageFragment.headImage;
+            headImage.setDrawingCacheEnabled(true);
+            Bitmap sendbitmap = Bitmap.createBitmap(headImage.getDrawingCache());
+            headImage.setDrawingCacheEnabled(false);
+            ((SendViewHolder) holder).image.setImageBitmap(sendbitmap);
+           // Log.d("测试","bitmap"+LoginActivity.photo);
         }else if (holder instanceof AcceptViewHolder){
             Log.d("日志","接收方");
             ((AcceptViewHolder) holder).message.setText(record.getMessage());
             ((AcceptViewHolder) holder).image.setImageBitmap(bitmap);
+
+
+
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             ((AcceptViewHolder) holder).time.setText(sdf.format(record.getSendTime()));
         }

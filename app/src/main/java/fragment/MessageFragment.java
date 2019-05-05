@@ -43,8 +43,8 @@ import util.SpaceItemDecoration;
 
 
 public class MessageFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private  ChatListAdapter adapter;
+    static private RecyclerView recyclerView;
+    static private  ChatListAdapter adapter;
     static private List<ConversationVo> conversationList = new ArrayList<>();
     private ChatListReceiver chatListReceiver;
     private int unReadMessage = 0;
@@ -77,14 +77,26 @@ public class MessageFragment extends Fragment {
 
         }
     };
+
+    private Handler hand = new Handler(){
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            //Log.d("测试","han");
+            adapter = new ChatListAdapter(conversationList,getContext());
+            Log.d("测试","hand");
+            recyclerView.setAdapter(adapter);
+
+        }
+    };
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         init();
         View view = inflater.inflate(R.layout.fragment_message,container,false);
-        Intent startIntent = new Intent(container.getContext(),ChatService.class);
+     //   Intent startIntent = new Intent(container.getContext(),ChatService.class);
+        //   container.getContext().startService(startIntent);
         refresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
-        container.getContext().startService(startIntent);
         recyclerView = (RecyclerView)view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -110,42 +122,28 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onHiddenChanged(boolean hidden){
-        super.onHiddenChanged(hidden);
-        if(hidden){//不在最前端界面显示，相当于调用了onPause()
-
-
-        }else{//重新显示到最前端 ,相当于调用了onResume()
-         //   init();
-            //进行网络数据刷新  此处执行必须要在 Fragment与Activity绑定了 即需要添加判断是否完成绑定，否则将会报空（即非第一个显示出来的fragment，虽然onCreateView没有被调用,
-            //但是onHiddenChanged也会被调用，所以如果你尝试去获取活动的话，注意防止出现空指针）
-
-        }
-
-    }
-
-
-
     public void update(ChatRecord record){
-
-       Log.d("日志","update方法");
-        Log.d("日志","update方法"+conversationList.size());
-       for (int i = 0;i<conversationList.size()-1;i++){
-           if (record.getConversationId() == conversationList.get(i).getId()){
-               conversationList.get(i).setLastMessage(record.getMessage());
-               conversationList.add(0,conversationList.remove(i));
-           }
-       }
-       new Thread(new Runnable() {
-           @Override
-           public void run() {
-               Log.d("日志","run方法");
-               Message message = new Message();
-               handler.sendMessage(message);
-           }
-       }).start();
+        Log.d("日志","???");
+        for (int i = 0;i<conversationList.size()-1;i++){
+            if (record.getConversationId() == conversationList.get(i).getId()){
+                conversationList.get(i).setLastMessage(record.getMessage());
+                conversationList.get(i).setLastTime(record.getSendTime());
+                if(record.getSenderId() == conversationList.get(i).getUserId1()){
+                    conversationList.get(i).setUser1UnRead(conversationList.get(i).getUser1UnRead() + 1);
+                }else{
+                    conversationList.get(i).setUser2UnRead(conversationList.get(i).getUser2UnRead() + 1);
+                }
+                conversationList.add(0,conversationList.remove(i));
+            }
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("日志","run方法");
+                Message message = new Message();
+                hand.sendMessage(message);
+            }
+        }).start();
     }
 
 
@@ -192,6 +190,7 @@ public class MessageFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("r日志","AA");
             ChatRecord record = (ChatRecord) intent.getSerializableExtra("record");
             if (record.getGeterId() == LoginActivity.USER.getId()){
                 update(record);

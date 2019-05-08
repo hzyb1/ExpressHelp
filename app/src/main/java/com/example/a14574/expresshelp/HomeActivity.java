@@ -73,7 +73,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{ 
         badgeView.setBadgeMargin(5,5,25,20);
         badgeView.setBackground(20, getResources().getColor(R.color.red));
         registerReceiver( ListReceiver,intentFilter);
-        Log.d("测试","是否执行了");
         Intent startIntent = new Intent(this, ChatService.class);
         startService(startIntent);
     }

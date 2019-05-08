@@ -104,6 +104,7 @@ public class MessageFragment extends Fragment {
 //        Intent startIntent = new Intent(container.getContext(),ChatService.class);
 //        container.getContext().startService(startIntent);
         refresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        refresh.setColorSchemeResources(R.color.selector_color);
         recyclerView = (RecyclerView) view.findViewById(R.id.chat_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -131,21 +132,6 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.d("日志","我不信???");
-        if (hidden) {
-            Log.d("日志","啥情况???");
-            //不在最前端界面显示，相当于调用了 onPause()
-        } else {
-            Log.d("日志","调用了吗");
-            init();
-            //重新显示到最前端,相当于调用了 onResume()
-            // 进行网络数据刷新此处执行必须要在 Fragment与 Activity绑定了即需要添加判断是否完成绑定，否则将会报空（即非第一个显示出来的 fragment，虽然 onCreateView没有被调用,
-            // 但是 onHiddenChanged也会被调用，所以如果你尝试去获取活动的话，注意防止出现空指针）}}
-        }
-    }
 
 
     @Override

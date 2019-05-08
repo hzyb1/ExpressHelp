@@ -63,10 +63,11 @@ public class MessageFragment extends Fragment {
             unReadMessage = 0;
             for(int i = 0;i<conversationList.size();i++){
                 if(LoginActivity.USER.getId() == conversationList.get(i).getUserId1()){
-                    unReadMessage+=conversationList.get(i).getUser1UnRead();
+                    unReadMessage += conversationList.get(i).getUser1UnRead();
                 }else{
                     unReadMessage+=conversationList.get(i).getUser2UnRead();
                 }
+                Log.d("日志","总未读信息"+unReadMessage);
                 HomeActivity.badgeView.setBadgeCount(unReadMessage);
             }
             adapter = new ChatListAdapter(conversationList,getContext());
@@ -81,7 +82,20 @@ public class MessageFragment extends Fragment {
         public void handleMessage(Message msg){
             super.handleMessage(msg);
             //Log.d("测试","han");
+            unReadMessage = 0;
+            for(int i = 0;i<conversationList.size();i++) {
+                if (LoginActivity.USER.getId() == conversationList.get(i).getUserId1()) {
+                    unReadMessage += conversationList.get(i).getUser1UnRead();
+                } else {
+                    unReadMessage += conversationList.get(i).getUser2UnRead();
+                }
+            }
+//            unReadMessage = unReadMessage + 1;
+            Log.d("日志","总未读信息"+unReadMessage);
+            HomeActivity.badgeView.setBadgeCount(unReadMessage);
+
             adapter = new ChatListAdapter(conversationList,getContext());
+
             Log.d("测试","hand");
             recyclerView.setAdapter(adapter);
 
@@ -132,13 +146,15 @@ public class MessageFragment extends Fragment {
             if (record.getConversationId() == conversationList.get(i).getId()){
                 conversationList.get(i).setLastMessage(record.getMessage());
                 conversationList.get(i).setLastTime(record.getSendTime());
-                if(record.getSenderId() == conversationList.get(i).getUserId1()){
+                if(record.getGeterId() == conversationList.get(i).getUserId1()){
                     conversationList.get(i).setUser1UnRead(conversationList.get(i).getUser1UnRead() + 1);
+                    Log.d("日志","我的未读信息"+ conversationList.get(i).getUser1UnRead());
+                    Log.d("日志","另一个人的信息"+ conversationList.get(i).getUser2UnRead());
                 }else{
                     conversationList.get(i).setUser2UnRead(conversationList.get(i).getUser2UnRead() + 1);
+                    Log.d("日志","我的未读信息"+ conversationList.get(i).getUser2UnRead());
+                    Log.d("日志","另一个人的信息"+ conversationList.get(i).getUser1UnRead());
                 }
-
-
                 conversationList.add(0,conversationList.remove(i));
             }
         }

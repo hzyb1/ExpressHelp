@@ -103,7 +103,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
                 holder.newMessage.setVisibility(View.VISIBLE);
                 holder.messageNum.setText(conversation.getUser1UnRead()+"");
             }
-
         }else{
             if(conversation.getUser2UnRead() == 0){
                 holder.newMessage.setVisibility(View.GONE);
